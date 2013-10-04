@@ -2153,8 +2153,6 @@
 		89BE76BF173C6C3500DFE837 /* AKU-vungle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89BE6B991739A05600DFE837 /* AKU-vungle.mm */; };
 		89BE76C2173C6C5D00DFE837 /* MOAIChartBoostIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6BA01739A05600DFE837 /* MOAIChartBoostIOS.h */; };
 		89BE76C3173C6C5D00DFE837 /* MOAIChartBoostIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89BE6BA11739A05600DFE837 /* MOAIChartBoostIOS.mm */; };
-		89BE76DC173C6D8E00DFE837 /* MOAIUrlMgrNSURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6BBF1739A05600DFE837 /* MOAIUrlMgrNSURL.h */; };
-		89BE76DD173C6D8E00DFE837 /* MOAIUrlMgrNSURL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89BE6BC01739A05600DFE837 /* MOAIUrlMgrNSURL.mm */; };
 		89BE76DE173C6D9600DFE837 /* MOAIVungleIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6BC11739A05600DFE837 /* MOAIVungleIOS.h */; };
 		89BE76DF173C6D9600DFE837 /* MOAIVungleIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89BE6BC21739A05600DFE837 /* MOAIVungleIOS.mm */; };
 		89E9D7861743F7EE00033CDD /* MOAIVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89E9D7841743F7EE00033CDD /* MOAIVersion.cpp */; };
@@ -4971,8 +4969,6 @@
 		89BE6BBC1739A05600DFE837 /* MOAITapjoyIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MOAITapjoyIOS.mm; sourceTree = "<group>"; };
 		89BE6BBD1739A05600DFE837 /* MOAITwitterIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAITwitterIOS.h; sourceTree = "<group>"; };
 		89BE6BBE1739A05600DFE837 /* MOAITwitterIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MOAITwitterIOS.mm; sourceTree = "<group>"; };
-		89BE6BBF1739A05600DFE837 /* MOAIUrlMgrNSURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIUrlMgrNSURL.h; sourceTree = "<group>"; };
-		89BE6BC01739A05600DFE837 /* MOAIUrlMgrNSURL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MOAIUrlMgrNSURL.mm; sourceTree = "<group>"; };
 		89BE6BC11739A05600DFE837 /* MOAIVungleIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIVungleIOS.h; sourceTree = "<group>"; };
 		89BE6BC21739A05600DFE837 /* MOAIVungleIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MOAIVungleIOS.mm; sourceTree = "<group>"; };
 		89BE6BC31739A05600DFE837 /* MOAIWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIWebViewDelegate.h; sourceTree = "<group>"; };
@@ -8686,8 +8682,6 @@
 				89BE6BBC1739A05600DFE837 /* MOAITapjoyIOS.mm */,
 				89BE6BBD1739A05600DFE837 /* MOAITwitterIOS.h */,
 				89BE6BBE1739A05600DFE837 /* MOAITwitterIOS.mm */,
-				89BE6BBF1739A05600DFE837 /* MOAIUrlMgrNSURL.h */,
-				89BE6BC01739A05600DFE837 /* MOAIUrlMgrNSURL.mm */,
 				89BE6BC11739A05600DFE837 /* MOAIVungleIOS.h */,
 				89BE6BC21739A05600DFE837 /* MOAIVungleIOS.mm */,
 				89BE6BC31739A05600DFE837 /* MOAIWebViewDelegate.h */,
@@ -12873,7 +12867,6 @@
 				89BE761C173C12CE00DFE837 /* MOAIUrlMgrCurl.h in Headers */,
 				89BE7620173C12CE00DFE837 /* MOAIUrlMgrNaCl.h in Headers */,
 				89BE7624173C12CE00DFE837 /* pch.h in Headers */,
-				89BE76DC173C6D8E00DFE837 /* MOAIUrlMgrNSURL.h in Headers */,
 				CDA93D4E17E91802006D544F /* ares.h in Headers */,
 				CDA93D5317E91802006D544F /* ares_build.h in Headers */,
 				CDA93D5617E91802006D544F /* ares_data.h in Headers */,
@@ -15890,7 +15883,6 @@
 				89BE761A173C12CE00DFE837 /* MOAIUrlMgrCurl.cpp in Sources */,
 				89BE761E173C12CE00DFE837 /* MOAIUrlMgrNaCl.cpp in Sources */,
 				89BE7622173C12CE00DFE837 /* pch.cpp in Sources */,
-				89BE76DD173C6D8E00DFE837 /* MOAIUrlMgrNSURL.mm in Sources */,
 				CDAE1D3217E9145400DF28C6 /* host.cpp in Sources */,
 				CDA93D4F17E91802006D544F /* ares__close_sockets.c in Sources */,
 				CDA93D5017E91802006D544F /* ares__get_hostent.c in Sources */,

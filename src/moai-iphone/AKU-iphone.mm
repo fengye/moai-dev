@@ -114,7 +114,6 @@ void AKUIphoneInit ( UIApplication* application ) {
 	#endif
 		
 	REGISTER_LUA_CLASS ( MOAIHttpTaskNSURL )
-	MOAIUrlMgrNSURL::Affirm ();
 		
 	// Device properties
 	MOAIEnvironment& environment = MOAIEnvironment::Get ();

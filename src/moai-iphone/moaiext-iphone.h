@@ -21,7 +21,6 @@
 #import <moai-iphone/MOAIWebViewIOS.h>
 
 #include <moai-iphone/MOAIHttpTaskNSURL.h>
-#include <moai-iphone/MOAIUrlMgrNSURL.h>
 
 #import <moai-iphone/NSArray+MOAILib.h>
 #import <moai-iphone/NSData+MOAILib.h>

@@ -34,7 +34,7 @@ int MOAIGameCenterIOS::_authenticatePlayer ( lua_State* L ) {
     if ( localPlayerClassAvailable && osVersionSupported ) {
 		
 		// If GameCenter is available, attempt to authenticate the local player
-		GKLocalPlayer *localPlayer = [ GKLocalPlayer localPlayer ];
+		GKLocalPlayer* localPlayer = [ GKLocalPlayer localPlayer ];
 		[ localPlayer authenticateWithCompletionHandler: ^( NSError *error ) {
 			
 			if ( [ error code ] == GKErrorNotSupported || [ error  code ] == GKErrorGameUnrecognized ) {
@@ -124,6 +124,22 @@ int MOAIGameCenterIOS::_getScores ( lua_State* L ) {
     }
 	
 	return 0;
+}
+
+//----------------------------------------------------------------//
+/**	@name	isAuthenticated
+	@text	Returns whether or not there is an authenticated local player.
+			
+	@in		nil
+	@out	bool	isAuthenticated
+*/
+int MOAIGameCenterIOS::_isAuthenticated ( lua_State* L ) {
+	
+	MOAILuaState state ( L );
+
+	lua_pushboolean ( state, [ GKLocalPlayer localPlayer ].isAuthenticated == YES );
+	
+	return 1;
 }
 
 //----------------------------------------------------------------//
@@ -301,8 +317,9 @@ void MOAIGameCenterIOS::RegisterLuaClass ( MOAILuaState& state ) {
 	
 	luaL_Reg regTable [] = {
 		{ "authenticatePlayer",			_authenticatePlayer },
-		{ "getPlayerAlias",					_getPlayerAlias },
+		{ "getPlayerAlias",				_getPlayerAlias },
 		{ "getScores",					_getScores },
+		{ "isAuthenticated",			_isAuthenticated },
 		{ "isSupported",				_isSupported },
 		{ "reportAchievementProgress",	_reportAchievementProgress },
 		{ "reportScore",				_reportScore },
