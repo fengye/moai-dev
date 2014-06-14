@@ -214,7 +214,7 @@ int MOAIJsonParser::_decode ( lua_State* L ) {
 			return 1;
 		}
 		
-		MOAIPrint( MOAILogMgr::LOG_ERROR, "MOAIJsonParser", "Bad json: %s (txt=%s, line=%d, colum=%d, pos=%d)", error.text, error.source, error.line, error.column, error.position);
+		MOAILog ( MOAILogMgr::LOG_ERROR, "MOAIJsonParser", "Bad json: %s (txt=%s, line=%d, colum=%d, pos=%d)", error.text, error.source, error.line, error.column, error.position);
 	}
 	return 0;
 }

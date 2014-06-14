@@ -13,7 +13,7 @@
 //----------------------------------------------------------------//
 int MOAILogMessages::_alertNewIsUnsupported ( lua_State* L ) {
 
-	MOAILog ( L, MOAI_NewIsUnsupported );
+	MOAILog ( L, 0, 0, MOAI_NewIsUnsupported );
 	return 0;
 }
 
@@ -29,7 +29,7 @@ bool MOAILogMessages::CheckFileExists ( cc8* filename, lua_State* L ) {
 	}
 	
 	STLString expand = ZLFileSys::GetAbsoluteFilePath ( filename );
-	MOAILog ( L, MOAILogMessages::MOAI_FileNotFound_S, expand.str ());
+	MOAILog ( L, 0, 0, MOAILogMessages::MOAI_FileNotFound_S, expand.str ());
 	
 	return false;
 }
@@ -38,11 +38,11 @@ bool MOAILogMessages::CheckFileExists ( cc8* filename, lua_State* L ) {
 bool MOAILogMessages::CheckIndex ( u32 idx, u32 size, lua_State* L ) {
 
 	if ( size == 0 ) {
-		MOAILog ( L, MOAILogMessages::MOAI_IndexNoReserved );
+		MOAILog ( L, 0, 0, MOAILogMessages::MOAI_IndexNoReserved );
 		return false;
 	}
 	else if ( !( idx < size )) {
-		MOAILog ( L, MOAILogMessages::MOAI_IndexOutOfRange_DDD, idx, 0, size - 1 );
+		MOAILog ( L, 0, 0, MOAILogMessages::MOAI_IndexOutOfRange_DDD, idx, 0, size - 1 );
 		return false;
 	}
 	return true;
@@ -52,11 +52,11 @@ bool MOAILogMessages::CheckIndex ( u32 idx, u32 size, lua_State* L ) {
 bool MOAILogMessages::CheckIndexPlusOne ( u32 idx, u32 size, lua_State* L ) {
 
 	if ( size == 0 ) {
-		MOAILog ( L, MOAILogMessages::MOAI_IndexNoReserved );
+		MOAILog ( L, 0, 0, MOAILogMessages::MOAI_IndexNoReserved );
 		return false;
 	}
 	else if ( !( idx < size )) {
-		MOAILog ( L, MOAILogMessages::MOAI_IndexOutOfRange_DDD, idx + 1, 1, size );
+		MOAILog ( L, 0, 0, MOAILogMessages::MOAI_IndexOutOfRange_DDD, idx + 1, 1, size );
 		return false;
 	}
 	return true;
@@ -66,7 +66,7 @@ bool MOAILogMessages::CheckIndexPlusOne ( u32 idx, u32 size, lua_State* L ) {
 bool MOAILogMessages::CheckReserve ( u32 idx, u32 size, lua_State* L ) {
 
 	if ( !( idx < size )) {
-		MOAILog ( L, MOAILogMessages::MOAI_IndexNoReserved );
+		MOAILog ( L, 0, 0, MOAILogMessages::MOAI_IndexNoReserved );
 		return false;
 	}
 	return true;

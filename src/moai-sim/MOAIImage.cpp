@@ -1597,7 +1597,7 @@ void MOAIImage::Load ( cc8* filename, u32 transform ) {
 		this->Load ( stream, transform );
 		stream.Close ();
 	} else {
-		MOAILog ( NULL, MOAILogMessages::MOAI_FileOpenError_S, filename );
+		MOAILog ( NULL, 0, 0, MOAILogMessages::MOAI_FileOpenError_S, filename );
 	}
 }
 

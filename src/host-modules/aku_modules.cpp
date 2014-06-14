@@ -83,10 +83,6 @@ void AKUModulesAppFinalize () {
 	#if AKU_WITH_OMNITURE
 		AKUOmnitureAppFinalize ();
 	#endif
-		
-	#if AKU_WITH_PLUMZI
-		AKUPlumziAppFinalize ();
-	#endif
 
 	#if AKU_WITH_SIM
 		AKUSimAppFinalize ();
@@ -183,10 +179,6 @@ void AKUModulesAppInitialize () {
 	
 	#if AKU_WITH_OMNITURE
 		AKUOmnitureAppInitialize ();
-	#endif
-		
-	#if AKU_WITH_PLUMZI
-		AKUPlumziAppInitialize ();
 	#endif
 
 	#if AKU_WITH_SIM
@@ -285,10 +277,6 @@ void AKUModulesContextInitialize () {
 		
 	#if AKU_WITH_OMNITURE
 		AKUOmnitureContextInitialize ();
-	#endif
-		
-	#if AKU_WITH_PLUMZI
-		AKUPlumziContextInitialize ();
 	#endif
 
 	#if AKU_WITH_SIM

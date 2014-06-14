@@ -21,6 +21,7 @@
 #include <moai-sim/MOAICameraAnchor2D.h>
 #include <moai-sim/MOAICameraFitter2D.h>
 #include <moai-sim/MOAICollisionFacet.h>
+#include <moai-sim/MOAICollisionShape.h>
 #include <moai-sim/MOAICollisionWorld.h>
 #include <moai-sim/MOAIColor.h>
 #include <moai-sim/MOAICompassSensor.h>

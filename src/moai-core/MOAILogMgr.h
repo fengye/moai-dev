@@ -72,13 +72,13 @@ public:
 	
 	//----------------------------------------------------------------//
 	void			CloseFile				();
-	void			Log						( lua_State *L, u32 messageID, ... );
-	void			LogVar					( lua_State *L, u32 messageID, va_list args );
+	void			Log						( u32 level, cc8* tag, cc8* message, ... );
+	void			Log						( lua_State *L, u32 level, cc8* tag,u32 messageID, ... );
+	void			LogV					( u32 level, cc8* tag, cc8* message, va_list args );
+	void			LogV					( lua_State *L, u32 level, cc8* tag,u32 messageID, va_list args );
 					MOAILogMgr				();
 					~MOAILogMgr				();
 	void			OpenFile				( cc8* filename );
-	void			Print					( u32 level, cc8* tag, cc8* message, ... );
-	void			PrintVar				( u32 level, cc8* tag, cc8* message, va_list args );
 	void			RegisterLogMessage		( u32 messageID, u32 level, cc8* formatString );
 	void			RegisterLuaClass		( MOAILuaState& state );
 	
@@ -97,9 +97,8 @@ public:
 //================================================================//
 // helpers
 //================================================================//
-extern void MOAILog		( lua_State *L, u32 messageID, ... );
-extern void MOAIPrint	( cc8* message, ... );
-extern void MOAIPrint	( u32 level, cc8* message, ... );
-extern void MOAIPrint	( u32 level, cc8* tag, cc8* message, ... );
+
+extern void MOAILog		( u32 level, cc8* tag, cc8* message, ... );
+extern void MOAILog		( lua_State *L, u32 level, cc8* tag, u32 messageID, ... );
 
 #endif

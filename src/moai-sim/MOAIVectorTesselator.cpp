@@ -1008,8 +1008,11 @@ void MOAIVectorTesselator::WriteSkirt ( TESStesselator* tess, const MOAIVectorSt
 //----------------------------------------------------------------//
 void MOAIVectorTesselator::WriteTriangleIndices ( TESStesselator* tess, u32 base ) {
 
+	STLString log;
+
 	if ( this->mVerbose ) {
-		MOAIPrint ( "WRITING INDICES:\n" );
+		log = "";
+		log.write ( "WRITING INDICES:\n" );
 	}
 
 	const int* elems = tessGetElements ( tess );
@@ -1019,7 +1022,7 @@ void MOAIVectorTesselator::WriteTriangleIndices ( TESStesselator* tess, u32 base
 		const int* tri = &elems [ i * 3 ];
 		
 		if ( this->mVerbose ) {
-			MOAIPrint ( "%d: %d, %d, %d\n", i, tri [ 0 ], tri [ 1 ], tri [ 2 ]);
+			log.write ( "%d: %d, %d, %d\n", i, tri [ 0 ], tri [ 1 ], tri [ 2 ]);
 		}
 		
 		this->mIdxStream.Write < u32 >( base + tri [ 0 ]);
@@ -1028,7 +1031,8 @@ void MOAIVectorTesselator::WriteTriangleIndices ( TESStesselator* tess, u32 base
 	}
 	
 	if ( this->mVerbose ) {
-		MOAIPrint ( "\n" );
+		log.write ( "\n" );
+		MOAILog ( NULL, 0, 0, 0, log.c_str ());
 	}
 }
 
@@ -1051,8 +1055,11 @@ void MOAIVectorTesselator::WriteVertices ( TESStesselator* tess, float z, u32 co
 
 	z = z != 0.0f ? z : this->mDepthOffset;
 
+	STLString log;
+
 	if ( this->mVerbose ) {
-		MOAIPrint ( "WRITING VERTICES:\n" );
+		log = "";
+		log.write ( "WRITING VERTICES:\n" );
 	}
 
 	const float* verts = tessGetVertices ( tess );
@@ -1063,13 +1070,14 @@ void MOAIVectorTesselator::WriteVertices ( TESStesselator* tess, float z, u32 co
 		const ZLVec2D& vert = (( const ZLVec2D* )verts )[ i ];
 		
 		if ( this->mVerbose ) {
-			MOAIPrint ( "%d: %f, %f\n", i, vert.mX, vert.mY );
+			log.write ( "%d: %f, %f\n", i, vert.mX, vert.mY );
 		}
 		this->WriteVertex ( vert.mX, vert.mY, z, color, vertexExtraID );
 	}
 	
 	if ( this->mVerbose ) {
-		MOAIPrint ( "\n" );
+		log.write ( "\n" );
+		MOAILog ( NULL, 0, 0, 0, log.c_str ());
 	}
 
 	this->mDepthOffset += this->mDepthBias;

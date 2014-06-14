@@ -334,7 +334,7 @@ bool MOAIUntzSoundQueue::ApplyAttrOp ( u32 attrID, MOAIAttrOp& attrOp, u32 op ) 
 		attrID = UNPACK_ATTR ( attrID );
 
 		if ( attrID == ATTR_VOLUME ) {
-			this->SetVolume ( attrOp.Apply ( this->GetVolume (), op, MOAIAttrOp::ATTR_READ_WRITE ));
+			this->SetVolume ( attrOp.Apply ( this->GetVolume (), op, MOAIAttrOp::ATTR_READ_WRITE, MOAIAttrOp::ATTR_TYPE_FLOAT ));
 			return true;
 		}
 	}

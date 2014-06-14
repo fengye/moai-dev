@@ -162,7 +162,7 @@ void MOAITexture::Init ( cc8* filename, u32 transform, cc8* debugname ) {
 	} else {
 			
 		STLString expand = ZLFileSys::GetAbsoluteFilePath ( filename );
-		MOAILog ( NULL, MOAILogMessages::MOAI_FileNotFound_S, expand.str ());
+		MOAILog ( NULL, 0, 0, MOAILogMessages::MOAI_FileNotFound_S, expand.str ());
 			
 	}
 }

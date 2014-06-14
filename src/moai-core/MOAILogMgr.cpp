@@ -37,28 +37,28 @@ std::string string_format(const std::string &fmt, va_list ap) {
 }
 
 //----------------------------------------------------------------//
-void MOAILog ( lua_State *L, u32 messageID, ... ) {
-
-	if ( MOAILogMgr::IsValid ()) {
-
-		va_list args;
-		va_start ( args, messageID );
-
-		MOAILogMgr::Get ().LogVar ( L, messageID, args );
-
-		va_end ( args );
-	}
-}
-
-//----------------------------------------------------------------//
-void MOAIPrint ( cc8* message, ... ) {
+void MOAILog ( u32 level, cc8* tag, cc8* message, ... ) {
 
 	if ( MOAILogMgr::IsValid ()) {
 
 		va_list args;
 		va_start ( args, message );
 
-		MOAILogMgr::Get ().PrintVar ( message, args );
+		MOAILogMgr::Get ().LogV ( level, tag, message, args );
+
+		va_end ( args );
+	}
+}
+
+//----------------------------------------------------------------//
+void MOAILog ( lua_State *L, u32 level, cc8* tag, u32 messageID, ... ) {
+
+	if ( MOAILogMgr::IsValid ()) {
+
+		va_list args;
+		va_start ( args, messageID );
+
+		MOAILogMgr::Get ().LogV ( L, level, tag, messageID, args );
 
 		va_end ( args );
 	}
@@ -119,12 +119,12 @@ int MOAILogMgr::_log ( lua_State* L ) {
 		cc8* tag		= state.GetValue < cc8* >( 2, "" );
 		cc8* msg		= state.GetValue < cc8* >( 3, "" );
 
-		MOAILogMgr::Get ().Print ( level, tag, "%s", msg );
+		MOAILogMgr::Get ().Log ( level, tag, "%s", msg );
 	}
 	else if ( state.IsType ( 1, LUA_TSTRING )) {
 
 		cc8* msg = state.GetValue < cc8* >( 1, "" );
-		MOAILogMgr::Get ().Print ( 0, "Lua", "%s", msg );
+		MOAILogMgr::Get ().Log ( 0, "Lua", "%s", msg );
 	}
 	
 	return 0;
@@ -223,18 +223,37 @@ void MOAILogMgr::CloseFile () {
 }
 
 //----------------------------------------------------------------//
-void MOAILogMgr::Log ( lua_State *L, u32 messageID, ... ) {
+void MOAILogMgr::Log ( u32 level, cc8* tag, cc8* message, ... ) {
 
 	va_list args;
-	va_start ( args, messageID );
+	va_start ( args, message );
 
-	MOAILogMgr::Get ().LogVar ( L, messageID, args );
+	MOAILogMgr::Get ().LogV ( level, tag, message, args );
 
 	va_end ( args );
 }
 
 //----------------------------------------------------------------//
-void MOAILogMgr::LogVar ( lua_State *L, u32 messageID, va_list args ) {
+void MOAILogMgr::Log ( lua_State *L, u32 level, cc8* tag, u32 messageID, ... ) {
+
+	va_list args;
+	va_start ( args, messageID );
+
+	MOAILogMgr::Get ().LogV ( L, level, tag, messageID, args );
+
+	va_end ( args );
+}
+
+//----------------------------------------------------------------//
+void MOAILogMgr::LogV ( u32 level, cc8* tag, cc8* message, va_list args ) {
+
+	if ( this->mLevel && ( level <= this->mLevel )) {
+		ZLLog::LogV ( this->mFile, level, tag, message, args );
+	}
+}
+
+//----------------------------------------------------------------//
+void MOAILogMgr::LogV ( lua_State *L, u32 level, cc8* tag, u32 messageID, va_list args ) {
 
 	if ( this->mLevel ) {
 
@@ -245,18 +264,20 @@ void MOAILogMgr::LogVar ( lua_State *L, u32 messageID, va_list args ) {
 
 			if ( message.mLevel <= this->mLevel ) {
 
+				STLString tmp = "";
+
 				if ( L ) {
-					tmp = "----------------------------------------------------------------\n";
+					tmp.write ( "----------------------------------------------------------------\n" );
 				}
 				
 				tmp += string_format ( message.mFormatString, args );
 				
 				if ( L ) {
 					MOAILuaState state ( L );
-					tmp += state.GetStackTrace(0);
+					tmp.write ( state.GetStackTrace ( 0 ).c_str ());
 				}
 				
-				this->Print ( "%s", (const char*)tmp );
+				this->Log ( level, tag, "%s", tmp.c_str ()); // don't use tmp as format string as it may contain escapes
 			}
 		}
 	}
@@ -286,25 +307,6 @@ void MOAILogMgr::OpenFile ( cc8* filename ) {
 		this->CloseFile ();
 		this->mFile = file;
 		this->mOwnsFileHandle = true;
-	}
-}
-
-//----------------------------------------------------------------//
-void MOAILogMgr::Print ( cc8* message, ... ) {
-
-	va_list args;
-	va_start ( args, message );
-
-	MOAILogMgr::Get ().PrintVar ( level, tag, message, args );
-
-	va_end ( args );
-}
-
-//----------------------------------------------------------------//
-void MOAILogMgr::PrintVar ( u32 level, cc8* tag, cc8* message, va_list args ) {
-
-	if ( this->mLevel && ( level <= this->mLevel )) {
-		ZLLog::LogV ( this->mFile, level, tag, message, args );
 	}
 }
 

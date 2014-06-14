@@ -88,7 +88,7 @@ bool MOAIGfxResource::Affirm () {
 bool MOAIGfxResource::Bind () {
 
 	if ( !MOAIGfxDevice::Get ().GetHasContext ()) {
-		MOAILog ( 0, MOAILogMessages::MOAIGfxResource_MissingDevice );
+		MOAILog ( NULL, 0, 0, MOAILogMessages::MOAIGfxResource_MissingDevice );
 		return false;
 	}
 

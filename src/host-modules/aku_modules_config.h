@@ -5,7 +5,7 @@
 	// modules
 
 	#ifndef AKU_WITH_AUDIOSAMPLER
-		#define AKU_WITH_AUDIOSAMPLER 1
+		#define AKU_WITH_AUDIOSAMPLER 0
 	#endif
 
 	#ifndef AKU_WITH_BILLING
@@ -91,7 +91,4 @@
 		#define AKU_WITH_MIXPANEL 0
 	#endif
 
-	#ifndef AKU_WITH_PLUMZI
-		#define AKU_WITH_PLUMZI 1
-	#endif
 #endif

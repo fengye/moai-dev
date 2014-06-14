@@ -149,6 +149,15 @@ int ZLVfsFileSystem::ChangeDir ( const char* path ) {
 }
 
 //----------------------------------------------------------------//
+bool ZLVfsFileSystem::CheckFileRemapping ( const char* filename, string& remappedFilename ) {
+
+	if ( this->mFileRemapCallback ) {
+		return this->mFileRemapCallback ( filename, remappedFilename );
+	}
+	return false;
+}
+
+//----------------------------------------------------------------//
 void ZLVfsFileSystem::Cleanup () {
 
 	ZLVfsVirtualPath* cursor = this->mVirtualPaths;
@@ -279,7 +288,7 @@ std::string ZLVfsFileSystem::GetAbsolutePath ( const char* path ) {
 	string norm = this->PathFromRef ( path );
 	
 	if ( this->mFileRemapCallback ) {
-		norm = this->mFileRemapCallback ( norm.c_str ());
+		this->mFileRemapCallback ( norm.c_str (), norm );
 	}
 	
 	if (( norm [ 0 ] == '\\' ) || ( norm [ 0 ] == '/' ) || ( norm [ 0 ] && ( norm [ 1 ] == ':' ))) {

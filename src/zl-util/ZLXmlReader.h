@@ -28,6 +28,7 @@ private:
 
 	STLString		mName;
 	STLString		mText;
+	STLString		mPath;
 
 	u32				mDepth;
 	u32				mChildren;
@@ -41,6 +42,7 @@ public:
 	GET ( u32, Depth, mDepth )
 	GET ( const STLString&, Name, mName )
 	GET ( const STLString&, Text, mText )
+	GET ( STLString, Path, mPath )
 	GET ( const AttributeMap&, Attributes, mAttributes )
 	
 	//----------------------------------------------------------------//

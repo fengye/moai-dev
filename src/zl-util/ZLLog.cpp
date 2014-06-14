@@ -6,6 +6,7 @@
 #include <string.h>
 #include <assert.h>
 
+#include <zl-util/ZLDeviceTime.h>
 #include <zl-util/ZLLog.h>
 
 #ifdef ANDROID
@@ -16,6 +17,7 @@
 // CurrentTime
 //================================================================//
 struct CurrentTime {
+
 	int		h;
 	int		m;
 	int		s;
@@ -24,27 +26,17 @@ struct CurrentTime {
 	//----------------------------------------------------------------//
 	void Update () {
 		
-		static double startTime = 0;
-		struct timeval val;
-		double now = 0;
-		if ( gettimeofday(&val, NULL) == 0 ) {
-			
-			now = (double)val.tv_sec + (double)val.tv_usec / 1000000.;
-		}
-		
-		if (!startTime) {
-			
-			startTime = now;
-		}
+		static double startTime = ZLDeviceTime::GetTimeInSeconds ();
+		double now = ZLDeviceTime::GetTimeInSeconds ();
 		
 		double elapsed = now - startTime;
 		
-		this->h = (int)elapsed / 3600;
-	    elapsed -= t->h * 3600;
-	    this->m = (int)elapsed / 60;
-	    elapsed -= t->m * 60;
-	    this->s = (int)elapsed;
-	    elapsed -= t->s;
+		this->h = ( int )elapsed / 3600;
+	    elapsed -= this->h * 3600;
+	    this->m = ( int )elapsed / 60;
+	    elapsed -= this->m * 60;
+	    this->s = ( int )elapsed;
+	    elapsed -= this->s;
 		this->ms = elapsed * 1000;
 	}
 };
@@ -73,6 +65,8 @@ void ZLLog::LogF ( void* file, u32 level, cc8* tag, cc8* format, ... ) {
 //----------------------------------------------------------------//
 void ZLLog::LogV ( void* file, u32 level, cc8* tag, cc8* format, va_list args ) {
 	
+	tag = tag ? tag : "";
+	
 	static cc8* levels = "NEWID";
 	static cc8* logFormat = "%.2d:%.2d:%.2d.%.3d %c/[%s] %s";
 
@@ -92,12 +86,12 @@ void ZLLog::LogV ( void* file, u32 level, cc8* tag, cc8* format, va_list args ) 
 	// it's supposed to be low level, yo
 	if ( sLogFunc ) {
 	
-		sLogFunc ( file, u32 level, cc8* tag, format, args, sLogFuncUserdata );
+		sLogFunc ( file, level, tag, format, args, sLogFuncUserdata );
 	}
 	else {
 	
 		if ( file && ( file != zl_stdout )) {
-			zl_vfprintf (( FILE* )file, logFormat, t.h, t.m, t.s, t.ms, levels [ level ], tag, str );
+			fprintf (( ZLFILE* )file, logFormat, t.h, t.m, t.s, t.ms, levels [ level ], tag, str );
 		}
 		else {
 			// TODO: this should really be hooked by the host

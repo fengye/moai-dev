@@ -5137,6 +5137,10 @@
 		CDEFD57B181ECB3E0058D772 /* MOAIVectorRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDEFD564181ECB3E0058D772 /* MOAIVectorRect.cpp */; };
 		CDEFD57C181ECB3E0058D772 /* MOAIVectorRect.h in Headers */ = {isa = PBXBuildFile; fileRef = CDEFD565181ECB3E0058D772 /* MOAIVectorRect.h */; };
 		CDEFD57D181ECB3E0058D772 /* MOAIVectorRect.h in Headers */ = {isa = PBXBuildFile; fileRef = CDEFD565181ECB3E0058D772 /* MOAIVectorRect.h */; };
+		CDF1FF58194C6AFF0013002B /* MOAIUntzSoundQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDF1FF56194C6AFF0013002B /* MOAIUntzSoundQueue.cpp */; };
+		CDF1FF59194C6AFF0013002B /* MOAIUntzSoundQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDF1FF56194C6AFF0013002B /* MOAIUntzSoundQueue.cpp */; };
+		CDF1FF5A194C6AFF0013002B /* MOAIUntzSoundQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = CDF1FF57194C6AFF0013002B /* MOAIUntzSoundQueue.h */; };
+		CDF1FF5B194C6AFF0013002B /* MOAIUntzSoundQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = CDF1FF57194C6AFF0013002B /* MOAIUntzSoundQueue.h */; };
 		CDF2885717ED41CF00FD4F59 /* headers.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6930173974FD00DFE837 /* headers.h */; };
 		CDF2885817ED41CF00FD4F59 /* pch.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6932173974FD00DFE837 /* pch.h */; };
 		CDF2885917ED41CF00FD4F59 /* zl_mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BE6934173974FD00DFE837 /* zl_mutex.h */; };
@@ -6438,7 +6442,7 @@
 		CD07C2A713A172B900C9386C /* RThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RThread.h; path = ../../3rdparty/untz/src/threading/RThread.h; sourceTree = SOURCE_ROOT; };
 		CD07C2AF13A172D800C9386C /* ExtAudioFileAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExtAudioFileAudioSource.cpp; path = ../../3rdparty/untz/src/native/ios/ExtAudioFileAudioSource.cpp; sourceTree = SOURCE_ROOT; };
 		CD07C2B013A172D800C9386C /* ExtAudioFileAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExtAudioFileAudioSource.h; path = ../../3rdparty/untz/src/native/ios/ExtAudioFileAudioSource.h; sourceTree = SOURCE_ROOT; };
-		CD07C2B113A172D800C9386C /* UntzSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UntzSystem.cpp; path = ../../3rdparty/untz/src/native/ios/UntzSystem.cpp; sourceTree = SOURCE_ROOT; };
+		CD07C2B113A172D800C9386C /* UntzSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = UntzSystem.cpp; path = ../../3rdparty/untz/src/native/ios/UntzSystem.cpp; sourceTree = SOURCE_ROOT; };
 		CD07C2B213A172D800C9386C /* vector_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_util.cpp; path = ../../3rdparty/untz/src/native/ios/vector_util.cpp; sourceTree = SOURCE_ROOT; };
 		CD07C2B313A172D800C9386C /* vector_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector_util.h; path = ../../3rdparty/untz/src/native/ios/vector_util.h; sourceTree = SOURCE_ROOT; };
 		CD07C3CD13A182AA00C9386C /* libmoai-ios-untz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libmoai-ios-untz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7821,6 +7825,8 @@
 		CDEFD563181ECB3E0058D772 /* MOAIVectorEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIVectorEllipse.h; sourceTree = "<group>"; };
 		CDEFD564181ECB3E0058D772 /* MOAIVectorRect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MOAIVectorRect.cpp; sourceTree = "<group>"; };
 		CDEFD565181ECB3E0058D772 /* MOAIVectorRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIVectorRect.h; sourceTree = "<group>"; };
+		CDF1FF56194C6AFF0013002B /* MOAIUntzSoundQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MOAIUntzSoundQueue.cpp; sourceTree = "<group>"; };
+		CDF1FF57194C6AFF0013002B /* MOAIUntzSoundQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIUntzSoundQueue.h; sourceTree = "<group>"; };
 		CDF288BC17ED41CF00FD4F59 /* libmoai-ios-zl-vfs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libmoai-ios-zl-vfs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9940D6514B7A217006465CC /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lfs.c; sourceTree = "<group>"; };
 		E9940D6714B7A217006465CC /* lfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lfs.h; sourceTree = "<group>"; };
@@ -9195,6 +9201,8 @@
 		89BE6B5F17399FEB00DFE837 /* moai-untz */ = {
 			isa = PBXGroup;
 			children = (
+				CDF1FF56194C6AFF0013002B /* MOAIUntzSoundQueue.cpp */,
+				CDF1FF57194C6AFF0013002B /* MOAIUntzSoundQueue.h */,
 				89BE6B6017399FEB00DFE837 /* host.cpp */,
 				89BE6B6117399FEB00DFE837 /* host.h */,
 				89BE6B6217399FEB00DFE837 /* MOAIUntzSampleBuffer.cpp */,
@@ -13841,6 +13849,7 @@
 				CDD4913817FA7C2C00525B77 /* residue_16.h in Headers */,
 				CDD4913E17FA7C2C00525B77 /* setup_16.h in Headers */,
 				CDD4916017FA7C3900525B77 /* lpc.h in Headers */,
+				CDF1FF5A194C6AFF0013002B /* MOAIUntzSoundQueue.h in Headers */,
 				CDD4913D17FA7C2C00525B77 /* setup_11.h in Headers */,
 				CDD4913417FA7C2C00525B77 /* psych_11.h in Headers */,
 				89BE6B7617399FEB00DFE837 /* MOAIUntzSystem.h in Headers */,
@@ -13919,6 +13928,7 @@
 				CDD491B717FA7C5000525B77 /* setup_8.h in Headers */,
 				CDD491B117FA7C5000525B77 /* psych_44.h in Headers */,
 				CDD491D517FA7C6500525B77 /* lpc.h in Headers */,
+				CDF1FF5B194C6AFF0013002B /* MOAIUntzSoundQueue.h in Headers */,
 				CDD491BE17FA7C5000525B77 /* setup_44u.h in Headers */,
 				89BE6B7717399FEB00DFE837 /* MOAIUntzSystem.h in Headers */,
 				CDD491BC17FA7C5000525B77 /* setup_44.h in Headers */,
@@ -17498,6 +17508,7 @@
 				031BBBAE13B18A0C0005ECE0 /* vorbisenc.c in Sources */,
 				031BBBAF13B18A0C0005ECE0 /* vorbisfile.c in Sources */,
 				031BBBB013B18A0C0005ECE0 /* window.c in Sources */,
+				CDF1FF58194C6AFF0013002B /* MOAIUntzSoundQueue.cpp in Sources */,
 				89BE6B6817399FEB00DFE837 /* host.cpp in Sources */,
 				89BE6B6C17399FEB00DFE837 /* MOAIUntzSampleBuffer.cpp in Sources */,
 				CDD4927317FA7D1300525B77 /* WaveFileAudioSource.cpp in Sources */,
@@ -17546,6 +17557,7 @@
 				CDD491EA17FA7C6500525B77 /* window.c in Sources */,
 				CDD491D617FA7C6500525B77 /* lsp.c in Sources */,
 				CDD491C317FA7C6500525B77 /* analysis.c in Sources */,
+				CDF1FF59194C6AFF0013002B /* MOAIUntzSoundQueue.cpp in Sources */,
 				89BE6B6917399FEB00DFE837 /* host.cpp in Sources */,
 				89BE6B6D17399FEB00DFE837 /* MOAIUntzSampleBuffer.cpp in Sources */,
 				CDD492A217FA7D1900525B77 /* WaveFileAudioSource.cpp in Sources */,

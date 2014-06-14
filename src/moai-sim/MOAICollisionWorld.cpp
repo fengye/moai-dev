@@ -4,7 +4,6 @@
 #include "pch.h"
 #include <moai-sim/MOAIDebugLines.h>
 #include <moai-sim/MOAICollisionFacet.h>
-#include <moai-sim/MOAICollisionShape.h>
 #include <moai-sim/MOAICollisionWorld.h>
 #include <moai-sim/MOAIGraphicsProp.h>
 #include <moai-sim/MOAIGfxDevice.h>

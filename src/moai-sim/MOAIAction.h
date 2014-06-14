@@ -85,6 +85,7 @@ public:
 	bool				IsBusy					();
 	bool				IsCurrent				();
 	virtual bool		IsDone					();
+	bool				IsPaused				();
 						MOAIAction				();
 						~MOAIAction				();
 	void				RegisterLuaClass		( MOAILuaState& state );

@@ -64,7 +64,7 @@ void MOAIFrameBufferTexture::Init ( u32 width, u32 height, u32 colorFormat, u32 
 		this->Load ();
 	}
 	else {
-		MOAILog ( 0, MOAILogMessages::MOAITexture_NoFramebuffer );
+		MOAILog ( NULL, 0, 0, MOAILogMessages::MOAITexture_NoFramebuffer );
 	}
 }
 

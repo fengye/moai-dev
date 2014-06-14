@@ -7,6 +7,7 @@
 #include <moai-sim/MOAIGfxDevice.h>
 #include <moai-sim/MOAIImage.h>
 #include <moai-sim/MOAIRenderable.h>
+#include <moai-sim/MOAIRenderMgr.h>
 
 // <-Plumzi Addition
 #include <moai-sim/host.h>
@@ -134,7 +135,7 @@ void MOAIClearableView::ClearSurface () {
 				clearColor.mB,
 				clearColor.mA
 			);
-		#end
+		#endif
 		// Plumzi Addition ->
 	}
 

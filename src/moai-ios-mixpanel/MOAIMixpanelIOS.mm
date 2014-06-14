@@ -51,7 +51,7 @@ int MOAIMixpanelIOS::_init ( lua_State* L ) {
 	if (distinctId) {
 		[mixpanel identify:mixpanel.distinctId];
 	} else {
-		MOAIPrint( MOAILogMgr::LOG_ERROR, (char*)"Mixpanel distinctId is nil. Is it iOS5?" );
+		MOAILog ( MOAILogMgr::LOG_ERROR, "MOAI Mixpanel", "Mixpanel distinctId is nil. Is it iOS5?" );
 	}
 	
 	mixpanel.showNetworkActivityIndicator = NO;

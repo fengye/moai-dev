@@ -75,7 +75,7 @@ int _loadContextFunc ( MOAILuaState& state ) {
 		return 0;
 	}
 	
-	ZLLog::LogF ( ZLLog::CONSOLE, "Missing function to call; use AKULoadFunc* to load a function\n" );
+	ZLLog::LogF ( ZLLog::CONSOLE, 0, 0, "Missing function to call; use AKULoadFunc* to load a function\n" );
 	return 1;
 }
 
@@ -346,7 +346,7 @@ void AKULoadFuncFromFile ( const char* filename ) {
 	sContext->mLuaFunc.Clear ();
 
 	if ( !ZLFileSys::CheckFileExists ( filename )) {
-		ZLLog::LogF ( ZLLog::CONSOLE, "Could not find file %s \n", filename );
+		ZLLog::LogF ( ZLLog::CONSOLE, 0, 0, "Could not find file %s \n", filename );
 		return;
 	}
 
@@ -376,7 +376,7 @@ int AKUMountVirtualDirectory ( char const* virtualPath, char const* archive ) {
 
 	int result = zl_mount_virtual ( virtualPath, archive );
 	if ( result ) {
-		ZLLog::LogF ( ZLLog::CONSOLE, "Error mounting %s at path %s\n", archive, virtualPath );
+		ZLLog::LogF ( ZLLog::CONSOLE, 0, 0, "Error mounting %s at path %s\n", archive, virtualPath );
 	}
 	return result;
 }

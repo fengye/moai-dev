@@ -771,7 +771,7 @@ int MOAITransform::_setParent ( lua_State* L ) {
 	
 	self->SetAttrLink ( PACK_ATTR ( MOAITransform, INHERIT_TRANSFORM ), parent, PACK_ATTR ( MOAITransformBase, TRANSFORM_TRAIT ));
 	
-	//MOAILog ( state, MOAILogMessages::MOAI_FunctionDeprecated_S, "setParent" );
+	//MOAILog ( state, 0, 0, MOAILogMessages::MOAI_FunctionDeprecated_S, "setParent" );
 	
 	return 0;
 }

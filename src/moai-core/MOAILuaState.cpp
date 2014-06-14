@@ -110,7 +110,7 @@ bool MOAILuaState::CheckParams ( int idx, cc8* format, bool verbose ) {
 				cc8* expectedName = MOAILuaState::GetLuaTypeName ( expected );
 				cc8* gotName = MOAILuaState::GetLuaTypeName ( type );
 			
-				MOAILog ( *this, MOAILogMessages::MOAI_ParamTypeMismatch_DSS, pos, expectedName, gotName );
+				MOAILog ( *this, 0, 0, MOAILogMessages::MOAI_ParamTypeMismatch_DSS, pos, expectedName, gotName );
 			}
 			return false;
 		}
@@ -835,7 +835,7 @@ bool MOAILuaState::PrintErrors ( FILE* file, int status ) {
 		cc8* error = lua_tostring ( this->mState, -1 );
 		if ( error ) {
 			STLString msg = lua_tostring ( this->mState, -1 );
-			ZLLog::LogF ( file, "-- %s\n", msg.c_str ());
+			ZLLog::LogF ( file, 0, 0, "-- %s\n", msg.c_str ());
 		}
 		lua_pop ( this->mState, 1 ); // pop error message
 		return true;
@@ -846,19 +846,19 @@ bool MOAILuaState::PrintErrors ( FILE* file, int status ) {
 //----------------------------------------------------------------//
 void MOAILuaState::PrintStackDump () {
 	STLString stackDump = this->GetStackDump ();
-	ZLLog::LogF ( ZLLog::CONSOLE, stackDump );
+	ZLLog::LogF ( ZLLog::CONSOLE, 0, 0, stackDump );
 }
 
 //----------------------------------------------------------------//
 void MOAILuaState::PrintStackDump ( FILE* file  ) {
 	STLString stackDump = this->GetStackDump ();
-	ZLLog::LogF ( file, stackDump );
+	ZLLog::LogF ( file, 0, 0, stackDump );
 }
 
 //----------------------------------------------------------------//
 void MOAILuaState::PrintStackTrace ( FILE* file, int level ) {
 	STLString stackTrace = this->GetStackTrace ( level );
-	ZLLog::LogF ( file, stackTrace.str ());
+	ZLLog::LogF ( file, 0, 0, stackTrace.str ());
 }
 
 //----------------------------------------------------------------//
@@ -1045,7 +1045,7 @@ int MOAILuaState::RelIndex ( int idx ) {
 
 //----------------------------------------------------------------//
 void MOAILuaState::ReportBadCast ( int idx, cc8* typeName ) {
-	MOAILog ( *this, MOAILogMessages::MOAI_BadCast_DS, this->AbsIndex ( idx ), typeName );
+	MOAILog ( *this, 0, 0, MOAILogMessages::MOAI_BadCast_DS, this->AbsIndex ( idx ), typeName );
 }
 
 //----------------------------------------------------------------//

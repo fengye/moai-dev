@@ -3,7 +3,6 @@
 
 #include "pch.h"
 #include <moai-sim/MOAICamera.h>
-#include <moai-sim/MOAICollisionShape.h>
 #include <moai-sim/MOAIDeck.h>
 #include <moai-sim/MOAIDeckRemapper.h>
 #include <moai-sim/MOAIDebugLines.h>
@@ -247,7 +246,7 @@ int MOAIGraphicsProp::_setParent ( lua_State* L ) {
 	self->SetAttrLink ( PACK_ATTR ( MOAITransform, INHERIT_TRANSFORM ), parent, PACK_ATTR ( MOAITransformBase, TRANSFORM_TRAIT ));
 	self->SetAttrLink ( PACK_ATTR ( MOAIGraphicsProp, INHERIT_VISIBLE ), parent, PACK_ATTR ( MOAIGraphicsProp, ATTR_VISIBLE ));
 	
-	//MOAILog ( state, MOAILogMessages::MOAI_FunctionDeprecated_S, "setParent" );
+	//MOAILog ( state, 0, 0, MOAILogMessages::MOAI_FunctionDeprecated_S, "setParent" );
 	
 	return 0;
 }

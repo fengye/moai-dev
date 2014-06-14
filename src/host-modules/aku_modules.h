@@ -83,9 +83,6 @@
 	#include <moai-plugins/host.h>
 #endif
 
-#if AKU_WITH_PLUMZI
-	#include <moai-plumzi/host.h>
-#endif
 #if AKU_WITH_SIM
 	#include <moai-sim/host.h>
 #endif

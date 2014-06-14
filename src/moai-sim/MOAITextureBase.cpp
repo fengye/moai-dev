@@ -107,7 +107,7 @@ void MOAITextureBase::CreateTextureFromImage ( MOAIImage& image ) {
 
 	// warn if not a power of two
 	if ( !image.IsPow2 ()) {
-		MOAILog ( 0, MOAILogMessages::MOAITexture_NonPowerOfTwo_SDD, ( cc8* )this->mDebugName, this->mWidth, this->mHeight );
+		MOAILog ( NULL, 0, 0, MOAILogMessages::MOAITexture_NonPowerOfTwo_SDD, ( cc8* )this->mDebugName, this->mWidth, this->mHeight );
 	}
 
 	this->mGLTexID = zglCreateTexture ();
