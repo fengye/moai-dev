@@ -39,6 +39,8 @@
 #include <zl-vfs/ZLVfsFile.h>
 #include <zl-vfs/ZLVfsFileSystem.h>
 
+// TODO: hoist this out of the low level file support and make it a stream reader/writer
+#include <zl-vfs/Obfuscate.h>
 using namespace std;
 
 //================================================================//
@@ -250,6 +252,19 @@ int zl_get_stat ( char const* path, zl_stat* filestat ) {
 		filestat->mTimeModified		= s.st_mtime;
 		filestat->mTimeViewed		= s.st_atime;
 	}
+
+	// TODO: plumzi
+	if ( ! filestat->mIsDir ) {
+		ZLVfsFile* file = new ZLVfsFile ();
+		if ( file->Open ( path, "r" ) == 0 ) {
+			if ( file->IsCrypt ()) { // this is frail
+				filestat->mSize -= CRYPT_HEADER_SIZE;
+			}
+			file->Close ();
+		}
+		delete file;
+	}
+
 	return 0;
 }
 

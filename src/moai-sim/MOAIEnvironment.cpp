@@ -221,7 +221,6 @@ void MOAIEnvironment::SetValue ( cc8* key ) {
 
 //----------------------------------------------------------------//
 void MOAIEnvironment::SetValue ( lua_State* L ) {
-
 	MOAILuaState state ( L );
 
 	this->PushLuaClassTable ( state );

@@ -45,6 +45,7 @@ private:
 	static int			_isActive				( lua_State* L );
 	static int			_isBusy					( lua_State* L );
 	static int			_isDone					( lua_State* L );
+	static int			_isPaused				( lua_State* L );
 	static int			_pause					( lua_State* L );
 	static int			_setAutoStop			( lua_State* L );
 	static int			_start					( lua_State* L );

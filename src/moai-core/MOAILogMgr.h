@@ -65,6 +65,7 @@ public:
 		LOG_ERROR,
 		LOG_WARNING,
 		LOG_STATUS,
+		LOG_DEBUG
 	};
 	
 	GET ( FILE*, File, mFile )
@@ -76,8 +77,8 @@ public:
 					MOAILogMgr				();
 					~MOAILogMgr				();
 	void			OpenFile				( cc8* filename );
-	void			Print					( cc8* message, ... );
-	void			PrintVar				( cc8* message, va_list args );
+	void			Print					( u32 level, cc8* tag, cc8* message, ... );
+	void			PrintVar				( u32 level, cc8* tag, cc8* message, va_list args );
 	void			RegisterLogMessage		( u32 messageID, u32 level, cc8* formatString );
 	void			RegisterLuaClass		( MOAILuaState& state );
 	
@@ -98,5 +99,7 @@ public:
 //================================================================//
 extern void MOAILog		( lua_State *L, u32 messageID, ... );
 extern void MOAIPrint	( cc8* message, ... );
+extern void MOAIPrint	( u32 level, cc8* message, ... );
+extern void MOAIPrint	( u32 level, cc8* tag, cc8* message, ... );
 
 #endif

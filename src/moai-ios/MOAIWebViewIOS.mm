@@ -123,12 +123,15 @@ int MOAIWebViewIOS::_closeWebView ( lua_State* L ) {
 	
 	MOAI_LUA_SETUP ( MOAIWebViewIOS, "U" );
 		
-	if ( self->mWebView ) {
-		
-		self->mWebView.delegate = nil;
-		[ self->mWebView stopLoading ];
-		[ self->mWebView removeFromSuperview ];
-	}	
+	self->mWebView.delegate = nil;
+	[ self->mWebView removeFromSuperview ];
+	[ self->mWebView stopLoading ];
+	[ self->mWebView release ];
+	self->mWebView = nil;
+	
+	[ self->mToolBar removeFromSuperview ];
+	[ self->mToolBar release ];
+	self->mToolBar = nil;
 	
 	return 0;
 }
@@ -230,8 +233,7 @@ int MOAIWebViewIOS::_hideWebView ( lua_State* L ) {
 	
 	MOAI_LUA_SETUP ( MOAIWebViewIOS, "U" );
 			
-	self->mWebView.hidden = true;
-	self->mToolBar.hidden = true;
+	self->Hide( false );
 	
 	return 0;
 }
@@ -254,11 +256,20 @@ int MOAIWebViewIOS::_initWebView ( lua_State* L ) {
 	int height = lua_tointeger ( state, 5 );
 	bool hidden = lua_toboolean ( state, 6 );
 			
+	//cleanup old
 	if ( self->mWebView ) {
 		
 		self->mWebView.delegate = nil;
 		[ self->mWebView stopLoading ];
 		[ self->mWebView removeFromSuperview ];
+		[ self->mWebView release ];
+	}
+	
+	if ( self->mToolBar ) {
+		
+		[ self->mToolBar removeFromSuperview ];
+		[ self->mToolBar release ];
+		self->mToolBar = nil;
 	}	
 	
 	UIWindow* window = [[ UIApplication sharedApplication ] keyWindow ];
@@ -266,10 +277,21 @@ int MOAIWebViewIOS::_initWebView ( lua_State* L ) {
 	
 	if ( self->mHasToolBar ) {
 				
-		self->mWebView = [[[ UIWebView alloc ] initWithFrame:CGRectMake ( left, top + TOOL_BAR_HEIGHT , width, height - TOOL_BAR_HEIGHT )] autorelease ];					
+		//create toolbar using new
+		self->mToolBar = [ UIToolbar new ];
+		self->mToolBar.barStyle = UIBarStyleDefault;
+		self->mToolBar.frame = CGRectMake( left, top, width, TOOL_BAR_HEIGHT );
+		
+		UIBarButtonItem *done = [[ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self->mWebViewDelegate action:@selector ( doneButtonPressed: )];
+		
+		NSArray* items = [ NSArray arrayWithObjects: done, nil ];
+		[ done release ];
+		[ self->mToolBar setItems:items animated:NO ];
+		
+		self->mWebView = [[ UIWebView alloc ] initWithFrame:CGRectMake ( left, top + TOOL_BAR_HEIGHT , width, height - TOOL_BAR_HEIGHT )];					
 		self->mWebView.transform = CGAffineTransformConcat ([ rootVC.view transform ], CGAffineTransformMakeRotation (( float )( -M_PI / 2 )));
 				
-		self->mToolBar.frame = CGRectMake( left, top, width, TOOL_BAR_HEIGHT );	
+		
 		if ( rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
 			
 			self->mToolBar.transform = CGAffineTransformConcat ([ rootVC.view transform ], CGAffineTransformMakeRotation(( float )( M_PI / 2 )));				
@@ -281,12 +303,18 @@ int MOAIWebViewIOS::_initWebView ( lua_State* L ) {
 			self->mWebView.transform = CGAffineTransformConcat ([ rootVC.view transform ], CGAffineTransformMakeRotation (( float )( -M_PI / 2 )));
 		}
 		
-		self->mToolBar.hidden = hidden;		
-		[ rootVC.view addSubview:self->mToolBar ];	
+		if ( hidden ) {
+			
+			self->mToolBar.hidden = hidden;		
+		}
+		else {
+			
+			[ rootVC.view addSubview:self->mToolBar ];	
+		}
 	}
 	else {
 	
-		self->mWebView = [[[ UIWebView alloc ] initWithFrame:CGRectMake ( left, top, width, height )] autorelease ];
+		self->mWebView = [[ UIWebView alloc ] initWithFrame:CGRectMake ( left, top, width, height )];
 		if ( rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {					
 			
 			self->mWebView.transform = CGAffineTransformConcat ([ rootVC.view transform ], CGAffineTransformMakeRotation(( float )( -M_PI / 2 )));
@@ -300,11 +328,14 @@ int MOAIWebViewIOS::_initWebView ( lua_State* L ) {
 	[ self->mWebView setDelegate:self->mWebViewDelegate ];
 	[ self->mWebView setScalesPageToFit:YES ];
 	[ self->mWebView setMultipleTouchEnabled:YES ];
-	[ rootVC.view addSubview:self->mWebView ];
+	[ self->mWebView setDataDetectorTypes:UIDataDetectorTypeNone ];
 
 	if ( hidden ) {
 		
 		self->mWebView.hidden = true;
+	} else {
+		
+		[ rootVC.view addSubview:self->mWebView ];
 	}
 
 	return 0;
@@ -411,28 +442,28 @@ int MOAIWebViewIOS::_loadRequest ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
-/**	@name	openUrlInSafari
+/**	@name	openUrlExternally
 	@text	Opens the URL in Safari.
 
 	@in		string url
-	@out	nil
+	@out	boolean true if successful
 */
-int MOAIWebViewIOS::_openUrlInSafari ( lua_State* L ) {
+int MOAIWebViewIOS::_openUrlExternally ( lua_State* L ) {
 	
 	MOAILuaState state ( L );
 	
-	if ( !state.CheckParams ( 1, "S" )) {
+	cc8* url = state.GetValue < cc8* >( 1, "" );
 		
-		return 0;
+	BOOL result = NO;
+	
+	if ( url && url [ 0 ] != '\0' ) {
+		
+		result = [[ UIApplication sharedApplication ] openURL:[ NSURL URLWithString:[ NSString stringWithFormat: @"%s", url ]]];
 	}
 	
-	cc8* urlStr = lua_tostring ( state, 1 );
-	NSString* urlString = [[ NSString alloc ] initWithCString:urlStr encoding:[ NSString defaultCStringEncoding ]];
-	NSURL* url = [ NSURL URLWithString:urlString ];
+	lua_pushboolean ( state, result );
 	
-	[[ UIApplication sharedApplication ] openURL:url ];
-	
-	return 0;
+	return 1;
 }
 
 //----------------------------------------------------------------//
@@ -522,10 +553,56 @@ int MOAIWebViewIOS::_show ( lua_State* L ) {
 	
 	MOAI_LUA_SETUP ( MOAIWebViewIOS, "U" );
 			
-	self->mWebView.hidden = false;		
-	if ( self->mHasToolBar ) {
+	self->mAnimate = lua_toboolean ( state, 2 );
+	
+	UIWindow* window = [[ UIApplication sharedApplication ] keyWindow ];
+	UIViewController* rootVC = [ window rootViewController ];
+	
+	if ( self->mToolBar ) {
 		
-		self->mToolBar.hidden = false;
+		[ rootVC.view addSubview:self->mToolBar ];
+	}
+	
+	[ rootVC.view addSubview:self->mWebView ];
+	
+	if ( self->mAnimate ) {
+		
+		CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+		BOOL landscape = rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+						 rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+		CGFloat offset = landscape?screenSize.width:screenSize.height;
+		
+		if ( self->mToolBar ) {
+			
+			self->mToolBar.transform = CGAffineTransformConcat (self->mToolBar.transform, CGAffineTransformMakeTranslation(0, offset));
+			self->mToolBar.hidden = false;
+		}
+		
+		self->mWebView.transform = CGAffineTransformConcat (self->mWebView.transform, CGAffineTransformMakeTranslation(0, offset));
+		self->mWebView.hidden = false;
+		
+		[UIView animateWithDuration:0.25
+							  delay:0.1
+							options: UIViewAnimationCurveEaseOut
+						 animations:^{
+							 
+							 if ( self->mToolBar ) {
+								 
+								 self->mToolBar.transform = CGAffineTransformConcat (self->mToolBar.transform, CGAffineTransformMakeTranslation(0, -offset));
+							 }
+							 
+							 self->mWebView.transform = CGAffineTransformConcat (self->mWebView.transform, CGAffineTransformMakeTranslation(0, -offset));
+						 }
+						 completion:^(BOOL){
+						 }];
+	}
+	else {
+
+		self->mWebView.hidden = false;		
+		if ( self->mToolBar ) {
+		
+			self->mToolBar.hidden = false;
+		}
 	}
 	
 	return 0;
@@ -537,23 +614,16 @@ int MOAIWebViewIOS::_show ( lua_State* L ) {
 
 //----------------------------------------------------------------//
 MOAIWebViewIOS::MOAIWebViewIOS () :
-	mWebView ( 0 ) {
+	mToolBar ( 0 ),
+	mWebView ( 0 ),
+	mAnimate ( false ) {
 
 	RTTI_SINGLE ( MOAIInstanceEventSource )
 	
 	mWebViewDelegate = [[ MOAIWebViewDelegate alloc ] retain ];
 	mWebViewDelegate.mMOAIWebView = this;
 
-	//create toolbar using new
-	mToolBar = [ UIToolbar new ];
-	mToolBar.barStyle = UIBarStyleDefault;
 	mHasToolBar = true;
-	
-	UIBarButtonItem *done = [[ UIBarButtonItem alloc ] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:mWebViewDelegate action:@selector ( doneButtonPressed: )];
-	
-	NSArray* items = [ NSArray arrayWithObjects: done, nil ];
-	[ done release ];
-	[ mToolBar setItems:items animated:NO ];
 }
 
 //----------------------------------------------------------------//
@@ -564,20 +634,98 @@ MOAIWebViewIOS::~MOAIWebViewIOS () {
 		mWebView.delegate = nil;
 		[ mWebView stopLoading ];
 		[ mWebView removeFromSuperview ];
+		[ mWebView release ];
+	}
+	
+	if ( mToolBar ) {
+		
+		[ mToolBar removeFromSuperview ];
+		[ mToolBar release ];
 	}
 	
 	if ( mWebViewDelegate ) {
 		
 		[ mWebViewDelegate release ];
-		mWebViewDelegate = 0;
 	}
 }
 
+
 //----------------------------------------------------------------//
-void MOAIWebViewIOS::Hide () {
+void MOAIWebViewIOS::Close () {
+	
+	Hide( true );
+}
+
+//----------------------------------------------------------------//
+void MOAIWebViewIOS::Hide ( bool clean ) {
+
+	if ( mAnimate ) {
+		
+		CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+		
+		UIWindow* window = [[ UIApplication sharedApplication ] keyWindow ];
+		UIViewController* rootVC = [ window rootViewController ];
+		
+		BOOL landscape = rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+		rootVC.interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+		CGFloat offset = landscape?screenSize.width:screenSize.height;
+		
+		[UIView animateWithDuration:0.25
+							  delay:0.1
+							options: UIViewAnimationCurveEaseIn
+						 animations:^{
+							 
+							 if ( mHasToolBar ) {
+								 
+								 mToolBar.transform = CGAffineTransformConcat (mToolBar.transform, CGAffineTransformMakeTranslation(0, offset));
+							 }
+							 
+							 mWebView.transform = CGAffineTransformConcat (mWebView.transform, CGAffineTransformMakeTranslation(0, offset));
+						 }
+						 completion:^(BOOL finished){
+							 
+							 mToolBar.hidden = true;
+							 mToolBar.transform = CGAffineTransformConcat (mToolBar.transform, CGAffineTransformMakeTranslation(0, -offset));
+							 [ mToolBar removeFromSuperview ];
 
 	mWebView.hidden = true;
+							 mWebView.delegate = nil;
+							 mWebView.transform = CGAffineTransformConcat (mWebView.transform, CGAffineTransformMakeTranslation(0, -offset));
+							 [ mWebView removeFromSuperview ];
+							 
+							 if ( clean ) {
+								 
+								 [ mWebView stopLoading ];
+								 [ mWebView release ];
+								 mWebView = nil;
+								 
+								 [ mToolBar release ];
+								 mToolBar = nil;
+							 }
+							 
+							 this->RaiseWebViewDidHideEvent ();
+						 }];
+	} else {
+	
 	mToolBar.hidden = true;
+		[ mToolBar removeFromSuperview ];
+		
+		mWebView.hidden = true;
+		mWebView.delegate = nil;
+		[ mWebView removeFromSuperview ];
+		
+		if ( clean ) {
+			
+			[ mWebView stopLoading ];
+			[ mWebView release ];
+			mWebView = nil;
+			
+			[ mToolBar release ];
+			mToolBar = nil;
+		}
+		
+		this->RaiseWebViewDidHideEvent ();
+	}
 }
 
 //----------------------------------------------------------------//
@@ -630,12 +778,23 @@ void MOAIWebViewIOS::RaiseWebViewDidStartLoadEvent () {
 }
 
 //----------------------------------------------------------------//
+void MOAIWebViewIOS::RaiseWebViewDidHideEvent () {
+	
+	MOAIScopedLuaState state = MOAILuaRuntime::Get ().State ();
+	if ( this->PushListenerAndSelf ( WEB_VIEW_DID_HIDE, state )) {
+		
+		state.DebugCall ( 1, 0 );
+	}
+}
+
+//----------------------------------------------------------------//
 void MOAIWebViewIOS::RegisterLuaClass ( MOAILuaState& state ) {
 
 	state.SetField ( -1, "DID_FAIL_LOAD_WITH_ERROR", 		( u32 )DID_FAIL_LOAD_WITH_ERROR );
 	state.SetField ( -1, "SHOULD_START_LOAD_WITH_REQUEST",	( u32 )SHOULD_START_LOAD_WITH_REQUEST );
 	state.SetField ( -1, "WEB_VIEW_DID_FINISH_LOAD", 		( u32 )WEB_VIEW_DID_FINISH_LOAD );
 	state.SetField ( -1, "WEB_VIEW_DID_START_LOAD", 		( u32 )WEB_VIEW_DID_START_LOAD );
+	state.SetField ( -1, "WEB_VIEW_DID_HIDE",				( u32 )WEB_VIEW_DID_HIDE );
 	
 	state.SetField( -1, "NAVIGATION_LINK_CLICKED", 			( u32 )NAVIGATION_LINK_CLICKED );
 	state.SetField( -1, "NAVIGATION_FORM_SUBMIT", 			( u32 )NAVIGATION_FORM_SUBMIT );
@@ -645,7 +804,7 @@ void MOAIWebViewIOS::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField( -1, "NAVIGATION_OTHER", 				( u32 )NAVIGATION_OTHER );
 	
 	luaL_Reg regTable [] = {
-		{ "openUrlInSafari",	_openUrlInSafari },
+		{ "openUrlExternally",	_openUrlExternally },
 		{ NULL, NULL }
 	};
 	

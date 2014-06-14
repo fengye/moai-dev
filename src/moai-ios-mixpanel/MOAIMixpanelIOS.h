@@ -1,8 +1,13 @@
-// Copyright (c) 2010-2011 Zipline Games, Inc. All Rights Reserved.
-// http://getmoai.com
+//
+//  MOAIMixpanelIOS.h
+//  libmoai
+//
+//  Created by Sylvain Rebaud on 7/5/13.
+//  Copyright (c) 2012 Plumzi. All rights reserved.
+//
 
-#ifndef	MOAIMIXPANELIOS_H
-#define	MOAIMIXPANELIOS_H
+#ifndef	MOAIMIXPANEL_H
+#define	MOAIMIXPANEL_H
 
 #import <moai-core/headers.h>
 
@@ -10,23 +15,24 @@
 // MOAIMixpanelIOS
 //================================================================//
 /**	@name	MOAIMixpanelIOS
-	@text	Wrapper for Mixpanel interface.
-*/
+	@text	Wrapper for Mixpanel integration on iOS devices.
+ */
 class MOAIMixpanelIOS :
 	public MOAIGlobalClass < MOAIMixpanelIOS, MOAILuaObject > {
 private:
-
+	
 	//----------------------------------------------------------------//
-	static int	_startSession						( lua_State* L );
-
+	static int	_init						( lua_State* L );
+	static int	_trackEvent					( lua_State* L );
+	static int	_registerSuperProperties	( lua_State* L );
+	
 public:
 	
-	DECL_LUA_SINGLETON ( MOAIMixpanelIOS )
-	
-	//----------------------------------------------------------------//
-			MOAIMixpanelIOS				();
-			~MOAIMixpanelIOS				();
-	void	RegisterLuaClass			( MOAILuaState& state );
+	DECL_LUA_SINGLETON ( MOAIMixpanelIOS );
+		
+			 MOAIMixpanelIOS		();
+			 ~MOAIMixpanelIOS		();
+	void	 RegisterLuaClass		( MOAILuaState& state );
 };
-
-#endif
+		
+#endif  //MOAIMIXPANEL_H

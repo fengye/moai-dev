@@ -45,6 +45,7 @@ public:
 	
 	//----------------------------------------------------------------//
 	STLString	GetAttribute	( cc8* name );
+	STLString	GetLocalPath	( ZLXmlElement* parent );
 	bool		HasAttribute	( cc8* name );
 	bool		IsValue			();
 };

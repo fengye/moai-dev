@@ -540,6 +540,18 @@ MOAINotifications = MOAINotificationsAndroid or MOAINotificationsIOS
 MOAITapjoy = MOAITapjoyAndroid or MOAITapjoyIOS
 MOAITwitter = MOAITwitterAndroid or MOAITwitterIOS
 
+MOAIPlayhaven = MOAIPlayhavenAndroid or MOAIPlayhavenIOS
+MOAIHockeyApp = MOAIHockeyAppAndroid or MOAIHockeyAppIOS
+MOAICrashlytics = MOAICrashlyticsAndroid or MOAICrashlyticsIOS
+MOAIVMNNotifications = MOAIVMNNotificationsAndroid or MOAIVMNNotificationsIOS
+MOAIOmniture = MOAIOmnitureAndroid or MOAIOmnitureIOS
+MOAIMixpanel = MOAIMixpanelAndroid or MOAIMixpanelIOS
+MOAIRate = MOAIRateAndroid or MOAIRateIOS
+MOAIUrbanAirship = MOAIUrbanAirshipAndroid or MOAIUrbanAirshipIOS
+MOAIWebView = MOAIWebViewAndroid or MOAIWebViewIOS
+
+-- Plumzi extensions
+PZVideo = PZVideoAndroid or PZVideoIOS
 -- Compatibility
 
 if MOAITwitterIOS then

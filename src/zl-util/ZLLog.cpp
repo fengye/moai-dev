@@ -13,6 +13,45 @@
 #endif
 
 //================================================================//
+// CurrentTime
+//================================================================//
+struct CurrentTime {
+	int		h;
+	int		m;
+	int		s;
+	int		ms;
+
+	//----------------------------------------------------------------//
+	void Update () {
+		
+		static double startTime = 0;
+		struct timeval val;
+		double now = 0;
+		if ( gettimeofday(&val, NULL) == 0 ) {
+			
+			now = (double)val.tv_sec + (double)val.tv_usec / 1000000.;
+		}
+		
+		if (!startTime) {
+			
+			startTime = now;
+		}
+		
+		double elapsed = now - startTime;
+		
+		this->h = (int)elapsed / 3600;
+	    elapsed -= t->h * 3600;
+	    this->m = (int)elapsed / 60;
+	    elapsed -= t->m * 60;
+	    this->s = (int)elapsed;
+	    elapsed -= t->s;
+		this->ms = elapsed * 1000;
+	}
+};
+
+
+
+//================================================================//
 // ZLLog
 //================================================================//
 
@@ -21,33 +60,53 @@ ZLLog::LogFunc	ZLLog::sLogFunc				= 0;
 void*			ZLLog::sLogFuncUserdata		= 0;
 
 //----------------------------------------------------------------//
-void ZLLog::LogF ( void* file, cc8* format, ... ) {
+void ZLLog::LogF ( void* file, u32 level, cc8* tag, cc8* format, ... ) {
 
 	va_list args;
 	va_start ( args, format );	
 	
-	ZLLog::LogV ( file, format, args );
+	ZLLog::LogV ( file, level, tag, format, args );
 	
 	va_end ( args );
 }
 
 //----------------------------------------------------------------//
-void ZLLog::LogV ( void* file, cc8* format, va_list args ) {
+void ZLLog::LogV ( void* file, u32 level, cc8* tag, cc8* format, va_list args ) {
 	
+	static cc8* levels = "NEWID";
+	static cc8* logFormat = "%.2d:%.2d:%.2d.%.3d %c/[%s] %s";
+
+	CurrentTime t;
+	t.Update ();
+
+	// TODO: this is unsafe
+	char str [ 1024 ];
+	vsnprintf ( str, 1024, format, args );
+	if ( level > 4 ) {
+		level = 4;
+	}
+
+	// TODO: all this mess should move up the channel to MOAILogMgr
+	// ZLLog should just make sure we can print to a file or console
+	// actually, this should just be a way to grab any output to a stream and re-route it via a callback
+	// it's supposed to be low level, yo
 	if ( sLogFunc ) {
 	
-		sLogFunc ( file, format, args, sLogFuncUserdata );
+		sLogFunc ( file, u32 level, cc8* tag, format, args, sLogFuncUserdata );
 	}
 	else {
 	
-		if ( file ) {
-			vfprintf (( FILE* )file, format, args );
+		if ( file && ( file != zl_stdout )) {
+			zl_vfprintf (( FILE* )file, logFormat, t.h, t.m, t.s, t.ms, levels [ level ], tag, str );
 		}
 		else {
+			// TODO: this should really be hooked by the host
+			// should only need to fall back on this if MOAILogMgr isn't used
+			// in either case this should get set up via a callback at the host level
 			#ifdef ANDROID
-				__android_log_vprint ( ANDROID_LOG_INFO, "MoaiLog", format, args );
+				__android_log_vprint ( ANDROID_LOG_INFO, "MoaiLog", logFormat, t.h, t.m, t.s, t.ms, _levels[level], tag, str );
 			#else
-				vprintf ( format, args );
+				printf ( logFormat, t.h, t.m, t.s, t.ms, levels [ level] , tag, str );
 			#endif
 		}
 	}

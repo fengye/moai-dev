@@ -7,7 +7,11 @@
 #include <moai-sim/MOAIGfxDevice.h>
 #include <moai-sim/MOAIImage.h>
 #include <moai-sim/MOAIRenderable.h>
-#include <moai-sim/MOAIRenderMgr.h>
+
+// <-Plumzi Addition
+#include <moai-sim/host.h>
+//#include <aku/AKU.h>
+// ->
 
 //================================================================//
 // local
@@ -59,6 +63,12 @@ int MOAIClearableView::_setClearColor ( lua_State* L ) {
 		
 		self->mClearColor = ZLColor::PackRGBA ( r, g, b, a );
 		self->mClearFlags |= ZGL_CLEAR_COLOR_BUFFER_BIT;
+		
+		// <-Plumzi Addition
+		// TODO: this assumes there's only one frame buffer and this is it
+		// fix this to only send info about the gfx device's frame buffer
+		AKUSetHasOpaqueBackground ( a == 1.0f );
+		// ->
 	}
 	return 0;
 }
@@ -105,12 +115,27 @@ void MOAIClearableView::ClearSurface () {
 			clearColor.SetRGBA ( this->mClearColor );
 		}
 		
-		zglClearColor (
-			clearColor.mR,
-			clearColor.mG,
-			clearColor.mB,
-			clearColor.mA
-		);
+		// <-Plumzi Addition
+		// TODO: only on MACOSX? Moai in general uses premult alpha.
+		// also, what does premult alpha mean for frame buffer opacity?
+		#if defined(MACOSX)
+			// premultiply the alpha in the clear color to get the same visual result
+			// than on IOS
+			zglClearColor (
+				clearColor.mR * clearColor.mA,
+				clearColor.mG * clearColor.mA,
+				clearColor.mB * clearColor.mA,
+				clearColor.mA
+			);
+		#else
+			zglClearColor (
+				clearColor.mR,
+				clearColor.mG,
+				clearColor.mB,
+				clearColor.mA
+			);
+		#end
+		// Plumzi Addition ->
 	}
 
 	MOAIGfxDevice::Get ().ClearSurface ( this->mClearFlags );
@@ -157,9 +182,17 @@ void MOAIClearableView::SetClearColor ( MOAIColor* color ) {
 		this->LuaRelease ( this->mClearColorNode );
 		this->LuaRetain ( color );
 		this->mClearColorNode = color;
+		
+		// <-Plumzi Addition
+		// TODO: once again assumes that this is the main and only frame buffer
+		if ( this->mClearColorNode ) {
+			AKUSetHasOpaqueBackground ( this->mClearColorNode->mA == 1.0f );
+		} else {
+			AKUSetHasOpaqueBackground ( true );
+		}
+		// ->
 	}
 }
-
 
 //================================================================//
 // local
@@ -288,7 +321,7 @@ MOAIFrameBuffer::MOAIFrameBuffer () :
 	mGLFrameBufferID ( 0 ),
 	mGrabNextFrame ( false ),
 	mRenderCounter ( 0 ),
-	mLastDrawCount( 0 ) {
+	mLastDrawCount ( 0 ) {
 	
 	RTTI_BEGIN
 		RTTI_EXTEND ( MOAIClearableView )
@@ -364,7 +397,6 @@ void MOAIFrameBuffer::Render () {
 void MOAIFrameBuffer::RenderTable ( MOAILuaState& state, int idx ) {
 
 	MOAIRenderMgr& renderMgr = MOAIRenderMgr::Get ();
-
 	idx = state.AbsIndex ( idx );
 
 	int n = 1;

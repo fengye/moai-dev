@@ -45,6 +45,11 @@ public:
 
 	DECL_LUA_FACTORY ( MOAIEaseDriver )
 
+	enum {
+		EVENT_DRIVER_UPDATE = MOAITimer::TOTAL_EVENTS,
+		TOTAL_EVENTS,
+	};
+		
 	//----------------------------------------------------------------//
 					MOAIEaseDriver		();
 					~MOAIEaseDriver		();

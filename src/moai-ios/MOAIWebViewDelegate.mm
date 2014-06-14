@@ -18,7 +18,7 @@
 		UNUSED ( sender );
 	
 		if ( mMOAIWebView ) {
-			mMOAIWebView->Hide ();
+			mMOAIWebView->Hide ( false );
 		}
 	}
 	

@@ -34,7 +34,8 @@ public:
 	int							AffirmPath					( const char* path );
 	static std::string			BlessPath					( const char* path );
 	int							ChangeDir					( const char* path );
-	void						Cleanup						();
+	bool							CheckFileRemapping					( const char* filename, string& remappedFilename );
+	void							Cleanup						();
 	static size_t				ComparePaths				( const char* p0, const char* p1 );
 	ZLVfsVirtualPath*			FindBestVirtualPath			( char const* path );
 	ZLVfsVirtualPath*			FindNextVirtualSubdir		( char const* path, ZLVfsVirtualPath* cursor ) ;

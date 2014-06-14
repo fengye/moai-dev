@@ -85,6 +85,8 @@ private:
 	void			Init				( void* bitmap, u32 width, u32 height, ZLColor::Format colorFmt, bool copy );
 	static bool		IsJpg				( ZLStream& stream );
 	static bool		IsPng				( ZLStream& stream );
+	static bool		IsPVR				( ZLStream& stream );
+		
 	
 	//----------------------------------------------------------------//
 	#if MOAI_WITH_LIBJPG
@@ -97,7 +99,12 @@ private:
 		void			LoadPng				( ZLStream& stream, u32 transform );
 		void			LoadPng				( void* pngParam, void* pngInfoParam, u32 transform );
 	#endif
-
+	
+	// <- Plumzi Addition
+	#if MOAI_WITH_LIBPVR
+		void			LoadPVR	( ZLStream& stream, u32 transform );
+	#endif
+	// ->
 public:
 	
 	DECL_LUA_FACTORY ( MOAIImage )

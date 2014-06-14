@@ -11,6 +11,30 @@
 //================================================================//
 // helpers
 //================================================================//
+std::string string_format(const std::string &fmt, va_list ap);
+
+std::string string_format(const std::string &fmt, va_list ap) {
+    
+    std::vector<char> str(256, '\0');
+
+	// copy ars in case we need to retry because buffer too small
+	va_list apcopy;
+	#ifdef _WIN32
+		apcopy = ap;
+	#else
+		va_copy (apcopy, ap);
+	#endif
+	
+	ssize_t n = vsnprintf(str.data(), str.size(), fmt.c_str(), ap);
+	if ((n <= -1) || (size_t(n) < str.size())) {
+		return str.data();
+	}
+        
+	// string too short, increase and try again
+	str.resize( n + 1, '\0' );
+	vsnprintf(str.data(), str.size(), fmt.c_str(), apcopy);
+	return str.data();
+}
 
 //----------------------------------------------------------------//
 void MOAILog ( lua_State *L, u32 messageID, ... ) {
@@ -88,11 +112,21 @@ int MOAILogMgr::_isDebugBuild ( lua_State* L ) {
 int MOAILogMgr::_log ( lua_State* L ) {
 
 	MOAILuaState state ( L );
-	if ( !state.CheckParams ( 1, "S" )) return 0;
+	
+	if ( state.CheckParams ( 1, "NSS" )) {
+		
+		u32 level		= state.GetValue < u32 >( 1, 0 );
+		cc8* tag		= state.GetValue < cc8* >( 2, "" );
+		cc8* msg		= state.GetValue < cc8* >( 3, "" );
 
-	cc8* msg = state.GetValue < cc8* >( 1, "" );
-	ZLLog::LogF ( ZLLog::CONSOLE, msg );
+		MOAILogMgr::Get ().Print ( level, tag, "%s", msg );
+	}
+	else if ( state.IsType ( 1, LUA_TSTRING )) {
 
+		cc8* msg = state.GetValue < cc8* >( 1, "" );
+		MOAILogMgr::Get ().Print ( 0, "Lua", "%s", msg );
+	}
+	
 	return 0;
 }
 
@@ -183,7 +217,7 @@ void MOAILogMgr::CloseFile () {
 
 	if ( this->mOwnsFileHandle ) {
 		fclose ( this->mFile );
-		this->mFile = 0;
+		this->mFile = stdout;
 		this->mOwnsFileHandle = false;
 	}
 }
@@ -212,17 +246,17 @@ void MOAILogMgr::LogVar ( lua_State *L, u32 messageID, va_list args ) {
 			if ( message.mLevel <= this->mLevel ) {
 
 				if ( L ) {
-					this->Print ( "----------------------------------------------------------------\n" );
+					tmp = "----------------------------------------------------------------\n";
 				}
-
-				this->PrintVar ( message.mFormatString, args );
+				
+				tmp += string_format ( message.mFormatString, args );
 				
 				if ( L ) {
-					this->Print ( "\n" );
 					MOAILuaState state ( L );
-					state.PrintStackTrace ( this->mFile, 0 );
-					this->Print ( "\n" );
+					tmp += state.GetStackTrace(0);
 				}
+				
+				this->Print ( "%s", (const char*)tmp );
 			}
 		}
 	}
@@ -231,7 +265,7 @@ void MOAILogMgr::LogVar ( lua_State *L, u32 messageID, va_list args ) {
 //----------------------------------------------------------------//
 MOAILogMgr::MOAILogMgr () :
 	mLevel ( LOG_STATUS ),
-	mFile ( 0 ),
+	mFile ( stdout ),
 	mOwnsFileHandle ( false ),
 	mTypeCheckLuaParams ( true ) {
 
@@ -261,15 +295,17 @@ void MOAILogMgr::Print ( cc8* message, ... ) {
 	va_list args;
 	va_start ( args, message );
 
-	MOAILogMgr::Get ().PrintVar ( message, args );
+	MOAILogMgr::Get ().PrintVar ( level, tag, message, args );
 
 	va_end ( args );
 }
 
 //----------------------------------------------------------------//
-void MOAILogMgr::PrintVar ( cc8* message, va_list args ) {
+void MOAILogMgr::PrintVar ( u32 level, cc8* tag, cc8* message, va_list args ) {
 
-	ZLLog::LogV ( this->mFile, message, args );
+	if ( this->mLevel && ( level <= this->mLevel )) {
+		ZLLog::LogV ( this->mFile, level, tag, message, args );
+	}
 }
 
 //----------------------------------------------------------------//
@@ -294,6 +330,7 @@ void MOAILogMgr::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField ( -1, "LOG_ERROR",			( u32 )LOG_ERROR );
 	state.SetField ( -1, "LOG_WARNING",			( u32 )LOG_WARNING );
 	state.SetField ( -1, "LOG_STATUS",			( u32 )LOG_STATUS );
+	state.SetField ( -1, "LOG_DEBUG",			( u32 )LOG_DEBUG );
 
 	MOAILogMessages::RegisterLogMessageIDs ( state );
 

@@ -159,6 +159,14 @@ void MOAIEaseDriver::OnUpdate ( float step ) {
 			}
 		}
 	}
+
+	// TODO: better to have this event on MOAINode?
+	// should think about impact on performance
+	// also, what is the use case?
+	MOAIScopedLuaState state = MOAILuaRuntime::Get ().State ();
+	if ( this->PushListenerAndSelf ( EVENT_DRIVER_UPDATE, state )) {
+		state.DebugCall ( 1, 0 );
+	}
 }
 
 //----------------------------------------------------------------//
@@ -246,6 +254,8 @@ u32 MOAIEaseDriver::ParseForSeek ( MOAILuaState& state, int idx, MOAINode* dest,
 void MOAIEaseDriver::RegisterLuaClass ( MOAILuaState& state ) {
 
 	MOAITimer::RegisterLuaClass ( state );
+	
+	state.SetField ( -1, "EVENT_DRIVER_UPDATE",	( u32 )EVENT_DRIVER_UPDATE );
 }
 
 //----------------------------------------------------------------//

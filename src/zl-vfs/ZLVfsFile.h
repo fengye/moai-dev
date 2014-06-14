@@ -13,7 +13,8 @@ class ZLVfsFile {
 private:
 
 	bool	mIsZip;
-	
+	bool	mIsCrypt; // TODO: factor this out
+
 	union {
 		FILE*				mFile;
 		ZLVfsZipStream*		mZip;
@@ -25,12 +26,14 @@ public:
 	void			ClearError			();
 	int				Close				();
 	int				CloseProcess		();
+	void			Decrypt				( void* buffer, long offset, size_t count );
 	int				Flush				();
 	int				GetChar				();
 	int				GetError			();
 	int				GetFileNum			();
 	int				GetPos				( fpos_t* position );
 	char*			GetString			( char* string, int length );
+	int				IsCrypt				();
 	int				IsEOF				();
 	int				Open				( const char* filename, const char* mode );
 	int				OpenProcess			( const char *command, const char *mode );

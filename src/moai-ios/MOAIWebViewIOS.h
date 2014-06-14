@@ -20,6 +20,7 @@
 	@const	SHOULD_START_LOAD_WITH_REQUEST	Event indicating an attempt to load a UIWebView.
 	@const	WEB_VIEW_DID_FINISH_LOAD		Event indicating a completed UIWebView load.
 	@const	WEB_VIEW_DID_START_LOAD			Event indicating the start of a UIWebView load.
+	@const	WEB_VIEW_DID_HIDE				Event indicating the UIWebView done button was pressed.
 
 	@const	NAVIGATION_LINK_CLICKED			Indicates the the navigation was due to a link click.
 	@const	NAVIGATION_FORM_SUBMIT			Indicates the the navigation was due to a form submit.
@@ -36,6 +37,7 @@ private:
 	UIToolbar*					mToolBar;
 	UIWebView*					mWebView;
 	MOAIWebViewDelegate*		mWebViewDelegate;
+	bool						mAnimate;
 	
 	//----------------------------------------------------------------//
 	static int	_canGoBack						( lua_State* L );	
@@ -57,7 +59,7 @@ private:
 	static int	_loadData						( lua_State* L );
 	static int	_loadHTML						( lua_State* L );
 	static int	_loadRequest					( lua_State* L ); 
-	static int	_openUrlInSafari				( lua_State* L ); 
+	static int	_openUrlExternally				( lua_State* L );
 	static int	_runJavaScript					( lua_State* L );
 	static int	_setAllowsInlineMediaPlayback	( lua_State* L );
 	static int	_setMediaPlaybackRequiresAction	( lua_State* L );
@@ -72,7 +74,8 @@ public:
 		DID_FAIL_LOAD_WITH_ERROR,
 		SHOULD_START_LOAD_WITH_REQUEST,
 		WEB_VIEW_DID_FINISH_LOAD,
-		WEB_VIEW_DID_START_LOAD
+		WEB_VIEW_DID_START_LOAD,
+		WEB_VIEW_DID_HIDE
 	};
 	
 	enum {
@@ -86,11 +89,13 @@ public:
 	
 				MOAIWebViewIOS							();
 				~MOAIWebViewIOS							();
-	void		Hide									();
+	void		Close									();
+	void		Hide									( bool clean );
 	void		RaiseDidFailLoadWithErrorEvent			( NSError* error );
 	BOOL		RaiseShouldStartLoadWithRequestEvent	( NSURLRequest* request, UIWebViewNavigationType navType );
 	void		RaiseWebViewDidFinishLoadEvent			();
 	void		RaiseWebViewDidStartLoadEvent			();
+	void		RaiseWebViewDidHideEvent				();
 	void		RegisterLuaClass						( MOAILuaState& state );
 	void		RegisterLuaFuncs						( MOAILuaState& state );
 	STLString	ToString								();

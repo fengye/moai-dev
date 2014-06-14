@@ -241,8 +241,8 @@ int MOAIApp::_requestProductIdentifiers ( lua_State* L ) {
 	@text	Request a restore of all purchased non-consumables from the App Store.
 			Use this to retrieve a list of all previously purchased items (for example
 			after reinstalling the app on a different device).
-	@out	nil
  
+	@out		nil
 */
 int MOAIApp::_restoreCompletedTransactions( lua_State* L ) {
 	

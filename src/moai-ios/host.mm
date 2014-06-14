@@ -32,12 +32,13 @@ void AKUIosAppInitialize () {
 //----------------------------------------------------------------//
 void AKUIosContextInitialize () {
 
-	MOAIAppIOS::Affirm ();
+	MOAIAppIOS::Affirm ().SetApplication ( application );
 			
 	// MOAI
 	REGISTER_LUA_CLASS ( MOAIAppIOS )
 	REGISTER_LUA_CLASS ( MOAIDialogIOS )
 	REGISTER_LUA_CLASS ( MOAIKeyboardIOS )
+	REGISTER_LUA_CLASS ( MOAIMoviePlayerIOS )
 	REGISTER_LUA_CLASS ( MOAIBrowserIOS )
 	REGISTER_LUA_CLASS ( MOAIWebViewIOS )
 	REGISTER_LUA_CLASS ( MOAINotificationsIOS )
@@ -50,19 +51,31 @@ void AKUIosContextInitialize () {
 	environment.SetValue ( MOAI_ENV_appVersion,				[[[[ NSBundle mainBundle ] infoDictionary ] objectForKey:@"CFBundleShortVersionString" ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_countryCode,			[[[ NSLocale currentLocale ] objectForKey: NSLocaleCountryCode ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_devModel,				[[ UIDevice currentDevice ].model UTF8String ] );
-	//environment.SetValue ( MOAI_ENV_devPlatform,			[[ UIDevice currentDevice ].platform UTF8String ]);
+	environment.SetValue ( MOAI_ENV_horizontalResolution,	[[ UIScreen mainScreen ] bounds ].size.width * [[ UIScreen mainScreen ] scale ] );	
 	environment.SetValue ( MOAI_ENV_iosRetinaDisplay,		[[ UIScreen mainScreen ] scale ] == 2.0 );
 	environment.SetValue ( MOAI_ENV_languageCode,			[[[ NSLocale currentLocale ] objectForKey: NSLocaleLanguageCode ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_osBrand,				"iOS" );
 	environment.SetValue ( MOAI_ENV_osVersion,				[[ UIDevice currentDevice ].systemVersion UTF8String ]);
 	environment.SetValue ( MOAI_ENV_openUdid,				[[ MOAIOpenUDID value] UTF8String ]);
-	environment.SetValue ( MOAI_ENV_horizontalResolution,	[[ UIScreen mainScreen ] bounds ].size.width * [[ UIScreen mainScreen ] scale ] );
-	environment.SetValue ( MOAI_ENV_verticalResolution,		[[ UIScreen mainScreen ] bounds ].size.height * [[ UIScreen mainScreen ] scale ] );
+	environment.SetValue ( MOAI_ENV_systemLanguageCode,	[[[ NSLocale preferredLanguages ] objectAtIndex: 0 ] UTF8String ]);	
+	environment.SetValue ( MOAI_ENV_verticalResolution,		[[ UIScreen mainScreen ] bounds ].size.height * [[ UIScreen mainScreen ] scale ]);
 	
 	environment.SetValue ( MOAI_ENV_cacheDirectory,			[[ NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES ) objectAtIndex:0 ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_resourceDirectory,		[[[ NSBundle mainBundle ] resourcePath ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_documentDirectory,		[[ NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES ) objectAtIndex:0 ] UTF8String ]);
 	environment.SetValue ( MOAI_ENV_libraryDirectory,		[[ NSSearchPathForDirectoriesInDomains ( NSLibraryDirectory, NSUserDomainMask, YES ) objectAtIndex:0 ] UTF8String ]);
+
+	// <-Plumzi Addition
+	environment.SetValue ( MOAI_ENV_buildVersion,		[[[[ NSBundle mainBundle ] infoDictionary ] objectForKey:@"CFBundleVersion" ] UTF8String ]);
+	environment.SetValue ( MOAI_ENV_devName,			[[UIDevice currentDevice].name UTF8String ]);
+	
+	size_t size = 100;
+	char* hw_machine = ( char* )alloca ( size );
+	int name[] = { CTL_HW, HW_MACHINE };
+	sysctl ( name, 2, hw_machine, &size, NULL, 0 );
+	NSString* hardware = [ NSString stringWithUTF8String:hw_machine ];
+	environment.SetValue ( MOAI_ENV_devPlatform, [hardware UTF8String ]);
+	// ->
 
 	if ([[ UIDevice currentDevice ] respondsToSelector:@selector ( identifierForVendor )]) {
 		environment.SetValue ( MOAI_ENV_iosIFV, [[[[UIDevice currentDevice] identifierForVendor ] UUIDString ] UTF8String ]);
@@ -98,9 +111,9 @@ void AKUIosNotifyRemoteNotificationReceived ( NSDictionary* notification ) {
 }
 
 //----------------------------------------------------------------//
-void AKUIosNotifyRemoteNotificationRegistrationComplete ( NSData* deviceToken ) {
+void AKUIosNotifyRemoteNotificationRegistrationComplete ( NSData* deviceToken, NSError* error ) {
 
-	MOAINotificationsIOS::Get ().NotifyRemoteRegistrationComplete ( deviceToken );
+	MOAINotificationsIOS::Get ().NotifyRemoteRegistrationComplete ( deviceToken, error );
 }
 
 //----------------------------------------------------------------//

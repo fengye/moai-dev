@@ -22,6 +22,18 @@ STLString ZLXmlElement::GetAttribute ( cc8* name ) {
 }
 
 //----------------------------------------------------------------//
+// TODO: where is this used?
+STLString ZLXmlElement::GetLocalPath ( ZLXmlElement* parent ) {
+
+	if ( !parent ) return this->mPath;
+
+	u32 parentPathSize = ( u32 )parent->mPath.size ();
+	if ( strncmp ( this->mPath, parent->mPath, parentPathSize )) return this->mPath;
+
+	return this->mPath.clip_to_back ( parentPathSize );
+}
+
+//----------------------------------------------------------------//
 bool ZLXmlElement::HasAttribute ( cc8* name ) {
 
 	return this->mAttributes.contains ( name );
@@ -204,6 +216,11 @@ ZLXmlElement* ZLXmlReader::PushElement ( cc8* name ) {
 	element->mName = name;
 	element->mDepth = ( u32 )this->mElementStack.size ();
 	element->mChildren = 0;
+	
+	if ( top ) {
+		element->mPath = top->mPath;
+	}
+	element->mPath.write ( "/%s", name );
 	
 	return element;
 }

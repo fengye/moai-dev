@@ -7,12 +7,28 @@
 #include <host-modules/aku_modules_config.h>
 #include <host-modules/aku_modules_util.h>
 
+#if AKU_WITH_AUDIOSAMPLER
+	#include <moai-audiosampler/AKU-audiosampler.h>
+#endif
+
+#if AKU_WITH_BILLING
+	#include <moai-billing/AKU-billing.h>
+#endif
+
 #if AKU_WITH_BOX2D
 	#include <moai-box2d/host.h>
 #endif
 
 #if AKU_WITH_CHIPMUNK
 	#include <moai-chipmunk/host.h>
+#endif
+
+#if AKU_WITH_COCOALUMBERJACK
+	#include <moai-cocoalumberjack/host.h>
+#endif
+
+#if AKU_WITH_CRASHLYTICS
+	#include <moai-crashlytics/host.h>
 #endif
 
 #if AKU_WITH_CRYPTO
@@ -27,6 +43,10 @@
 	#include <moai-fmod-ex/host.h>
 #endif
 
+#if AKU_WITH_FMOD_STUDIO
+	#include <moai-fmod-studio/host.h>
+#endif
+
 #if AKU_WITH_HARNESS
 	#include <moai-harness/host.h>
 #endif
@@ -39,10 +59,33 @@
 	#include <moai-http-server/host.h>
 #endif
 
+#if AKU_WITH_HOCKEYAPP
+	#include <moai-hockeyapp/host.h>
+#endif
+
 #if AKU_WITH_LUAEXT
 	#include <moai-luaext/host.h>
 #endif
 
+#if AKU_WITH_OMNITURE
+	#include <moai-omniture/host.h>
+#endif
+
+#if AKU_WITH_MIXPANEL
+	#include <moai-mixpanel/host.h>
+#endif
+
+#if AKU_WITH_NSLOGGER
+	#include <moai-nslogger/host.h>
+#endif
+
+#if AKU_WITH_PLUGINS
+	#include <moai-plugins/host.h>
+#endif
+
+#if AKU_WITH_PLUMZI
+	#include <moai-plumzi/host.h>
+#endif
 #if AKU_WITH_SIM
 	#include <moai-sim/host.h>
 #endif
@@ -62,6 +105,7 @@
 #if AKU_WITH_PLUGINS
 	#include <moai-plugins/host.h>
 #endif
+
 //----------------------------------------------------------------//
 void		AKUModulesAppFinalize					();
 void		AKUModulesAppInitialize					();
@@ -70,7 +114,7 @@ void		AKUModulesParseArgs						( int argc, char** argv );
 void		AKUModulesPause							( bool pause );
 void		AKUModulesRunLuaAPIWrapper				();
 void		AKUModulesUpdate						();
+
 void		AKUModulesPause							();
 void		AKUModulesResume						();
-
 #endif

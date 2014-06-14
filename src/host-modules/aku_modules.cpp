@@ -11,6 +11,14 @@
 
 //----------------------------------------------------------------//
 void AKUModulesAppFinalize () {
+	
+	#if AKU_WITH_AUDIOSAMPLER
+		AKUAudioSamplerAppFinalize ();
+	#endif
+	
+	#if AKU_WITH_BILLING
+		AKUBillingAppFinalize ();
+	#endif
 
 	#if AKU_WITH_BOX2D
 		AKUBox2DAppFinalize ();
@@ -18,6 +26,14 @@ void AKUModulesAppFinalize () {
 
 	#if AKU_WITH_CHIPMUNK
 		AKUChipmunkAppFinalize ();
+	#endif
+
+	#if AKU_WITH_COCOALUMBERJACK
+		AKUCocoaLumberjackAppFinalize ();
+	#endif
+	
+	#if AKU_WITH_CRASHLYTICS
+		AKUCrashlyticsAppFinalize ();
 	#endif
 
 	#if AKU_WITH_CRYPTO
@@ -32,6 +48,10 @@ void AKUModulesAppFinalize () {
 		AKUFmodExAppFinalize ();
 	#endif
 
+	#if AKU_WITH_FMOD_STUDIO
+		AKUFmodStudioAppFinalize ();
+	#endif
+
 	#if AKU_WITH_HARNESS
 		AKUHarnessAppFinalize ();
 	#endif
@@ -44,8 +64,28 @@ void AKUModulesAppFinalize () {
 		AKUHttpServerAppFinalize ();
 	#endif
 
+	#if AKU_WITH_HOCKEYAPP
+		AKUHockeyAppAppFinalize ();
+	#endif
+
 	#if AKU_WITH_LUAEXT
 		AKULuaExtAppFinalize ();
+	#endif
+
+	#if AKU_WITH_NSLOGGER
+		AKUNSLoggerAppFinalize ();
+	#endif
+		
+	#if AKU_WITH_MIXPANEL
+		AKUMixpanelAppFinalize ();
+	#endif
+		
+	#if AKU_WITH_OMNITURE
+		AKUOmnitureAppFinalize ();
+	#endif
+		
+	#if AKU_WITH_PLUMZI
+		AKUPlumziAppFinalize ();
 	#endif
 
 	#if AKU_WITH_SIM
@@ -63,7 +103,6 @@ void AKUModulesAppFinalize () {
 	#if AKU_WITH_UTIL
 		AKUUtilAppFinalize ();
 	#endif
-
 	#if AKU_WITH_PLUGINS
 		AKUPluginsAppFinalize ();
 	#endif
@@ -74,12 +113,28 @@ void AKUModulesAppFinalize () {
 //----------------------------------------------------------------//
 void AKUModulesAppInitialize () {
 
+	#if AKU_WITH_AUDIOSAMPLER
+		AKUAudioSamplerAppInitialize ();
+	#endif
+			
+	#if AKU_WITH_BILLING
+		AKUBillingAppInitialize ();
+	#endif
+
 	#if AKU_WITH_BOX2D
 		AKUBox2DAppInitialize ();
 	#endif
 
 	#if AKU_WITH_CHIPMUNK
 		AKUChipmunkAppInitialize ();
+	#endif
+
+	#if AKU_WITH_COCOALUMBERJACK
+		AKUCocoaLumberjackAppInitialize ();
+	#endif
+
+	#if AKU_WITH_CRASHLYTICS
+		AKUCrashlyticsAppInitialize ();
 	#endif
 
 	#if AKU_WITH_CRYPTO
@@ -94,6 +149,10 @@ void AKUModulesAppInitialize () {
 		AKUFmodExAppInitialize ();
 	#endif
 
+	#if AKU_WITH_FMOD_STUDIO
+		AKUFmodStudioAppInitialize ();
+	#endif
+
 	#if AKU_WITH_HARNESS
 		AKUHarnessAppInitialize ();
 	#endif
@@ -106,8 +165,28 @@ void AKUModulesAppInitialize () {
 		AKUHttpServerAppInitialize ();
 	#endif
 
+	#if AKU_WITH_HOCKEYAPP
+		AKUHockeyAppAppInitialize ();
+	#endif
+
 	#if AKU_WITH_LUAEXT
 		AKULuaExtAppInitialize ();
+	#endif
+
+	#if AKU_WITH_MIXPANEL
+		AKUMixpanelAppInitialize ();
+	#endif
+	
+	#if AKU_WITH_NSLOGGER
+		AKUNSLoggerAppInitialize ();
+	#endif
+	
+	#if AKU_WITH_OMNITURE
+		AKUOmnitureAppInitialize ();
+	#endif
+		
+	#if AKU_WITH_PLUMZI
+		AKUPlumziAppInitialize ();
 	#endif
 
 	#if AKU_WITH_SIM
@@ -136,12 +215,28 @@ void AKUModulesAppInitialize () {
 //----------------------------------------------------------------//
 void AKUModulesContextInitialize () {
 
+	#if AKU_WITH_AUDIOSAMPLER
+		AKUAudioSamplerContextInitialize ();
+	#endif
+	
+	#if AKU_WITH_BILLING
+		AKUBillingContextInitialize ();
+	#endif
+
 	#if AKU_WITH_BOX2D
 		AKUBox2DContextInitialize ();
 	#endif
 
 	#if AKU_WITH_CHIPMUNK
 		AKUChipmunkContextInitialize ();
+	#endif
+
+	#if AKU_WITH_COCOALUMBERJACK
+		AKUCocoaLumberjackContextInitialize ();
+	#endif
+
+	#if AKU_WITH_CRASHLYTICS
+		AKUCrashlyticsContextInitialize ();
 	#endif
 
 	#if AKU_WITH_CRYPTO
@@ -156,6 +251,10 @@ void AKUModulesContextInitialize () {
 		AKUFmodExContextInitialize ();
 	#endif
 
+	#if AKU_WITH_FMOD_STUDIO
+		AKUFmodStudioContextInitialize ();
+	#endif
+
 	#if AKU_WITH_HARNESS
 		AKUHarnessContextInitialize ();
 	#endif
@@ -168,8 +267,28 @@ void AKUModulesContextInitialize () {
 		AKUHttpServerContextInitialize ();
 	#endif
 
+	#if AKU_WITH_HOCKEYAPP
+		AKUHockeyAppContextInitialize ();
+	#endif
+
 	#if AKU_WITH_LUAEXT
 		AKULuaExtContextInitialize ();
+	#endif
+
+	#if AKU_WITH_MIXPANEL
+		AKUMixpanelContextInitialize ();
+	#endif
+	
+	#if AKU_WITH_NSLOGGER
+		AKUNSLoggerContextInitialize ();
+	#endif
+		
+	#if AKU_WITH_OMNITURE
+		AKUOmnitureContextInitialize ();
+	#endif
+		
+	#if AKU_WITH_PLUMZI
+		AKUPlumziContextInitialize ();
 	#endif
 
 	#if AKU_WITH_SIM
@@ -204,6 +323,7 @@ void AKUModulesPause ( bool pause ) {
 	
 	#if AKU_WITH_UNTZ
 		AKUUntzPause ( pause );
+	
 	#endif
 }
 
@@ -217,9 +337,13 @@ void AKUModulesUpdate () {
 	#if AKU_WITH_FMOD_DESIGNER
 		AKUFmodDesignerUpdate ();
 	#endif
-
+	
 	#if AKU_WITH_FMOD_EX
 		AKUFmodExUpdate ();
+	#endif
+	
+	#if AKU_WITH_FMOD_STUDIO
+		AKUFmodStudioUpdate ();
 	#endif
 
 	#if AKU_WITH_HARNESS

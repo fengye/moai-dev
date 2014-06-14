@@ -183,6 +183,24 @@ void MOAIImage::LoadPng ( void* pngParam, void* pngInfoParam, u32 transform ) {
 					png_read_row ( png, ( png_bytep )row, 0 );
 				}
 			}
+
+			// <-Plumzi Addition
+			#ifdef MACOSX
+				
+				// TODO: why just on MACOSX? this should be a feature and should be set from Lua. should be
+				// part of the image transforms available on loading.
+				
+				// Color correction of the PNGs for proper color matching on OSX
+				// between a video encoded in the sRGB colorspace and a PNG (which is sRGB by default apparently)
+				// correcting the gamma & desaturating a bit brings the rendering close enough
+				// those are totally empirical values based on my eye
+				for ( u32 y = 0; y < height; ++y ) {
+					void* row = this->GetRowAddr ( y );
+					ZLColor::GammaCorrection ( row, this->mColorFormat, width, 1.15f );
+					ZLColor::Desaturate ( row, this->mColorFormat, width, 0.1f );
+				}
+			#endif
+			// Plumzi Addition ->
 			
 			if ( transform & MOAIImageTransform::PREMULTIPLY_ALPHA ) {
 				for ( u32 y = 0; y < height; ++y ) {

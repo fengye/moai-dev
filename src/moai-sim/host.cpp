@@ -9,6 +9,12 @@
 // aku
 //================================================================//
 
+// TODO: this needs to be in the context; not safe to use globals here
+// <-Plumzi Addition
+static bool			gHasOpaqueBackground = true;
+static bool			gReadyToShow	= false;
+// ->
+
 //----------------------------------------------------------------//
 void AKUSimAppFinalize () {
 }
@@ -77,7 +83,6 @@ void AKUSimContextInitialize () {
 	REGISTER_LUA_CLASS ( MOAIJoystickSensor )
 	REGISTER_LUA_CLASS ( MOAIKeyboardSensor )
 	REGISTER_LUA_CLASS ( MOAILayer )
-	REGISTER_LUA_CLASS ( MOAIPinTransform )
 	//REGISTER_LUA_CLASS ( MOAILayoutFrame )
 	REGISTER_LUA_CLASS ( MOAILocationSensor )
 	REGISTER_LUA_CLASS ( MOAIMesh )
@@ -93,6 +98,7 @@ void AKUSimContextInitialize () {
 	REGISTER_LUA_CLASS ( MOAIPartition )
 	REGISTER_LUA_CLASS ( MOAIPathFinder )
 	REGISTER_LUA_CLASS ( MOAIPathTerrainDeck )
+	REGISTER_LUA_CLASS ( MOAIPinTransform )
 	REGISTER_LUA_CLASS ( MOAIPointerSensor )
 	//REGISTER_LUA_CLASS ( MOAIProfilerReportBox )
 	REGISTER_LUA_CLASS ( MOAIRenderMgr )
@@ -222,6 +228,54 @@ void AKUEnqueueWheelEvent ( int deviceID, int sensorID, float value ) {
 	MOAIInputMgr::Get ().EnqueueWheelEvent (( u8 )deviceID, ( u8 )sensorID, value );
 }
 
+// <-Plumzi Addition
+//----------------------------------------------------------------//
+void AKUSetHasOpaqueBackground ( bool hasOpaqueBackground ) {
+	
+	gHasOpaqueBackground = hasOpaqueBackground;
+}
+
+//----------------------------------------------------------------//
+bool AKUHasOpaqueBackground () {
+	
+	return gHasOpaqueBackground;
+}
+
+//----------------------------------------------------------------//
+void AKUSetDeviceName ( const char* deviceName) {
+	
+	MOAIEnvironment::Get ().SetValue ( MOAI_ENV_devName, deviceName );
+}
+
+//----------------------------------------------------------------//
+double AKUGetSimStepMultiplier () {
+
+	return MOAISim::Get ().GetStepMultiplier ();
+}
+
+//----------------------------------------------------------------//
+bool AKUGetNetworkActivity () {
+
+	return MOAISim::Get ().GetNetworkActivity ();
+}
+
+//----------------------------------------------------------------//
+void AKUSetReadyToShow ( bool isReadyToShow ) {
+	gReadyToShow = isReadyToShow;
+}
+
+//----------------------------------------------------------------//
+bool AKUGetReadyToShow () {
+	return gReadyToShow;
+}
+
+//-----------------------------------------------------------------//
+void AKUSetFrameBuffer ( int frameBuffer ) {
+	MOAIGfxDevice::Get ().GetDefaultBuffer ()->SetGLFrameBufferID (frameBuffer);
+}
+
+// ->
+
 //----------------------------------------------------------------//
 double AKUGetSimStep () {
 
@@ -252,12 +306,6 @@ void AKURender () {
 }
 
 //----------------------------------------------------------------//
-void AKUSetFunc_HideCursor ( AKUHideCursorFunc func ) {
-
-	MOAISim::Get ().SetHideCursorFunc ( func );
-}
-
-//----------------------------------------------------------------//
 void AKUReserveInputDevices ( int total ) {
 
 	MOAIInputMgr::Get ().ReserveDevices (( u8 )total );
@@ -282,6 +330,12 @@ void AKUSetFunc_ExitFullscreenMode ( AKUExitFullscreenModeFunc func ) {
 }
 
 //----------------------------------------------------------------//
+void AKUSetFunc_HideCursor ( AKUHideCursorFunc func ) {
+
+	MOAISim::Get ().SetHideCursorFunc ( func );
+}
+
+//----------------------------------------------------------------//
 void AKUSetFunc_OpenWindow ( AKUOpenWindowFunc func ) {
 
 	MOAISim::Get ().SetOpenWindowFunc ( func );
@@ -294,6 +348,12 @@ void AKUSetFunc_SetSimStep ( AKUSetSimStepFunc func ) {
 }
 
 //----------------------------------------------------------------//
+void AKUSetFunc_ShowCursor ( AKUShowCursorFunc func ) {
+
+	MOAISim::Get ().SetShowCursorFunc ( func );
+}
+
+//----------------------------------------------------------------//
 void AKUSetInputConfigurationName ( char const* name ) {
 
 	MOAIInputMgr::Get ().SetConfigurationName ( name );
@@ -303,12 +363,6 @@ void AKUSetInputConfigurationName ( char const* name ) {
 void AKUSetInputDevice ( int deviceID, char const* name ) {
 
 	MOAIInputMgr::Get ().SetDevice (( u8 )deviceID, name );
-}
-
-//----------------------------------------------------------------//
-void AKUSetInputDeviceHardwareInfo ( int deviceID, char const* hardwareInfo ) {
-
-	MOAIInputMgr::Get ().SetDeviceHardwareInfo (( u8 )deviceID, hardwareInfo );
 }
 
 //----------------------------------------------------------------//
@@ -327,6 +381,12 @@ void AKUSetInputDeviceButton ( int deviceID, int sensorID, char const* name ) {
 void AKUSetInputDeviceCompass ( int deviceID, int sensorID, char const* name ) {
 
 	MOAIInputMgr::Get ().SetSensor (( u8 )deviceID, ( u8 )sensorID, name, MOAISensor::COMPASS );
+}
+
+//----------------------------------------------------------------//
+void AKUSetInputDeviceHardwareInfo ( int deviceID, char const* hardwareInfo ) {
+
+	MOAIInputMgr::Get ().SetDeviceHardwareInfo (( u8 )deviceID, hardwareInfo );
 }
 
 //----------------------------------------------------------------//
@@ -421,12 +481,6 @@ void AKUSetViewSize ( int width, int height ) {
 			state.DebugCall ( 2, 0 );
 		}
 	}
-}
-
-//----------------------------------------------------------------//
-void AKUSetFunc_ShowCursor ( AKUShowCursorFunc func ) {
-
-	MOAISim::Get ().SetShowCursorFunc ( func );
 }
 
 //----------------------------------------------------------------//

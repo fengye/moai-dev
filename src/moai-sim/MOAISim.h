@@ -89,6 +89,11 @@ private:
 	
 	double			mSimDuration;
 	
+	// <-Plumzi Addition
+	double			mLastComputedFrameRate;	// TODO: where/how is this used?
+	bool			mNetworkActivity;			// TODO: where/how is this used?
+	// ->
+	
 	EnterFullscreenModeFunc		mEnterFullscreenModeFunc;
 	ExitFullscreenModeFunc		mExitFullscreenModeFunc;
 	OpenWindowFunc				mOpenWindowFunc;
@@ -136,6 +141,10 @@ private:
 	static int		_showCursor					( lua_State* L );
 	static int		_timeToFrames				( lua_State* L );
 
+	// <-Plumzi Addition
+	static int		_frameRate					( lua_State* L );
+	// ->
+
 	//----------------------------------------------------------------//
 	#ifdef DOXYGEN
 		static int		_clearRenderStack		( lua_State* L );
@@ -174,6 +183,11 @@ public:
 	GET ( u32, StepCount, mStepCount )
 	GET ( float, FrameRate, mFrameRate )
 	
+	// <-Plumzi Addition
+	GET ( double, StepMultiplier, mStepMultiplier )
+	GET ( bool, NetworkActivity, mNetworkActivity)
+	// ->
+
 	GET_SET ( EnterFullscreenModeFunc, EnterFullscreenModeFunc, mEnterFullscreenModeFunc );
 	GET_SET ( ExitFullscreenModeFunc, ExitFullscreenModeFunc, mExitFullscreenModeFunc );
 	GET_SET ( HideCursorFunc, HideCursorFunc, mHideCursorFunc );
@@ -201,6 +215,7 @@ public:
 	void			Resume						();
 	void			SendFinalizeEvent			();
 	void			SetStep						( double step );
+	void			SetReadyToShow				( bool readyToShow );
 	void			Update						();
 };
 

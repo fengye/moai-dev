@@ -39,6 +39,11 @@ namespace ZLColor {
 	u32				ReadRGBA			( const void* stream, Format format );
 	ZLColorVec		Set					( u32 c0 );
 	void			WriteRGBA			( void* stream, u32 color, Format format );
+
+	// <-Plumzi Addition - gamma correction
+	void			GammaCorrection		( void* colors, Format format, u32 nColors, float gamma );
+	void			Desaturate			( void* colors, Format format, u32 nColors, float K );
+	// Plumzi Addition ->
 };
 
 //================================================================//

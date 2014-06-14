@@ -6,6 +6,6 @@
 
 //----------------------------------------------------------------//
 int		GlutHost				( int argc, char** arg );
-void	GlutRefreshContext		(int argc, char** argv);
+void	GlutRefreshContext		();
 
 #endif

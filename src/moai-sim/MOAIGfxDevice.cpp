@@ -196,6 +196,22 @@ int MOAIGfxDevice::_setPointSize ( lua_State* L ) {
 	return 0;
 }
 
+//----------------------------------------------------------------//
+/**	@name	release
+
+	@in		release textures scheduled to be released
+	@out	nil
+ */
+// TODO: rename this to something more descriptive?
+int MOAIGfxDevice::_release ( lua_State* L ) {
+
+	MOAILuaState state ( L );
+
+	MOAIGfxDevice::Get ().ProcessDeleters ();
+	zglFlush ();
+	return 0;
+}
+
 //================================================================//
 // MOAIGfxDevice
 //================================================================//
@@ -646,6 +662,7 @@ void MOAIGfxDevice::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "setPenColor",				_setPenColor },
 		{ "setPenWidth",				_setPenWidth },
 		{ "setPointSize",				_setPointSize },
+		{ "release",					_release },
 		{ NULL, NULL }
 	};
 
@@ -1339,7 +1356,7 @@ void MOAIGfxDevice::SetViewRect ( ZLRect rect ) {
 	u32 h = ( u32 )( deviceRect.Height () + 0.5f );
 	
 	zglViewport ( x, y, w, h );
-	
+
 	this->mViewRect = rect;
 	this->mShaderDirty = true;
 }
@@ -1691,4 +1708,3 @@ void MOAIGfxDevice::WriteQuad ( const ZLVec2D* vtx, const ZLVec2D* uv, float xOf
 	
 	this->TransformAndWriteQuad ( vtxBuffer, uvBuffer );
 }
-

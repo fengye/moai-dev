@@ -7,16 +7,16 @@
 #include <lua.h>
 #include <host-glut/GlutHost.h>
 #include <moai-core/host.h>
-
 #include <string.h>
+
 #include <host-modules/aku_modules.h>
 
 #ifdef FREEGLUT_STATIC
 #include <GL/freeglut.h>
+
 #else
 #include <GLUT/glut.h>
 #endif
-
 #if LUA_VERSION_NUM >= 502
 	#ifdef MOAI_WITH_LUAEXT
 		#undef MOAI_WITH_LUAEXT
@@ -26,16 +26,28 @@
 
 #define UNUSED(p) (( void )p)
 
+
 #ifdef _WIN32
+	#include <glut.h>
 	#if MOAI_WITH_FOLDER_WATCHER
 		#include <FolderWatcher-win.h>
+	#endif
+#else
+	#ifdef MOAI_OS_LINUX
+	  	#include <GL/glut.h>
+	#else
+		// <-Plumzi Addition
+		#include <PZGLUT/glut.h>
+		#import <AppKit/AppKit.h>
+		// Plumzi Addition ->
+		//#include <GLUT/glut.h>
 	#endif
 #endif
 
 #ifdef __APPLE__
 
 	#include <OpenGL/OpenGL.h>
-
+	
 	#if MOAI_WITH_FOLDER_WATCHER
 		#include <FolderWatcher-mac.h>
 	#endif
@@ -100,7 +112,7 @@ static void _onKeyDown ( unsigned char key, int x, int y ) {
 	( void )y;
 
 	_updateModifiers ();
-
+	
 	AKUEnqueueKeyboardEvent ( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::KEYBOARD, key, true );
 }
 
@@ -110,7 +122,7 @@ static void _onKeyUp ( unsigned char key, int x, int y ) {
 	( void )y;
 
 	_updateModifiers ();
-
+	
 	AKUEnqueueKeyboardEvent ( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::KEYBOARD, key, false );
 }
 
@@ -118,13 +130,13 @@ static void _onKeyUp ( unsigned char key, int x, int y ) {
 static void _onSpecialFunc ( int key, int x, int y ) {
 	( void )x;
 	( void )y;
-
+	
 	_updateModifiers ();
 
 	if ( key == GLUT_KEY_F1 ) {
-
+	
 		static bool toggle = true;
-
+		
 		if ( toggle ) {
 			AKUReleaseGfxContext ();
 		}
@@ -133,9 +145,9 @@ static void _onSpecialFunc ( int key, int x, int y ) {
 		}
 		toggle = !toggle;
 	}
-
+	
 	if ( key == GLUT_KEY_F2 ) {
-
+	
 		AKUSoftReleaseGfxResources ( 0 );
 	}
 }
@@ -145,8 +157,12 @@ static void _onMouseButton ( int button, int state, int x, int y ) {
 	( void )x;
 	( void )y;
 
+	// <-Plumzi Addition
+	// sets the pointer coordinates on OSX so that clicks work the first time we click on something
+	AKUEnqueuePointerEvent ( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::POINTER, x, y );
+	// Plumzi Addition ->
 	_updateModifiers ();
-
+	
 	switch ( button ) {
 		case GLUT_LEFT_BUTTON:
 			AKUEnqueueButtonEvent ( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::MOUSE_LEFT, ( state == GLUT_DOWN ));
@@ -172,8 +188,10 @@ static void _onMouseMove ( int x, int y ) {
 	AKUEnqueuePointerEvent ( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::POINTER, x, y );
 }
 
+#ifdef FREEGLUT_STATIC
 //----------------------------------------------------------------//
 static void _onMultiButton( int touch_id, int x, int y, int button, int state ) {
+	UNUSED(button);
 	AKUEnqueueTouchEvent (
 		GlutInputDeviceID::DEVICE,
 		GlutInputDeviceSensorID::TOUCH,
@@ -196,9 +214,10 @@ static void _onMultiMotion( int touch_id, int x, int y ) {
 	);
 }
 
+#endif
 //----------------------------------------------------------------//
 static void _onPaint () {
-
+	
 	AKURender ();
 	glutSwapBuffers ();
 }
@@ -207,10 +226,10 @@ static void _onPaint () {
 static void _onReshape( int w, int h ) {
 
 	if ( sExitFullscreen ) {
-
+	
 		w = sWinWidth;
 		h = sWinHeight;
-
+		
 		sExitFullscreen = false;
 	}
 
@@ -225,10 +244,9 @@ static void _onTimer ( int millisec ) {
 	double fSimStep = AKUGetSimStep ();
 	int timerInterval = ( int )( fSimStep * 1000.0 );
 	glutTimerFunc ( timerInterval, _onTimer, timerInterval );
-
-
+	
 	AKUModulesUpdate ();
-
+	
 	glutPostRedisplay ();
 }
 
@@ -238,6 +256,8 @@ static void _onTimer ( int millisec ) {
 
 void	_AKUEnterFullscreenModeFunc		();
 void	_AKUExitFullscreenModeFunc		();
+void	_AKUShowCursor 					();
+void	_AKUHideCursor 					();
 void	_AKUOpenWindowFunc				( const char* title, int width, int height );
 
 //----------------------------------------------------------------//
@@ -273,22 +293,22 @@ void _AKUHideCursor () {
 
 //----------------------------------------------------------------//
 void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
-
+	
 	sWinX = 180;
 	sWinY = 100;
 	sWinWidth = width;
 	sWinHeight = height;
-
+	
 	sWinWidth = width;
 	sWinHeight = height;
-
+	
 	if ( !sHasWindow ) {
 		glutInitDisplayMode ( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
 		glutInitWindowSize ( sWinWidth, sWinHeight );
 		glutInitWindowPosition ( sWinX, sWinY );
 		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE))
-		{
-		    exit(1);
+		{ 
+		    exit(1); 
 		}
 		glutCreateWindow ( title );
 		sHasWindow = true;
@@ -311,10 +331,10 @@ void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 		
 		glutPassiveMotionFunc ( _onMouseMove );
     #endif
-
+	
 	glutDisplayFunc ( _onPaint );
 	glutReshapeFunc ( _onReshape );
-
+	
 	AKUDetectGfxContext ();
 	AKUSetScreenSize ( width, height );
 
@@ -322,10 +342,31 @@ void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 	GLint sync = 1;
 	CGLContextObj ctx = CGLGetCurrentContext();
 	CGLSetParameter (ctx, kCGLCPSwapInterval, &sync);
+	// <-Plumzi Addition
+	NSApplication* app = [NSApplication sharedApplication];
+	// retrieve the first window - it's the GLUT / openGL one
+	NSWindow *glWindow = [app.windows objectAtIndex:0];
+	NSPoint origin = glWindow.frame.origin;
+	NSRect contentRect = [glWindow.contentView frame];
+	// create a new window that will hold the video as borderless
+	NSWindow *videoWindow = [[NSWindow alloc] initWithContentRect: contentRect
+														 styleMask: NSBorderlessWindowMask
+														   backing:NSBackingStoreBuffered defer:NO];
+	// the video is black by default
+	[videoWindow setBackgroundColor:[NSColor blackColor]];
+	// set the video window a child of the glWindow, and place it below
+	// that the parent/child will link the position of the child to the parent's
+	// but the child will be below the parent
+	[glWindow addChildWindow:videoWindow ordered:NSWindowBelow];
+	
+	// set the origin of the video window to match the content of the openGL one
+	NSRect rect = NSMakeRect(origin.x, origin.y, contentRect.size.width, contentRect.size.height);
+	[videoWindow setFrame:rect display:YES];
+	// disable the shadow so that the titlebar doesn't display the shadow over the video
+	[glWindow setHasShadow:NO];
+	// Plumzi Addition ->
 #endif
 }
-
-
 
 //================================================================//
 // GlutHost
@@ -333,12 +374,10 @@ void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 
 //----------------------------------------------------------------//
 static void _cleanup () {
-
-
-
+	
 	AKUModulesAppFinalize ();
 	AKUAppFinalize ();
-
+	
   // if ( sDynamicallyReevaluateLuaFiles ) {
   //  #ifdef _WIN32
   //    winhostext_CleanUp ();
@@ -370,10 +409,10 @@ int GlutHost ( int argc, char** argv ) {
 
 	glutInit ( &argc, argv );
 
-	GlutRefreshContext ( argc, argv);
+	GlutRefreshContext ();
 
- AKUModulesParseArgs ( argc, argv );
-
+ 	AKUModulesParseArgs ( argc, argv );
+	
 	if ( sHasWindow ) {
 		glutTimerFunc ( 0, _onTimer, 0 );
 		glutMainLoop ();
@@ -381,21 +420,20 @@ int GlutHost ( int argc, char** argv ) {
 	return 0;
 }
 
-void GlutRefreshContext (int argc, char** argv) {
+void GlutRefreshContext () {
 
     AKUAppInitialize ();
 	AKUModulesAppInitialize ();
-
 	AKUCreateContext ();
-
-    AKUModulesContextInitialize ();
+	
+	AKUModulesContextInitialize ();
 	AKUModulesRunLuaAPIWrapper ();
 
 	AKUSetInputConfigurationName ( "AKUGlut" );
 
 	AKUReserveInputDevices			( GlutInputDeviceID::TOTAL );
 	AKUSetInputDevice				( GlutInputDeviceID::DEVICE, "device" );
-
+	
 	AKUReserveInputDeviceSensors	( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::TOTAL );
 	AKUSetInputDeviceKeyboard		( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::KEYBOARD,		"keyboard" );
 	AKUSetInputDevicePointer		( GlutInputDeviceID::DEVICE, GlutInputDeviceSensorID::POINTER,		"pointer" );
@@ -409,6 +447,7 @@ void GlutRefreshContext (int argc, char** argv) {
 	AKUSetFunc_HideCursor ( _AKUHideCursor );
 	AKUSetFunc_OpenWindow ( _AKUOpenWindowFunc );
 
-   
-
+	// <-Plumzi Addition
+	AKUSetDeviceName([[[NSHost currentHost] localizedName] UTF8String]);
+	// ->
 }

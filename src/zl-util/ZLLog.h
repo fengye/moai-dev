@@ -13,14 +13,14 @@ public:
 
 	static void* CONSOLE;
 
-	typedef void ( *LogFunc )( void* file, cc8* format, va_list args, void* userdata );
+	typedef void ( *LogFunc )( void* file, u32 level, cc8* tag, cc8* format, va_list args, void* userdata );
 	static LogFunc sLogFunc;
 	
 	static void* sLogFuncUserdata;
 
 	//----------------------------------------------------------------//
-	static void	LogF		( void* file, cc8* format, ... );
-	static void	LogV		( void* file, cc8* format, va_list args );
+	static void	LogF		( void* file, u32 level, cc8* tag, cc8* format, ... );
+	static void	LogV		( void* file, u32 level, cc8* tag, cc8* format, va_list args );
 	static void SetLogFunc	( LogFunc logFunc, void* userdata );
 };
 

@@ -45,7 +45,7 @@ int MOAIFileSystem::_checkFileExists ( lua_State* L ) {
 	MOAILuaState state ( L );
 	
 	cc8* filename = state.GetValue < cc8* >( 1, "" );
-	bool result = ZLFileSys::CheckFileExists ( filename );
+	bool result = ZLFileSys::CheckFileExists ( filename, true );
 	
 	lua_pushboolean ( state, result );
 	return 1;

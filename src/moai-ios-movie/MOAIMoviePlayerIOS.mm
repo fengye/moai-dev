@@ -34,13 +34,28 @@ int MOAIMoviePlayerIOS::_init ( lua_State* L ) {
 
 	MOAIMoviePlayerIOS::Get ().Reset ();
 
-	MOAIMoviePlayerIOS::Get ().mMoviePlayer = [[ MPMoviePlayerController alloc ] initWithContentURL:[ NSURL URLWithString:url ]];
+// <-Plumzi changes, allow local urls
+	NSURL *URL;
+	if ([url hasPrefix:@"http"]) {
+		URL = [NSURL URLWithString:url];
+	} else {
+		// assume local, in bundle for now
+		NSString *resource = [[NSBundle mainBundle] pathForResource:url ofType:nil];
+		if (resource) {
+			URL = [NSURL fileURLWithPath:resource];
+		} else {
+			return 0;
+		}
+	}
+	
+	MOAIMoviePlayerIOS::Get ().mMoviePlayer = [[ MPMoviePlayerController alloc ] initWithContentURL:URL];
+// ->
 	
 	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setShouldAutoplay:NO ];
 	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setFullscreen:YES ];
 	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setControlStyle:MPMovieControlStyleNone ];
 	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setScalingMode:MPMovieScalingModeAspectFit ];      
-	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setUseApplicationAudioSession:NO ];
+//	[ MOAIMoviePlayerIOS::Get ().mMoviePlayer setUseApplicationAudioSession:NO ];
 
 	[[ NSNotificationCenter defaultCenter ] addObserver:MOAIMoviePlayerIOS::Get ().mPlaybackDelegate selector:@selector( videoLoadedCallback: ) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:MOAIMoviePlayerIOS::Get ().mMoviePlayer];
 
@@ -70,8 +85,9 @@ int MOAIMoviePlayerIOS::_play ( lua_State* L ) {
 		[[ UIApplication sharedApplication ] setStatusBarOrientation:MOAIMoviePlayerIOS::Get ().mLastOrientation ];
 	}
 
-	[[[ UIApplication sharedApplication ] keyWindow ] addSubview:MOAIMoviePlayerIOS::Get ().mMoviePlayer.view ];
-	[[[ UIApplication sharedApplication ] keyWindow ] bringSubviewToFront:MOAIMoviePlayerIOS::Get ().mMoviePlayer.view ];
+	[[[ UIApplication sharedApplication ] keyWindow ] insertSubview:MOAIMoviePlayerIOS::Get ().mMoviePlayer.view atIndex:0];
+//	[[[ UIApplication sharedApplication ] keyWindow ] addSubview:MOAIMoviePlayerIOS::Get ().mMoviePlayer.view ];
+//	[[[ UIApplication sharedApplication ] keyWindow ] bringSubviewToFront:MOAIMoviePlayerIOS::Get ().mMoviePlayer.view ];
 
 //	[[ NSNotificationCenter defaultCenter ] addObserver:MOAIMoviePlayerIOS::Get ().mPlaybackDelegate selector:@selector( deviceOrientationChanged: ) name:UIDeviceOrientationDidChangeNotification object:nil ];
 //	[[ UIDevice currentDevice ] beginGeneratingDeviceOrientationNotifications ];

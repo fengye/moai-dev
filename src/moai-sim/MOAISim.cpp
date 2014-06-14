@@ -566,6 +566,21 @@ int MOAISim::_timeToFrames ( lua_State* L ) {
 	return 1;
 }
 
+// <-Plumzi Addition
+//----------------------------------------------------------------//
+/**	@name	frameRate
+	@text	returns the last computed framerate
+ 
+	@out	number framerate		The number of frame per second
+ */
+int MOAISim::_frameRate ( lua_State* L ) {
+	
+	MOAISim& device = MOAISim::Get ();
+	lua_pushnumber ( L, device.mLastComputedFrameRate ); // TODO: when is this computed?
+	return 1;
+}
+// ->
+
 //================================================================//
 // DOXYGEN
 //================================================================//
@@ -637,6 +652,8 @@ MOAISim::MOAISim () :
 	mCpuBudget ( DEFAULT_CPU_BUDGET ),
 	mStepMultiplier ( DEFAULT_STEP_MULTIPLIER ),
 	mTimerError ( 0.0 ),
+	mLastComputedFrameRate ( 0.0 ),
+	mNetworkActivity ( false ),
 	mSimDuration ( 1.0 / 60.0 ),
 	mEnterFullscreenModeFunc ( 0 ),
 	mExitFullscreenModeFunc ( 0 ),
@@ -645,7 +662,7 @@ MOAISim::MOAISim () :
 	mShowCursorFunc ( 0 ),
 	mHideCursorFunc ( 0 ),
 	mGCActive ( true ),
-	mGCStep ( 0 ),
+	mGCStep ( 0 ), // TODO: default this to something reasonable
 	mForceGC ( false ) {
 	
 	RTTI_SINGLE ( MOAIGlobalEventSource )
@@ -768,6 +785,9 @@ void MOAISim::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "setTraceback",				_setTraceback },
 		{ "showCursor",					_showCursor },
 		{ "timeToFrames",				_timeToFrames },
+		// <-Plumzi Addition
+		{ "frameRate",					_frameRate },
+		// ->
 		{ NULL, NULL }
 	};
 

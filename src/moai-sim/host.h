@@ -19,6 +19,7 @@ typedef void ( *AKUEnterFullscreenModeFunc )	();
 typedef void ( *AKUExitFullscreenModeFunc )		();
 typedef void ( *AKUHideCursorFunc )				();
 typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height );
+typedef void ( *AKUReadyToShowFunc )			();
 typedef void ( *AKUSetSimStepFunc )				( double step );
 typedef void ( *AKUShowCursorFunc )				();
 
@@ -47,16 +48,26 @@ AKU_API void			AKUSetFunc_ShowCursor			( AKUShowCursorFunc func );
 AKU_API void			AKUSetFunc_HideCursor			( AKUHideCursorFunc func );
 AKU_API void			AKUSetFunc_OpenWindow			( AKUOpenWindowFunc func );
 AKU_API void			AKUSetFunc_SetSimStep			( AKUSetSimStepFunc func );
+AKU_API void			AKUSetFunc_ReadyToShow			( AKUReadyToShowFunc func );
+
+// <-Plumzi Addition
+AKU_API void			AKUSetHasOpaqueBackground		( bool hasOpaqueBackground );
+AKU_API bool			AKUHasOpaqueBackground			();
+AKU_API void			AKUSetDeviceName				( const char* deviceName);
+AKU_API double			AKUGetSimStepMultiplier			();
+AKU_API bool			AKUGetNetworkActivity			();
+AKU_API void            AKUSetFrameBuffer               (int frameBuffer);
+// ->
 
 // input device api
 AKU_API void			AKUReserveInputDevices			( int total );
 AKU_API void			AKUReserveInputDeviceSensors	( int deviceID, int total );
 AKU_API void			AKUSetInputConfigurationName	( char const* name );
 AKU_API void			AKUSetInputDevice				( int deviceID, char const* name );
-AKU_API void			AKUSetInputDeviceHardwareInfo	( int deviceID, char const* hardwareInfo );
 AKU_API void			AKUSetInputDeviceActive			( int deviceID, bool active );
 AKU_API void			AKUSetInputDeviceButton			( int deviceID, int sensorID, char const* name );
 AKU_API void			AKUSetInputDeviceCompass		( int deviceID, int sensorID, char const* name );
+AKU_API void			AKUSetInputDeviceHardwareInfo	( int deviceID, char const* hardwareInfo );
 AKU_API void			AKUSetInputDeviceKeyboard		( int deviceID, int sensorID, char const* name );
 AKU_API void			AKUSetInputDeviceJoystick		( int deviceID, int sensorID, char const* name );
 AKU_API void			AKUSetInputDeviceLevel			( int deviceID, int sensorID, char const* name );

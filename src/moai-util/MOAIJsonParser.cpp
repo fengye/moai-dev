@@ -4,6 +4,7 @@
 #include "pch.h"
 #include <math.h>
 #include <moai-util/MOAIJsonParser.h>
+#include <moai-core/MOAILogMessages.h>
 
 SUPPRESS_EMPTY_FILE_WARNING
 #if MOAI_WITH_JANSSON
@@ -212,6 +213,8 @@ int MOAIJsonParser::_decode ( lua_State* L ) {
 			json_decref ( json );
 			return 1;
 		}
+		
+		MOAIPrint( MOAILogMgr::LOG_ERROR, "MOAIJsonParser", "Bad json: %s (txt=%s, line=%d, colum=%d, pos=%d)", error.text, error.source, error.line, error.column, error.position);
 	}
 	return 0;
 }

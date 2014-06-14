@@ -120,7 +120,6 @@ extern int					zl_vprintf				( const char* format, va_list arg );
     extern off_t            zl_ftello               ( ZLFILE* fp);	
 #endif
 
-
 #ifdef MOAI_COMPILER_MSVC
 	extern errno_t	 		zl_fopen_s 				( ZLFILE** fp, const char* filename, const char* mode );
 	extern int				zl_fseeki64				( ZLFILE* fp, __int64 offset, int origin );

@@ -21,9 +21,18 @@ bool ZLFileSys::AffirmPath ( cc8* path ) {
 }
 
 //----------------------------------------------------------------//
-bool ZLFileSys::CheckFileExists ( cc8* path ) {
+bool ZLFileSys::CheckFileExists ( cc8* path, bool allowRemap  ) {
 	//printf ( "CheckFileExists %s\n", path );
 	zl_stat fileStat;
+	
+	std::string remappedFilename;
+	if ( allowRemap ) {
+
+		if ( ZLVfsFileSystem::Get ().CheckFileRemapping ( path, remappedFilename ) ) {
+			path = remappedFilename.c_str ();
+		}
+		//printf ( "remapped path %s\n", path );
+	}
 	
 	if ( ZLFileSys::GetFileStat ( path, fileStat )) {
 		return ( fileStat.mExists != 0 && fileStat.mIsDir == 0 );
@@ -150,7 +159,14 @@ STLString ZLFileSys::GetAbsoluteDirPath ( cc8* path ) {
 }
 
 //----------------------------------------------------------------//
-STLString ZLFileSys::GetAbsoluteFilePath ( cc8* path ) {
+STLString ZLFileSys::GetAbsoluteFilePath ( cc8* path, bool allowRemap ) {
+	
+	string remappedFilename;
+	if ( allowRemap ) {
+		if ( ZLVfsFileSystem::Get ().CheckFileRemapping ( path, remappedFilename ) ) {
+			path = remappedFilename.c_str ();
+		}
+	}
 
 	return ZLVfsFileSystem::Get ().GetAbsoluteFilePath ( path );
 }

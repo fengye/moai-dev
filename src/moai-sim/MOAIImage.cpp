@@ -9,8 +9,7 @@
 
 #include <moai-sim/MOAIImage.h>
 #include <moai-sim/MOAIGfxDevice.h>
-
-#define DEFAULT_ELLIPSE_STEPS 64
+#include <moai-sim/MOAIPvrHeader.h>
 
 //================================================================//
 // local
@@ -1618,6 +1617,22 @@ void MOAIImage::Load ( ZLStream& stream, u32 transform ) {
 			this->LoadJpg ( stream, transform );
 		#endif
 	}
+	// <- Plumzi Addition
+	else if ( MOAIImage::IsPVR ( stream )) {
+		#if MOAI_WITH_LIBPVR
+			this->LoadPVR ( stream, transform );
+		#endif
+	}
+	// ->
+}
+
+bool MOAIImage::IsPVR ( ZLStream& stream ) {
+	// only decode PVR if MOAI doesn't support it natively (IOS)
+	MOAIPvrHeader header;
+	header.Load ( stream );
+	
+	// get file data, check if PVR
+	return header.IsValid ();
 }
 
 //----------------------------------------------------------------//
