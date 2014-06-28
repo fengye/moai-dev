@@ -15,10 +15,6 @@
 #include <moai-core/headers.h>
 #include <moai-core/host.h>
 #include <moai-sim/headers.h>
-#include <moai-sim/host.h>
-#include <moai-util/host.h>
-#include <moai-http-client/host.h>
-#include <moai-luaext/host.h>
 
 //================================================================//
 // Input event locking queue
@@ -234,23 +230,9 @@
 	}
 
 	//----------------------------------------------------------------//
-	extern "C" void Java_com_ziplinegames_moai_Moai_AKULuaExtContextInitialize ( JNIEnv* env, jclass obj ) {
-
-		AKULuaExtContextInitialize ();
-	}
-
-	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUFinalize	( JNIEnv* env, jclass obj ) {
-		AKUModulesAppFinalize ();
-		AKUAppFinalize ();
-	}
-
-	//----------------------------------------------------------------//
-	extern "C" void Java_com_ziplinegames_moai_Moai_AKUFMODExInit ( JNIEnv* env, jclass obj ) {
-
-#ifdef USE_FMOD
-		AKUFmodExInit ();
-#endif
+        AKUModulesAppFinalize();
+        AKUAppFinalize ();
 	}
 
 	//----------------------------------------------------------------//
@@ -271,67 +253,84 @@
 		MOAIKeyboardAndroid::Affirm ();
 		REGISTER_LUA_CLASS ( MOAIKeyboardAndroid );
 
-		AKUModulesAppInitialize();
+		#ifndef DISABLE_ADCOLONY
+			MOAIAdColonyAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIAdColonyAndroid );
+		#endif
 
-#ifndef DISABLE_ADCOLONY
-		MOAIAdColonyAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIAdColonyAndroid );
-#endif
+		#ifndef DISABLE_BILLING
+			MOAIBillingAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIBillingAndroid );
+		#endif
 
-#ifndef DISABLE_BILLING
-		MOAIBillingAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIBillingAndroid );
-#endif
+		#ifndef DISABLE_CHARTBOOST
+			MOAIChartBoostAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIChartBoostAndroid );
+		#endif
 
-#ifndef DISABLE_CHARTBOOST
-		MOAIChartBoostAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIChartBoostAndroid );
-#endif
+		#ifndef DISABLE_CRITTERCISM
+			MOAICrittercismAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAICrittercismAndroid );
+		#endif
 
-#ifndef DISABLE_CRITTERCISM
-		MOAICrittercismAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAICrittercismAndroid );
-#endif
+		#ifndef DISABLE_FACEBOOK
+			MOAIFacebookAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIFacebookAndroid );
+		#endif
 
-#ifndef DISABLE_FACEBOOK
-		MOAIFacebookAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIFacebookAndroid );
-#endif
+		#ifndef DISABLE_FLURRY
+			MOAIFlurryAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIFlurryAndroid );
+		#endif
 
-#ifndef DISABLE_FLURRY
-		MOAIFlurryAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIFlurryAndroid );
-#endif
+		#ifndef DISABLE_NOTIFICATIONS
+			MOAINotificationsAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAINotificationsAndroid );
+		#endif
 
-#ifndef DISABLE_NOTIFICATIONS
-		MOAINotificationsAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAINotificationsAndroid );
-#endif
+		#ifndef DISABLE_TAPJOY
+			MOAITapjoyAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAITapjoyAndroid );
+		#endif
 
-#ifndef DISABLE_TAPJOY
-		MOAITapjoyAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAITapjoyAndroid );
-#endif
+		#ifndef DISABLE_TWITTER
+			MOAITwitterAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAITwitterAndroid );
+		#endif
 
-#ifndef DISABLE_TWITTER
-		MOAITwitterAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAITwitterAndroid );
-#endif
+		#ifndef DISABLE_TSTOREWALL
+			MOAITstoreWallAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAITstoreWallAndroid );
+		#endif
 
-#ifndef DISABLE_TSTOREWALL
-		MOAITstoreWallAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAITstoreWallAndroid );
-#endif
-
-#ifndef DISABLE_TSTOREGAMECENTER
-		MOAITstoreWallAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAITstoreGamecenterAndroid );
-#endif
-
-		AKUModulesRunLuaAPIWrapper();
+		#ifndef DISABLE_TSTOREGAMECENTER
+			MOAITstoreWallAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAITstoreGamecenterAndroid );
+		#endif
+	
+		#ifndef DISABLE_PLAYSERVICES
+			MOAIGooglePlayServicesAndroid::Affirm ();
+			REGISTER_LUA_CLASS ( MOAIGooglePlayServicesAndroid );
+		#endif
 
 		inputQueue = new LockingQueue < InputEvent > ();
 	}
+	
+	//----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUAppInitialize ( JNIEnv* env, jclass obj ) {
+		AKUAppInitialize();
+		AKUModulesAppInitialize();
+	}	
+
+	//----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUModulesContextInitialize ( JNIEnv* env, jclass obj ) {
+        AKUModulesContextInitialize ();
+    }
+
+    //----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUModulesRunLuaAPIWrapper ( JNIEnv* env, jclass obj ) {
+        AKUModulesRunLuaAPIWrapper ();
+    }
 
 	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUMountVirtualDirectory ( JNIEnv* env, jclass obj, jstring jvirtualPath, jstring jarchive ) {
@@ -348,8 +347,11 @@
 	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUPause ( JNIEnv* env, jclass obj, jboolean paused ) {
 
-		AKUPause ( paused );
-
+		if (paused) {
+			AKUModulesPause ();
+		} else {
+			AKUModulesResume ();
+		}
 	}
 
 	//----------------------------------------------------------------//
@@ -380,9 +382,8 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKURunScript ( JNIEnv* env, jclass obj, jstring jfilename ) {
 
 		JNI_GET_CSTRING ( jfilename, filename );
-
-		AKURunScript ( filename );
-
+		AKULoadFuncFromFile ( filename );
+		AKUCallFunc ();
 		JNI_RELEASE_CSTRING ( jfilename, filename );
 	}
 
@@ -448,9 +449,15 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetDocumentDirectory ( JNIEnv* env, jclass obj, jstring jpath ) {
 
 		JNI_GET_CSTRING ( jpath, path );
-
 		MOAIEnvironment::Get ().SetValue ( MOAI_ENV_documentDirectory,	path );
+		JNI_RELEASE_CSTRING ( jpath, path );
+	}
 
+	//----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetCacheDirectory ( JNIEnv* env, jclass obj, jstring jpath ) {
+		
+		JNI_GET_CSTRING ( jpath, path );
+		MOAIEnvironment::Get ().SetValue ( MOAI_ENV_cacheDirectory,	path );
 		JNI_RELEASE_CSTRING ( jpath, path );
 	}
 
@@ -458,9 +465,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputConfigurationName ( JNIEnv* env, jclass obj, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputConfigurationName ( name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -468,9 +473,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputDevice ( JNIEnv* env, jclass obj, jint deviceId, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputDevice ( deviceId, name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -478,9 +481,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputDeviceCompass ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputDeviceCompass ( deviceId, sensorId, name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -488,9 +489,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputDeviceLevel ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputDeviceLevel ( deviceId, sensorId, name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -498,9 +497,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputDeviceLocation ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputDeviceLocation ( deviceId, sensorId, name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -508,9 +505,7 @@
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetInputDeviceTouch ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jstring jname ) {
 
 		JNI_GET_CSTRING ( jname, name );
-
 		AKUSetInputDeviceTouch ( deviceId, sensorId, name );
-
 		JNI_RELEASE_CSTRING ( jname, name );
 	}
 
@@ -544,7 +539,7 @@
 	}
 
 	//----------------------------------------------------------------//
-	extern "C" void Java_com_ziplinegames_moai_Moai_AKUUpdate ( JNIEnv* env, jclass obj ) {
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUModulesUpdate ( JNIEnv* env, jclass obj ) {
 
 		InputEvent ievent;
 		while ( inputQueue->Pop ( ievent )) {
@@ -566,10 +561,12 @@
 			}
 		}
 
-		AKUUpdate ();
+		AKUModulesUpdate ();
 	}
 
+	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUSetDeviceLocale ( JNIEnv* env, jclass obj, jstring jlangCode, jstring jcountryCode ) {
+	
 		JNI_GET_CSTRING ( jlangCode, langCode );
 		JNI_GET_CSTRING ( jcountryCode, countryCode );
 
