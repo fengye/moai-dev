@@ -47,6 +47,7 @@ public:
 	bool			GetFieldWithType		( int idx, int key, int type );
 	static cc8*		GetLuaTypeName			( int type );
 	void*			GetPtrUserData			( int idx );
+	STLString		GetStackDump			();
 	STLString		GetStackTrace			( int level );
 	int				GetTop					();
 	void*			GetUserData				( int idx, void* value );
@@ -69,6 +70,8 @@ public:
 	void			Pop						( int n );
 	bool			PrepMemberFunc			( int idx, cc8* name );
 	bool			PrintErrors				( FILE* file, int status );
+	void			PrintStackDump			();
+	void			PrintStackDump			( FILE* file );
 	void			PrintStackTrace			( FILE* file, int level );
 	void			Push					();
 	void			Push					( bool value );
@@ -79,7 +82,6 @@ public:
 	void			Push					( u16 value );
 	void			Push					( u32 value );
 	void			Push					( u64 value );
-	void			Push					( size_t value );
 	void			Push					( lua_CFunction value );
 	void			Push					( MOAILuaObject* luaObject );
 	void			Push					( MOAILuaRef& ref );

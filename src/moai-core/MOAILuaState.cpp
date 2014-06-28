@@ -411,6 +411,58 @@ void* MOAILuaState::GetPtrUserData ( int idx ) {
 }
 
 //----------------------------------------------------------------//
+STLString MOAILuaState::GetStackDump () {
+	STLString out;
+	int top = GetTop ();
+	out.write ( "Lua stack: %d element(s)", top );
+
+	for ( int index = top; index >= 1; index-- ) {
+		int type = lua_type ( this->mState, index );
+
+		// Print index and type
+		int relativeIndex = index - top - 1;
+		out.write ( "\n[ %d | %d ] = %s", index, relativeIndex, GetLuaTypeName ( type ) );
+
+		// Print value, if possible
+		switch ( type ) {
+		case LUA_TBOOLEAN:
+			// boolean
+			out.write ( ": %s", lua_toboolean ( this->mState, index ) ? "true" : "false" );
+			break;
+		case LUA_TNUMBER:
+			// number
+			out.write ( ": %g", lua_tonumber ( this->mState, index ) );
+			break;
+		case LUA_TSTRING:
+			// string
+			out.write ( ": \"%s\"", lua_tostring ( this->mState, index ) );
+			break;
+		case LUA_TUSERDATA:
+			// userdata
+		{
+			// Moai uses userdata exclusively for pointers to MOAILuaObject instances.
+			// This code will most likely crash if it encounters userdata that is used differently.
+			MOAILuaObject* luaObject = ( MOAILuaObject* )this->GetPtrUserData ( index );
+			if ( luaObject ) {
+				out.write ( ": %s at %p", luaObject->TypeName (), luaObject );
+			}
+			break;
+		}
+		case LUA_TLIGHTUSERDATA:
+		case LUA_TTABLE:
+		case LUA_TFUNCTION:
+		case LUA_TTHREAD:
+			// anything with an address
+			out.write ( " at %p", lua_topointer ( this->mState, index ) );
+			break;
+		}
+	}
+
+	out.write("\n");
+	return out;
+}
+
+//----------------------------------------------------------------//
 STLString MOAILuaState::GetStackTrace ( int level ) {
 
 	int firstpart = 1;  /* still before eventual `...' */
@@ -792,8 +844,19 @@ bool MOAILuaState::PrintErrors ( FILE* file, int status ) {
 }
 
 //----------------------------------------------------------------//
-void MOAILuaState::PrintStackTrace ( FILE* file, int level ) {
+void MOAILuaState::PrintStackDump () {
+	STLString stackDump = this->GetStackDump ();
+	ZLLog::LogF ( ZLLog::CONSOLE, stackDump );
+}
 
+//----------------------------------------------------------------//
+void MOAILuaState::PrintStackDump ( FILE* file  ) {
+	STLString stackDump = this->GetStackDump ();
+	ZLLog::LogF ( file, stackDump );
+}
+
+//----------------------------------------------------------------//
+void MOAILuaState::PrintStackTrace ( FILE* file, int level ) {
 	STLString stackTrace = this->GetStackTrace ( level );
 	ZLLog::LogF ( file, stackTrace.str ());
 }
@@ -848,13 +911,6 @@ void MOAILuaState::Push ( u32 value ) {
 
 //----------------------------------------------------------------//
 void MOAILuaState::Push ( u64 value ) {
-
-	// TODO: check for overflow
-	lua_pushnumber ( this->mState, ( double )value );
-}
-
-//----------------------------------------------------------------//
-void MOAILuaState::Push ( size_t value ) {
 
 	// TODO: check for overflow
 	lua_pushnumber ( this->mState, ( double )value );

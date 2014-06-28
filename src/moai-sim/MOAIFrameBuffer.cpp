@@ -113,9 +113,7 @@ void MOAIClearableView::ClearSurface () {
 		);
 	}
 
-	if ( this->mClearFlags ) {
-		zglClear ( this->mClearFlags );
-	}
+	MOAIGfxDevice::Get ().ClearSurface ( this->mClearFlags );
 }
 
 //----------------------------------------------------------------//
@@ -172,7 +170,7 @@ void MOAIClearableView::SetClearColor ( MOAIColor* color ) {
 	@text	Returns the number of draw calls last frame.	
 
 	@in		MOAIFrameBuffer self
-	@out	number count Number of underlying graphics "draw" calls last frame.	
+	@out	number count			Number of underlying graphics "draw" calls last frame.
 */	
 int MOAIFrameBuffer::_getPerformanceDrawCount ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFrameBuffer, "U" )
@@ -289,8 +287,8 @@ MOAIFrameBuffer::MOAIFrameBuffer () :
 	mLandscape ( false ),
 	mGLFrameBufferID ( 0 ),
 	mGrabNextFrame ( false ),
-	mLastDrawCount( 0 ),
-	mRenderCounter ( 0 ) {
+	mRenderCounter ( 0 ),
+	mLastDrawCount ( 0 ) {
 	
 	RTTI_BEGIN
 		RTTI_EXTEND ( MOAIClearableView )
@@ -366,7 +364,6 @@ void MOAIFrameBuffer::Render () {
 void MOAIFrameBuffer::RenderTable ( MOAILuaState& state, int idx ) {
 
 	MOAIRenderMgr& renderMgr = MOAIRenderMgr::Get ();
-
 	idx = state.AbsIndex ( idx );
 
 	int n = 1;

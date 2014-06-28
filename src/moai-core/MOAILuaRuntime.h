@@ -4,7 +4,7 @@
 #ifndef MOAILUARUNTIME_H
 #define MOAILUARUNTIME_H
 
-#include <moai-core/MOAIEventSource.h>
+//#include <moai-core/MOAIEventSource.h>
 #include <moai-core/MOAIGlobals.h>
 
 #include <moai-core/MOAILuaClass.h>

@@ -58,7 +58,7 @@ void MOAIFacet::OnDetach ( MOAIProp& prop ) {
 /**	@name	getBounds
 	@text	Return the prop's local bounds or 'nil' if prop bounds is
 			global or missing. The bounds are in model space and will
-			be overidden by the prop's bounds if it's been set (using
+			be overridden by the prop's bounds if it's been set (using
 			setBounds ())
 	
 	@in		MOAIProp self
@@ -86,6 +86,23 @@ int MOAIProp::_getBounds ( lua_State* L ) {
 	state.Push ( bounds.mMax.mZ );
 
 	return 6;
+}
+
+//----------------------------------------------------------------//
+/**	@name	getDeck
+	@text	Get the deck.
+               
+	@in		MOAIProp self
+	@out	MOAIDeck deck
+*/
+int MOAIProp::_getDeck ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAIProp, "U" )
+
+	if ( self->mDeck ) {
+		self->mDeck->PushLuaUserdata ( state );
+		return 1;
+	}
+	return 0;
 }
 
 //----------------------------------------------------------------//
@@ -714,6 +731,8 @@ bool MOAIProp::Inside ( ZLVec3D vec, float pad ) {
 	
 	bounds.Bless ();
 	bounds.Inflate ( pad );
+    if ( pad != 0 ) bounds.Bless ();
+    
 	return bounds.Contains ( vec );
 }
 
@@ -807,6 +826,7 @@ void MOAIProp::RegisterLuaFuncs ( MOAILuaState& state ) {
 
 	luaL_Reg regTable [] = {
 		{ "getBounds",				_getBounds },
+		{ "getDeck",				_getDeck },
 		{ "getDims",				_getDims },
 		{ "getFacet",				_getFacet },
 		{ "getGrid",				_getGrid },

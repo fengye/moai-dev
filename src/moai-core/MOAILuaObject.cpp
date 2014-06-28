@@ -5,6 +5,7 @@
 #include <moai-core/MOAIDeserializer.h>
 #include <moai-core/MOAILua.h>
 #include <moai-core/MOAISerializer.h>
+#include <moai-core/MOAILuaState-impl.h>
 
 #define FINALIZE_FUNC_NAME "finalize"
 
@@ -309,7 +310,8 @@ MOAILuaObject::~MOAILuaObject () {
 		
 		MOAILuaRuntime::Get ().DeregisterObject ( *this );
 		
-		if ( this->mUserdata ) {
+		// TODO: change from both patrick's fork and the community branch; double check
+		if (( !this->mCollected ) && this->mUserdata ) {
 			MOAIScopedLuaState state = MOAILuaRuntime::Get ().State ();
 			
 			// clear out the gc

@@ -94,6 +94,7 @@ private:
 	
 	//----------------------------------------------------------------//
 	static int			_getBounds					( lua_State* L );
+	static int			_getDeck					( lua_State* L );
 	static int			_getDims					( lua_State* L );
 	static int			_getFacet					( lua_State* L );
 	static int			_getGrid					( lua_State* L );

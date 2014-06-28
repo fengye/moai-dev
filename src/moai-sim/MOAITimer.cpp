@@ -11,10 +11,16 @@
 //================================================================//
 
 //----------------------------------------------------------------//
+/**	@name	getSpeed
+	@text	Return the playback speed.
+
+	@in		MOAITimer self
+	@out	number speed
+*/
 int MOAITimer::_getSpeed ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAITimer, "U" )
 
-	lua_pushnumber ( L, self->mSpeed );
+	state.Push ( self->mSpeed );
 	return 1;
 }
 
