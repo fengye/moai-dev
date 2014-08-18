@@ -2,7 +2,6 @@
 #define	ZL_GFX_PCH_H
 
 #include <moai_config.h>
-#include <zl-common/zl_platform.h>
-#include <zl-common/zl_types.h>
+#include <zl-util/headers.h>
 
 #endif

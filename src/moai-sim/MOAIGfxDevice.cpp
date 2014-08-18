@@ -338,29 +338,6 @@ void MOAIGfxDevice::DrawPrims () {
 }
 
 //----------------------------------------------------------------//
-//void MOAIGfxDevice::DrawPrims ( const MOAIVertexFormat& format, GLenum primType, void* buffer, void* indices, u32 size ) {
-//
-//	if ( !( buffer && size )) return;
-//
-//	this->SetVertexFormat ();
-//	
-//	// draw the prims
-//	u32 nVerts = ( u32 )( size / format.GetVertexSize ());
-//	if ( nVerts ) {
-//		
-//		format.Bind ( buffer );
-//
-//		if ( indices ) {
-//			glDrawElements ( primType, nVerts, GL_UNSIGNED_SHORT, indices );
-//		}
-//		else {
-//			glDrawArrays ( primType, 0, nVerts );
-//		}
-//		format.Unbind ();
-//	}
-//}
-
-//----------------------------------------------------------------//
 void MOAIGfxDevice::EndPrim () {
 
 	if ( this->mPrimSize ) {

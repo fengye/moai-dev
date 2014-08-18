@@ -1,8 +1,8 @@
 // Copyright (c) 2010-2011 Zipline Games, Inc. All Rights Reserved.
 // http://getmoai.com
 
-#ifndef ZLLSCORE_H
-#define ZLLSCORE_H
+#ifndef ZL_UTIL_HEADERS_H
+#define ZL_UTIL_HEADERS_H
 
 #include <zl-util/pch.h>
 
