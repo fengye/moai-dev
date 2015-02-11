@@ -7,6 +7,7 @@ SUPPRESS_EMPTY_FILE_WARNING
 #if MOAI_WITH_LIBPNG
 
 #include <moai-sim/MOAIImageFormatPng.h>
+#include "MOAITextureBase.h"
 
 #include <png.h>
 
@@ -79,15 +80,18 @@ MOAIImageFormatPng::~MOAIImageFormatPng () {
 bool MOAIImageFormatPng::ReadImage ( MOAIImage& image, ZLStream& stream, u32 transform ) {
 
 	png_structp png = png_create_read_struct ( PNG_LIBPNG_VER_STRING, 0, _pngError, 0 );
-	if ( !png ) return;
+	if ( !png ) return false;
 
+	bool ret = false;
 	png_infop pngInfo = png_create_info_struct ( png );
 	if ( pngInfo ) {
 		png_set_read_fn ( png, &stream, _pngRead );
 		this->ReadImagePng ( image, png, pngInfo, transform );
+		ret = true;
 	}
 
 	png_destroy_read_struct ( &png, &pngInfo, NULL );
+	return ret;
 }
 
 //----------------------------------------------------------------//

@@ -7,6 +7,7 @@ SUPPRESS_EMPTY_FILE_WARNING
 #if MOAI_WITH_LIBJPG
 
 #include <moai-sim/MOAIImageFormatJpg.h>
+#include "MOAITextureBase.h"
 
 extern "C" {
 	#include <jinclude.h>
@@ -140,6 +141,7 @@ bool MOAIImageFormatJpg::ReadImage ( MOAIImage& image, ZLStream& stream, u32 tra
 	
 	jpeg_finish_decompress ( &cinfo );
 	jpeg_destroy_decompress ( &cinfo );
+	return true;
 }
 
 //----------------------------------------------------------------//

@@ -229,6 +229,7 @@ void MOAITexture::Init ( const void* data, u32 size, u32 transform, cc8* debugna
 bool MOAITexture::LoadFromStream ( ZLStream& stream, u32 transform ) {
 
 	MOAIImageFormat* format = 0;
+	bool ret = false;
 		
 	format = MOAIImageFormatMgr::Get ().FindFormat ( stream );
 	if ( format ) {
@@ -248,6 +249,7 @@ bool MOAITexture::LoadFromStream ( ZLStream& stream, u32 transform ) {
 				
 				this->mWidth = textureInfo.mWidth;
 				this->mHeight = textureInfo.mHeight;
+				ret = true;
 			}
 			else {
 				free ( data );
@@ -262,12 +264,15 @@ bool MOAITexture::LoadFromStream ( ZLStream& stream, u32 transform ) {
 				this->mImage.Set ( *this, image );
 				this->mWidth = image->GetWidth ();
 				this->mHeight = image->GetHeight ();
+				ret = true;
 			}
 			else {
 				delete image;
 			}
 		}
 	}
+
+	return ret;
 }
 
 //----------------------------------------------------------------//
