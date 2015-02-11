@@ -94,7 +94,7 @@ int MOAITransformBase::_getWorldScl ( lua_State* L ) {
 /**	@lua	modelToWorld
 	@text	Transform a point in model space to world space.
 	
-	@in		MOAITransform self
+	@in		MOAITransformBase self
 	@opt	number x			Default value is 0.
 	@opt	number y			Default value is 0.
 	@opt	number z			Default value is 0.
@@ -116,6 +116,37 @@ int MOAITransformBase::_modelToWorld ( lua_State* L ) {
 	lua_pushnumber ( state, loc.mX );
 	lua_pushnumber ( state, loc.mY );
 	lua_pushnumber ( state, loc.mZ );
+
+	return 3;
+}
+
+
+//----------------------------------------------------------------//
+/**	@name	modelToWorldVec
+	@text	Transform a vector in model space to world space.
+	
+	@in		MOAITransformBase self
+	@opt	number x			Default value is 0.
+	@opt	number y			Default value is 0.
+	@opt	number z			Default value is 0.
+	@out	number x
+	@out	number y
+	@out	number z
+*/
+int MOAITransformBase::_modelToWorldVec ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAITransformBase, "U" )
+
+	ZLVec3D vec;
+	vec.mX = state.GetValue < float >( 2, 0.0f );
+	vec.mY = state.GetValue < float >( 3, 0.0f );
+	vec.mZ = state.GetValue < float >( 4, 0.0f );
+
+	ZLAffine3D modelToWorld = self->GetLocalToWorldMtx ();
+	modelToWorld.TransformVec ( vec );
+
+	lua_pushnumber ( state, vec.mX );
+	lua_pushnumber ( state, vec.mY );
+	lua_pushnumber ( state, vec.mZ );
 
 	return 3;
 }
@@ -144,7 +175,7 @@ int MOAITransformBase::_setParent ( lua_State* L ) {
 /**	@lua	worldToModel
 	@text	Transform a point in world space to model space.
 	
-	@in		MOAITransform self
+	@in		MOAITransformBase self
 	@opt	number x			Default value is 0.
 	@opt	number y			Default value is 0.
 	@opt	number z			Default value is 0.
@@ -170,6 +201,36 @@ int MOAITransformBase::_worldToModel ( lua_State* L ) {
 	return 3;
 }
 
+
+//----------------------------------------------------------------//
+/**	@name	worldToModelVec
+	@text	Transform a vector in world space to model space.
+	
+	@in		MOAITransformBase self
+	@opt	number x			Default value is 0.
+	@opt	number y			Default value is 0.
+	@opt	number z			Default value is 0.
+	@out	number x
+	@out	number y
+	@out	number z
+*/
+int MOAITransformBase::_worldToModelVec ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAITransformBase, "U" )
+
+	ZLVec3D vec;
+	vec.mX = state.GetValue < float >( 2, 0.0f );
+	vec.mY = state.GetValue < float >( 3, 0.0f );
+	vec.mZ = state.GetValue < float >( 4, 0.0f );
+
+	ZLAffine3D worldToModel = self->GetWorldToLocalMtx ();
+	worldToModel.TransformVec ( vec );
+
+	lua_pushnumber ( state, vec.mX );
+	lua_pushnumber ( state, vec.mY );
+	lua_pushnumber ( state, vec.mZ );
+
+	return 3;
+}
 //================================================================//
 // MOAITransformBase
 //================================================================//
@@ -328,13 +389,15 @@ void MOAITransformBase::RegisterLuaFuncs ( MOAILuaState& state ) {
 	MOAINode::RegisterLuaFuncs ( state );
 	
 	luaL_Reg regTable [] = {
-		{ "getWorldDir",		_getWorldDir },
-		{ "getWorldLoc",		_getWorldLoc },
-		{ "getWorldRot",		_getWorldRot },
-		{ "getWorldScl",		_getWorldScl },
-		{ "modelToWorld",		_modelToWorld },
-		{ "setParent",			_setParent },
-		{ "worldToModel",		_worldToModel },
+		{ "getWorldDir",			_getWorldDir },
+		{ "getWorldLoc",			_getWorldLoc },
+		{ "getWorldRot",			_getWorldRot },
+		{ "getWorldScl",			_getWorldScl },
+		{ "modelToWorld",			_modelToWorld },
+		{ "modelToWorldVec",	_modelToWorldVec },
+		{ "setParent",				_setParent },
+		{ "worldToModel",			_worldToModel },
+		{ "worldToModelVec",	_worldToModelVec },
 		{ NULL, NULL }
 	};
 	

@@ -22,6 +22,7 @@ target_link_libraries ( moai-luaext
 	moai-core
   luasocket
   luafilesystem
+  lpeg
 )
 
 if (MOAI_CURL) 

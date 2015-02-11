@@ -243,6 +243,22 @@ int MOAIParticleScript::_add ( lua_State* L ) {
 	IMPL_LUA_PARTICLE_OP ( ADD, "RVV" )
 }
 
+
+//----------------------------------------------------------------//
+/**	@name	age
+	@text	age of particle, in second
+	
+	@in		MOAIParticleScript self
+	@in		number r0
+	@in		number v0
+	@in		number v1
+	@out	nil
+*/
+int MOAIParticleScript::_age ( lua_State* L ) {
+	IMPL_LUA_PARTICLE_OP ( AGE, "RVV" )
+}
+
+
 //----------------------------------------------------------------//
 /**	@lua	angleVec
 	@text	Load two registers with the X and Y components of a unit
@@ -418,22 +434,6 @@ int MOAIParticleScript::_packLiveReg ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
-/**	@lua	packReg
-	@text	Pack a register index into a particle script param.
-	
-	@in		number regIdx		Register index to pack.
-	@out	number packed		The packed value.
-*/
-int MOAIParticleScript::_packReg ( lua_State* L ) {
-	MOAILuaState state ( L );
-
-	u8 val = state.GetValue < u8 >( 1, 0 ) + MOAIParticle::TOTAL_PARTICLE_REG - 1;
-	state.Push ( Pack64 ( val, PARAM_TYPE_PARTICLE_REG ));
-
-	return 1;
-}
-
-//----------------------------------------------------------------//
 /**	@lua	rand
 	@text	Load a register with a random number from a range.
 	
@@ -515,6 +515,20 @@ int MOAIParticleScript::_setLiveReg ( lua_State* L ) {
  */
 int MOAIParticleScript::_sin ( lua_State* L ) {
 	IMPL_LUA_PARTICLE_OP ( SIN, "RV" )
+}
+
+
+//----------------------------------------------------------------//
+/**	@name	sign
+ @text	if v0 > 0 then r0 =1; elseif v0 < 0 then r0 = -1; else r0 = 0
+ 
+ @in		MOAIParticleScript self
+ @in		number r0
+ @in		number v0
+ @out	nil
+ */
+int MOAIParticleScript::_sign ( lua_State* L ) {
+	IMPL_LUA_PARTICLE_OP ( SIGN, "RV" )
 }
 
 //----------------------------------------------------------------//
@@ -700,13 +714,18 @@ void MOAIParticleScript::PushSprite ( MOAIParticleSystem& system, float* registe
 
 	AKUParticleSprite sprite;
 
-	sprite.mXLoc		= registers [ SPRITE_X_LOC ];
-	sprite.mYLoc		= registers [ SPRITE_Y_LOC ];
-	
-	sprite.mZRot		= registers [ SPRITE_ROT ];
-	
-	sprite.mXScl		= registers [ SPRITE_X_SCL ];
-	sprite.mYScl		= registers [ SPRITE_Y_SCL ];
+ 
+ 	sprite.mXLoc		= registers [ SPRITE_X_LOC ];
+ 	sprite.mYLoc		= registers [ SPRITE_Y_LOC ];
+	sprite.mZLoc		= registers [ SPRITE_Z_LOC ];
+
+	sprite.mXRot		= registers [ SPRITE_X_ROT ];
+	sprite.mYRot		= registers [ SPRITE_Y_ROT ];
+	sprite.mZRot		= registers [ SPRITE_Z_ROT ];
+ 	
+ 	sprite.mXScl		= registers [ SPRITE_X_SCL ];
+ 	sprite.mYScl		= registers [ SPRITE_Y_SCL ];
+	sprite.mZScl		= registers [ SPRITE_Z_SCL ];
 	
 	float opacity		= registers [ SPRITE_OPACITY ];
 	float glow			= 1.0f - registers [ SPRITE_GLOW ];
@@ -726,14 +745,21 @@ void MOAIParticleScript::RegisterLuaClass ( MOAILuaState& state ) {
 
 	state.SetField ( -1, "PARTICLE_X",			Pack64 ( MOAIParticle::PARTICLE_X, PARAM_TYPE_PARTICLE_REG ));
 	state.SetField ( -1, "PARTICLE_Y",			Pack64 ( MOAIParticle::PARTICLE_Y, PARAM_TYPE_PARTICLE_REG ));
+	state.SetField ( -1, "PARTICLE_Z",			Pack64 ( MOAIParticle::PARTICLE_Z, PARAM_TYPE_PARTICLE_REG ));
 	state.SetField ( -1, "PARTICLE_DX",			Pack64 ( MOAIParticle::PARTICLE_DX, PARAM_TYPE_PARTICLE_REG ));
 	state.SetField ( -1, "PARTICLE_DY",			Pack64 ( MOAIParticle::PARTICLE_DY, PARAM_TYPE_PARTICLE_REG ));
+	state.SetField ( -1, "PARTICLE_DZ",			Pack64 ( MOAIParticle::PARTICLE_DZ, PARAM_TYPE_PARTICLE_REG ));
 
 	state.SetField ( -1, "SPRITE_X_LOC",		Pack64 ( SPRITE_X_LOC, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_Y_LOC",		Pack64 ( SPRITE_Y_LOC, PARAM_TYPE_SPRITE_REG ));
-	state.SetField ( -1, "SPRITE_ROT",			Pack64 ( SPRITE_ROT, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_Z_LOC",		Pack64 ( SPRITE_Z_LOC, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_X_ROT",			Pack64 ( SPRITE_X_ROT, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_Y_ROT",			Pack64 ( SPRITE_Y_ROT, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_Z_ROT",			Pack64 ( SPRITE_Z_ROT, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_X_SCL",		Pack64 ( SPRITE_X_SCL, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_Y_SCL",		Pack64 ( SPRITE_Y_SCL, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_Z_SCL",		Pack64 ( SPRITE_Z_SCL, PARAM_TYPE_SPRITE_REG ));
+	state.SetField ( -1, "SPRITE_ROT",			Pack64 ( SPRITE_Z_ROT, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_RED",			Pack64 ( SPRITE_RED, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_GREEN",		Pack64 ( SPRITE_GREEN, PARAM_TYPE_SPRITE_REG ));
 	state.SetField ( -1, "SPRITE_BLUE",			Pack64 ( SPRITE_BLUE, PARAM_TYPE_SPRITE_REG ));
@@ -744,7 +770,7 @@ void MOAIParticleScript::RegisterLuaClass ( MOAILuaState& state ) {
 	luaL_Reg regTable [] = {
 		{ "packConst",			_packConst },
 		{ "packLiveReg",		_packLiveReg },
-		{ "packReg",			_packReg },
+		{ "packReg",			_packLiveReg },
 		{ NULL, NULL }
 	};
 	
@@ -757,6 +783,7 @@ void MOAIParticleScript::RegisterLuaFuncs ( MOAILuaState& state ) {
 	luaL_Reg regTable [] = {
 		{ "abs",				_abs },
 		{ "add",				_add },
+		{ "age",				_age },
 		{ "angleVec",			_angleVec },
 		{ "color",				_color },
 		{ "cos",				_cos },
@@ -772,6 +799,7 @@ void MOAIParticleScript::RegisterLuaFuncs ( MOAILuaState& state ) {
 		{ "setLiveReg",			_setLiveReg },
 		{ "setReg",				_setLiveReg }, // TODO: mark as deprecated
 		{ "sin",				_sin },
+		{ "sign",				_sign },
 		{ "sprite",				_sprite },
 		{ "step",				_step },
 		{ "sub",				_sub },
@@ -790,9 +818,13 @@ void MOAIParticleScript::ResetRegisters ( float* spriteRegisters, float* particl
 
 	spriteRegisters [ SPRITE_X_LOC ]		= particleRegisters [ MOAIParticle::PARTICLE_X ];
 	spriteRegisters [ SPRITE_Y_LOC ]		= particleRegisters [ MOAIParticle::PARTICLE_Y ];
-	spriteRegisters [ SPRITE_ROT ]			= 0.0f;
+	spriteRegisters [ SPRITE_Z_LOC ]		= particleRegisters [ MOAIParticle::PARTICLE_Z ];
+	spriteRegisters [ SPRITE_X_ROT ]		= 0.0f;
+	spriteRegisters [ SPRITE_Y_ROT ]		= 0.0f;
+	spriteRegisters [ SPRITE_Z_ROT ]		= 0.0f;
 	spriteRegisters [ SPRITE_X_SCL ]		= 1.0f;
 	spriteRegisters [ SPRITE_Y_SCL ]		= 1.0f;
+	spriteRegisters [ SPRITE_Z_SCL ]		= 1.0f;
 	spriteRegisters [ SPRITE_RED ]			= system.mR;
 	spriteRegisters [ SPRITE_GREEN ]		= system.mG;
 	spriteRegisters [ SPRITE_BLUE ]			= system.mB;
@@ -846,6 +878,15 @@ void MOAIParticleScript::Run ( MOAIParticleSystem& system, MOAIParticle& particl
 				
 				if ( r0 ) {
 					*r0 = v0 + v1;
+				}
+				break;
+
+			case AGE: // RVV
+				
+				READ_ADDR	( r0, bytecode );
+				
+				if ( r0 ) {
+					*r0 = particle.mAge;
 				}
 				break;
 			
@@ -1021,6 +1062,23 @@ void MOAIParticleScript::Run ( MOAIParticleSystem& system, MOAIParticle& particl
 					*r0 = v0;
 				}
 				break;
+
+			case SIGN: // RV
+
+				READ_ADDR   ( r0, bytecode );
+				READ_VALUE  ( v0, bytecode );
+				
+				if ( r0 ) {
+					if( v0 > 0.0f ){
+						*r0 = 1.0f;
+					} else if( v0 < 0.0f ){
+						*r0 = -1.0f;
+					} else {
+						*r0 = 0.0f;
+					}
+				}
+				break;
+
 			case SIN: // RV
 
 				READ_ADDR   ( r0, bytecode );

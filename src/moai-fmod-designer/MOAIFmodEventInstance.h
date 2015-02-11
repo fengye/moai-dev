@@ -43,7 +43,11 @@ private:
 
     static int _getTime                ( lua_State* L );
     static int _getDominantFrequency   ( lua_State* L );
-    
+
+    static int _setSubChannelTime      ( lua_State* L );
+
+    static int _getDuration            ( lua_State* L );
+
     // music API    
     static int _getTempo               ( lua_State* L );
     static int _getBeatFraction        ( lua_State* L );

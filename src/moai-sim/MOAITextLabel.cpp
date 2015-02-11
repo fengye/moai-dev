@@ -155,6 +155,22 @@ int MOAITextLabel::_getText ( lua_State* L ) {
 	return 0;
 }
 
+
+//----------------------------------------------------------------//
+/**	@lua	getSpool
+	@text	Return the text string.
+
+	@in		MOAITextLabel self
+	@out	spool
+*/
+int MOAITextLabel::_getSpool ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAITextLabel, "U" )
+
+	state.Push( self->mSpool );
+	return 1;
+}
+
+
 //----------------------------------------------------------------//
 /**	@lua	getTextBounds
 	@text	Returns the bounding rectange of a given substring on a
@@ -726,7 +742,7 @@ void MOAITextLabel::Draw ( int subPrimID, float lod ) {
 	UNUSED ( subPrimID );
 	
 	if ( !this->IsVisible ( lod )) return;
-	if ( this->IsClear ()) return;
+	// if ( this->IsClear ()) return;
 	
 	if ( this->mReveal ) {
 		
@@ -758,7 +774,7 @@ void MOAITextLabel::DrawDebug ( int subPrimID, float lod ) {
 	MOAIGraphicsProp::DrawDebug ( subPrimID, lod );
 
 	if ( !this->IsVisible ( lod )) return;
-	if ( this->IsClear ()) return;
+	// if ( this->IsClear ()) return;
 
 	MOAIGfxDevice& gfxDevice = MOAIGfxDevice::Get ();
 	MOAIDebugLines& debugLines = MOAIDebugLines::Get ();
@@ -1037,6 +1053,7 @@ void MOAITextLabel::RegisterLuaFuncs ( MOAILuaState& state ) {
 		{ "setText",				_setText },
 		{ "setWordBreak",			_setWordBreak },
 		{ "setYFlip",				_setYFlip },
+		{ "getSpool",					_getSpool },
 		{ "spool",					_spool },
 		{ NULL, NULL }
 	};

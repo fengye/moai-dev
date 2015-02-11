@@ -9,6 +9,11 @@
 #include <zl-util/ZLStream.h>
 #include <stdio.h>
 
+#ifdef _MSC_VER
+#define va_copy(d,s) ((d) = (s))
+#else
+#endif
+
 //----------------------------------------------------------------//
 bool ZLStream::CheckCaps ( u32 flags ) {
 

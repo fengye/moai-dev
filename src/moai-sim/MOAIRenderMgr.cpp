@@ -187,7 +187,7 @@ void MOAIRenderMgr::Render () {
 
 	MOAIGfxDevice& device = MOAIGfxDevice::Get ();
 	device.ResetDrawCount ();
-
+	
 	if ( this->mBufferTable ) {
 		MOAIScopedLuaState state = MOAILuaRuntime::Get ().State ();
 		state.Push ( this->mBufferTable );
@@ -195,7 +195,7 @@ void MOAIRenderMgr::Render () {
 		state.Pop ( 1 );
 	}	
 	
-	device.GetDefaultBuffer ()->Render ();
+	// device.GetDefaultBuffer ()->Render ();
 	this->mLastDrawCount = MOAIGfxDevice::Get ().GetDrawCount ();
 	this->mRenderCounter++;
 	

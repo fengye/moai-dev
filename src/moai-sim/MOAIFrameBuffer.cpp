@@ -347,6 +347,7 @@ void MOAIFrameBuffer::Render () {
 	MOAIGfxDevice& gfxDevice = MOAIGfxDevice::Get ();
 	this->mLastDrawCount = gfxDevice.GetDrawCount ();
 
+	gfxDevice.ResetState ();
 	gfxDevice.SetFrameBuffer ( this );
 	
 	//disable scissor rect for clear
@@ -428,21 +429,21 @@ ZLRect MOAIFrameBuffer::WndRectToDevice ( ZLRect rect ) const {
 
 	rect.Bless ();
 
-	if ( this->mLandscape ) {
+	// if ( this->mLandscape ) {
 	
-		float width = ( float )this->mBufferWidth;
+	// 	float width = ( float )this->mBufferWidth;
 		
-		float xMin = rect.mYMin;
-		float yMin = width - rect.mXMax;
-		float xMax = rect.mYMax;
-		float yMax = width - rect.mXMin;
+	// 	float xMin = rect.mYMin;
+	// 	float yMin = width - rect.mXMax;
+	// 	float xMax = rect.mYMax;
+	// 	float yMax = width - rect.mXMin;
 		
-		rect.mXMin = xMin;
-		rect.mYMin = yMin;
-		rect.mXMax = xMax;
-		rect.mYMax = yMax;
-	}
-	else {
+	// 	rect.mXMin = xMin;
+	// 	rect.mYMin = yMin;
+	// 	rect.mXMax = xMax;
+	// 	rect.mYMax = yMax;
+	// }
+	// else {
 	
 		float height = ( float )this->mBufferHeight;
 		
@@ -455,7 +456,7 @@ ZLRect MOAIFrameBuffer::WndRectToDevice ( ZLRect rect ) const {
 		rect.mYMin = yMin;
 		rect.mXMax = xMax;
 		rect.mYMax = yMax;
-	}
+	// }
 
 	rect.Scale ( this->mBufferScale, this->mBufferScale );
 	return rect;

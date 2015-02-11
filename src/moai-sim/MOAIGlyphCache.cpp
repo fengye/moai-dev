@@ -6,7 +6,7 @@
 #include <moai-sim/MOAIGlyphCache.h>
 #include <moai-sim/MOAIFont.h>
 #include <moai-sim/MOAIImage.h>
-
+#include <moai-sim/MOAIFont.h>
 //================================================================//
 // MOAIGlyphCache
 //================================================================//

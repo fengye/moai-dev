@@ -74,7 +74,7 @@ public:
 		LOG_DEBUG,
 	};
 	
-	GET ( FILE*, File, mFile ? mFile : ZLLog::CONSOLE )
+	GET ( FILE*, File, mFile )
 	
 	//----------------------------------------------------------------//
 	void			CloseFile				();

@@ -47,6 +47,10 @@ project ( crypto )
         set ( PLATFORM_INCLUDE "include-iphone")
     endif ( BUILD_IOS)
 
+    if ( BUILD_HTML )
+         set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DOPENSSL_SYSNAME_LINUX"  )
+        set ( PLATFORM_INCLUDE "include-linux")
+    endif ( BUILD_HTML )
 
   
     set( CRYPTO_INCLUDES
@@ -54,6 +58,7 @@ project ( crypto )
         ${CRYPTO_INCLUDES}
     )
    
+
 
 
   set ( CRYPTO_SOURCES 

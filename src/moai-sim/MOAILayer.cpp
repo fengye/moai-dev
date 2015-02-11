@@ -627,7 +627,7 @@ void MOAILayer::Draw ( int subPrimID, float lod  ) {
 	renderMgr.SetCamera ( this->mCamera );
 	renderMgr.SetViewport ( this->mViewport );
 	
-	gfxDevice.ResetState ();
+	// gfxDevice.ResetState ();
 
 	// TODO:
 	ZLMatrix4x4 mtx;

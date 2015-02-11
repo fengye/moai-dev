@@ -248,6 +248,9 @@ int MOAIParticleSystem::_setComputeBounds ( lua_State* L ) {
 	return 0;
 }
 
+
+//----------------------------------------------------------------//
+
 //----------------------------------------------------------------//
 /**	@lua	setSpriteColor
 	@text	Set the color of the most recently added sprite.
@@ -390,20 +393,27 @@ void MOAIParticleSystem::Draw ( int subPrimID, float lod ) {
 		total = maxSprites;
 	}
 	
-	for ( u32 i = 0; i < total; ++i ) {
+	int k, step;
+	if ( this->mDrawOrder == ORDER_NORMAL ) {
+		k = total - 1;
+		step = -1;
+	} else {
+		k = 0;
+		step = 1;
+	}
 
-		u32 idx;
-		if ( this->mDrawOrder == ORDER_NORMAL ) {
-			idx = ( base + i ) % maxSprites;
-		}
-		else {
-			idx = ( base + ( total - 1 - i )) % maxSprites;
-		}
-				
+	for ( u32 i = 0; i < total; ++i ) {
+		
+		u32 idx = ( base + k ) % maxSprites;
+		k += step;
+
 		AKUParticleSprite& sprite = this->mSprites [ idx ];
 		gfxDevice.SetPenColor ( sprite.mRed, sprite.mGreen, sprite.mBlue, sprite.mAlpha );
 		
-		spriteMtx.ScRoTr ( sprite.mXScl, sprite.mYScl, 1.0f, 0.0f, 0.0f, sprite.mZRot * ( float )D2R, sprite.mXLoc, sprite.mYLoc, 0.0f );
+		spriteMtx.ScRoTr (
+			sprite.mXScl, sprite.mYScl, sprite.mZScl,
+			sprite.mXRot* ( float )D2R, sprite.mYRot* ( float )D2R, sprite.mZRot * ( float )D2R,
+			sprite.mXLoc, sprite.mYLoc, sprite.mZLoc );
 		
 		drawingMtx = this->GetLocalToWorldMtx ();
 		drawingMtx.Prepend ( spriteMtx );
@@ -579,6 +589,52 @@ bool MOAIParticleSystem::PushParticle ( float x, float y, float dx, float dy ) {
 	}
 	return false;
 }
+
+
+//----------------------------------------------------------------//
+bool MOAIParticleSystem::PushParticle ( float x, float y, float z, float dx, float dy, float dz ) {
+	
+	if (( !this->mFree ) && this->mCapParticles ) {
+		return false;
+	}
+	
+	MOAIParticleState* state = this->GetState ( 0 );
+	if ( !state ) return false;
+	
+	MOAIParticle* particle = 0;
+	
+	if ( this->mFree ) {
+		particle = this->mFree;
+		this->mFree = particle->mNext;
+	}
+	else if ( this->mHead ) {
+		particle = this->mHead;
+		this->mHead = particle->mNext;
+	}
+	
+	if ( particle ) {
+		
+		float* r = particle->mData;
+		
+		r [ MOAIParticle::PARTICLE_X ] = x;
+		r [ MOAIParticle::PARTICLE_Y ] = y;
+		r [ MOAIParticle::PARTICLE_Z ] = z;
+		r [ MOAIParticle::PARTICLE_DX ] = dx;
+		r [ MOAIParticle::PARTICLE_DY ] = dy;
+		r [ MOAIParticle::PARTICLE_DZ ] = dz;
+		
+		for ( u32 i = MOAIParticle::TOTAL_PARTICLE_REG; i < this->mParticleSize; ++i ) {
+			r [ i ] = 0.0f;
+		}
+		
+		state->InitParticle ( *this, *particle );
+		this->EnqueueParticle ( *particle );
+		
+		return true;
+	}
+	return false;
+}
+
 
 //----------------------------------------------------------------//
 bool MOAIParticleSystem::PushSprite ( const AKUParticleSprite& sprite ) {

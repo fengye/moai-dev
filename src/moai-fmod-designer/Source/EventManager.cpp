@@ -10,12 +10,17 @@
 #include "VoiceLRU.h"
 #include <algorithm>
 #include <cmath>
+#ifdef _WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
 
 using namespace FMODDesigner;
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
     #include <fmod_event_net.hpp>
-#endif
+// #endif
 
 #ifdef MOAI_OS_IPHONE
     #include <fmodiphone.h>
@@ -28,6 +33,8 @@ using namespace FMODDesigner;
 #ifdef MOAI_OS_WINDOWS
 	#include <windows.h>
 #endif
+
+#define FMOD_SOUND_ENCRYPTION_KEY 0
 
 // We don't need to update more than every 30th of a second or so
 float FMODDesigner::g_AudioUpdateInterval = (1.f/30.f);
@@ -42,6 +49,37 @@ FMODDesigner::EventManager FMODDesigner::tEventManager;
 u32 FMODDesigner::GetTimeMs()
 {
     return (u32)(ZLDeviceTime::GetTimeInSeconds() * 1000.0);
+}
+
+//----------------------------------------------------------------//
+// DSP Time Offset ( for accurate play position aquiring )
+//----------------------------------------------------------------//
+u32 lastDSPUpdateTime = -1;
+
+FMOD_RESULT F_CALLBACK timeOffsetDSPCallback(
+  FMOD_DSP_STATE *  dsp_state,
+  float *  inbuffer,
+  float *  outbuffer,
+  unsigned int  length,
+  int  inchannels,
+  int  outchannels
+) {      
+    lastDSPUpdateTime = FMODDesigner::GetTimeMs();
+    for ( int count = 0; count < length; count++)
+    { 
+       for (int count2 = 0; count2 < outchannels; count2++)
+       {
+           outbuffer[(count * outchannels) + count2] = inbuffer[(count * inchannels) + count2] ;
+       }
+    } 
+    return FMOD_OK;
+}
+
+u32 FMODDesigner::GetDSPTimeOffsetMs() {
+    if( lastDSPUpdateTime<0 ) return 0;
+    u32 ctime = FMODDesigner::GetTimeMs();
+    u32 offset = ctime - lastDSPUpdateTime;
+    return offset;
 }
 
 //----------------------------------------------------------------------------------------
@@ -85,6 +123,12 @@ bool EventManager::Init(const SoundInitParams& initParams)
     return m_enabled;
 }
 
+FMOD::System* EventManager::GetSoundSystem() {
+    FMOD::System* pSystem = NULL;
+    FMOD_RESULT result = s_pFMODEventSystem->getSystemObject( &pSystem );
+    return pSystem;
+}
+
 void EventManager::Shutdown() 
 {  
     if (m_enabled)
@@ -110,7 +154,7 @@ void EventManager::Shutdown()
 			delete m_aReverbInstances[i];
 		}
 		m_aReverbInstances.clear();
-
+        m_enabled = false;
     }
 }
 
@@ -400,9 +444,15 @@ EventHandle EventManager::PlayEvent2D(const Event& soundEvent, bool loopSound, c
                 {
                     Trace(TT_Sound, TL_Warning, "The FMOD Event %s is 3D, but the game is trying to play it as 2D.", soundEvent.GetName().c_str());
                 }
-                pInstance->m_myHandle = m_handleFactory.Alloc(pInstance);
-                m_aEventInstances.push_back( pInstance );                
-                return pInstance->m_myHandle;
+                int result = ((FMOD::Event*)(pInstance->GetInternalData()))->start();
+                if ( result != FMOD_OK ){
+                    delete pInstance;
+                    Trace(TT_Sound, TL_Info, "Failed to play 2D sound: %s", soundEvent.GetName().c_str() );
+                } else {
+                    pInstance->m_myHandle = m_handleFactory.Alloc(pInstance);
+                    m_aEventInstances.push_back( pInstance );                
+                    return pInstance->m_myHandle;
+                }
             }
             else
             {
@@ -426,10 +476,16 @@ EventHandle EventManager::PlayEvent3D(const Event& soundEvent, const ZLVec3D& vP
             {                        
                 Trace(TT_Sound, TL_Info, "The FMOD Event %s is 2D, but the game is trying to play it as 3D.", soundEvent.GetName().c_str());
             }
-            pNewInstance->SetPosition(vPos, vVelocity);            
-            pNewInstance->m_myHandle = m_handleFactory.Alloc( pNewInstance );            
-            m_aEventInstances.push_back( pNewInstance );            
-            return pNewInstance->m_myHandle;
+            pNewInstance->SetPosition(vPos, vVelocity);
+            int result = ((FMOD::Event*)(pNewInstance->GetInternalData()))->start();
+            if ( result != FMOD_OK ){
+                delete pNewInstance;
+                Trace(TT_Sound, TL_Info, "Failed to play 3D sound: %s", soundEvent.GetName().c_str() );
+            } else {
+                pNewInstance->m_myHandle = m_handleFactory.Alloc( pNewInstance );            
+                m_aEventInstances.push_back( pNewInstance );            
+                return pNewInstance->m_myHandle;
+            }
         }
         else
         {
@@ -887,14 +943,14 @@ const char* // static
 EventManager::GetVoiceEncryptionKey()
 {
     // Voice banks might not be encrypted
-    if (sg_nEncryptedWavbanks) { return "DFm3t4lFTW"; }
+    if (sg_nEncryptedWavbanks) { return FMOD_SOUND_ENCRYPTION_KEY; }
     return NULL;
 }
 
 const char* // static
 EventManager::GetSoundEncryptionKey()
 {
-    return "DFm3t4lFTW";
+    return FMOD_SOUND_ENCRYPTION_KEY;
 }
 
 static const char*
@@ -1734,12 +1790,12 @@ void EventManager::_InitInternals()
     void* pExtraDriverData = NULL;
     FMOD_INITFLAGS systemInitFlags = FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED;
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
     if( m_initParams.m_enableAuditioning )
     {
         systemInitFlags |= FMOD_INIT_ENABLE_PROFILE;
     }    
-#endif
+// #endif
     FMOD_EVENT_INITFLAGS eventInitFlags = FMOD_EVENT_INIT_NORMAL | FMOD_EVENT_INIT_FAIL_ON_MAXSTREAMS;    
 
     if( m_initParams.m_enableDistantLowpass )
@@ -1917,18 +1973,21 @@ void EventManager::_InitInternals()
     extraDriverData.instance = g_instance->pp_instance();
     pExtraDriverData = &extraDriverData;
 
+    pSystem->setDSPBufferSize( 1024, 4 );    
     result = s_pFMODEventSystem->init(m_initParams.m_nVirtualChannels, systemInitFlags, pExtraDriverData, eventInitFlags);	// Initialize FMOD.
     if (result != FMOD_OK)
     {
         goto fail_with_result;
     }    
-    s_pFMODEventSystem->setDSPBufferSize( 1024, 4 );    
 #else
-    result = s_pFMODEventSystem->init(m_initParams.m_nVirtualChannels, systemInitFlags, pExtraDriverData, eventInitFlags);	// Initialize FMOD.
+    // result = s_pFMODEventSystem->init(m_initParams.m_nVirtualChannels, systemInitFlags, pExtraDriverData, eventInitFlags);	// Initialize FMOD.
+    pSystem->setDSPBufferSize( 256, 4 );
+    result = s_pFMODEventSystem->init( m_initParams.m_nVirtualChannels, systemInitFlags, pExtraDriverData, eventInitFlags );
+    // result = s_pFMODEventSystem->init( m_initParams.m_nVirtualChannels, FMOD_INIT_NORMAL, 0 );
     if (result != FMOD_OK)
     {
         goto fail_with_result;
-    }    
+    }
 #endif
 
     // set the media path
@@ -1966,12 +2025,12 @@ void EventManager::_InitInternals()
 
     m_voiceLRU.Init(m_initParams.m_voiceLRUMaxMB - m_initParams.m_voiceLRUBufferMB, m_initParams.m_voiceLRUMaxMB);
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
     if( m_initParams.m_enableAuditioning )
     {
         FMOD::NetEventSystem_Init( s_pFMODEventSystem );
     } 
-#endif    
+// #endif    
     
     m_enabled = true;
 
@@ -1987,6 +2046,23 @@ void EventManager::_InitInternals()
 		m_aReverbInstances.push_back(pNewInstance);
 	}
     
+    // setup time offset dsp callback 
+    { 
+        FMOD_DSP_DESCRIPTION  offsetDspDesc; 
+        memset(&offsetDspDesc, 0, sizeof(FMOD_DSP_DESCRIPTION)); 
+        strcpy(offsetDspDesc.name, "Time Offset Helper"); 
+        offsetDspDesc.channels     = 0;                   // 0 = whatever comes in, else specify. 
+        offsetDspDesc.read         = timeOffsetDSPCallback;                 
+        result = pSystem->createDSP( &offsetDspDesc, &m_timeOffsetDsp ); 
+    }
+
+    // FMOD::DSP           *dsphead;
+    // FMOD::DSPConnection *dspConnection;
+
+    result = pSystem->addDSP( m_timeOffsetDsp, 0 );
+    // result = dsphead->addD( m_timeOffsetDsp, &dspConnection );
+    // m_timeOffsetDsp->setActive( true );
+
     return;
 
  fail_with_result:
@@ -1998,12 +2074,15 @@ void EventManager::_InitInternals()
 void
 EventManager::_ShutdownInternals()
 {
-#ifdef _DEBUG
+// #ifdef _DEBUG
     if( m_initParams.m_enableAuditioning )
     {
         FMOD::NetEventSystem_Shutdown();
     }   
-#endif
+// #endif
+
+    //shutdown time offset dsp
+    m_timeOffsetDsp->release();
 
     // release our highpass dsps
     for (u32 i = 0; i < s_aHighPassFilters.size(); ++i)
@@ -2046,7 +2125,7 @@ bool EventManager::_PassesRetriggerTest( ZLVec3D vSourcePosition, const EventPro
         {
             FMOD_RESULT result;
             FMOD::Event* pEvent = NULL;
-            result = s_pFMODEventSystem->getEventBySystemID( (int)soundEvent.m_pInternalData, FMOD_EVENT_INFOONLY, &pEvent ); 
+            result = s_pFMODEventSystem->getEventBySystemID( soundEvent.getInternalId(), FMOD_EVENT_INFOONLY, &pEvent ); 
             if( result == FMOD_OK )
             {
                 FMOD_RESULT result = FMOD_OK;
@@ -2225,12 +2304,13 @@ EventInstance* EventManager::_PlayEvent( const Event& soundEvent, bool loops, co
                     }
                     else
                     {
-                        result = s_pFMODEventSystem->getEventBySystemID( (int)soundEvent.m_pInternalData, FMOD_EVENT_DEFAULT | FMOD_EVENT_NONBLOCKING, &pEvent ); 
+                        result = s_pFMODEventSystem->getEventBySystemID( soundEvent.getInternalId(), FMOD_EVENT_DEFAULT | FMOD_EVENT_NONBLOCKING, &pEvent ); 
                     }
 
                     if( result == FMOD_OK )
                     {                    
-                        result = pEvent->start();
+                        // result = pEvent->start();
+                        // play the event after position setup
                         if( result == FMOD_OK )
                         {
                             if( pInstanceOverride )
@@ -2330,7 +2410,7 @@ bool EventManager::UnloadEvent(const Event& soundEvent, bool blockOnUnload) cons
             {
                 //unload the sound
                 FMOD::Event* pEvent = NULL;
-                result = s_pFMODEventSystem->getEventBySystemID( (int)soundEvent.m_pInternalData, FMOD_EVENT_INFOONLY, &pEvent );
+                result = s_pFMODEventSystem->getEventBySystemID( soundEvent.getInternalId(), FMOD_EVENT_INFOONLY, &pEvent );
                 if( result == FMOD_OK )
                 {
                     FMOD::EventGroup* pGroup = NULL;
@@ -2374,7 +2454,7 @@ u32 EventManager::GetNumInstances(const Event& soundEvent)
             }
             else
             {
-                result = s_pFMODEventSystem->getEventBySystemID( (int)soundEvent.m_pInternalData, FMOD_EVENT_INFOONLY, &pEvent );                
+                result = s_pFMODEventSystem->getEventBySystemID( soundEvent.getInternalId(), FMOD_EVENT_INFOONLY, &pEvent );                
             }
 
             if(result == FMOD_OK && pEvent)
@@ -2613,7 +2693,7 @@ static FMOD_RESULT GetReverbPreset( const STLString& name, FMOD_REVERB_PROPERTIE
         FMOD_RESULT result = FMOD_OK;        
 
         // Grab the project
-        int id = -1;
+        int id = 0;
         result = FMODDesigner::s_pFMODEventSystem->getReverbPreset( name.c_str(), &reverb, &id );
         if( result == FMOD_OK )
         {
@@ -2716,6 +2796,23 @@ void EventManager::_MuteSoundCategory(const SoundCategoryState* pCategoryState, 
     }
 }
 
+
+void EventManager::SetGlobalReverb( const STLString& reverbName )
+{
+    assert( reverbName.length() > 0 );
+    FMOD_REVERB_PROPERTIES reverbProperties;
+    FMOD_RESULT result = GetReverbPreset( reverbName, reverbProperties );
+    if( result == FMOD_OK )
+    {
+        result = s_pFMODEventSystem->setReverbProperties( &reverbProperties );
+    }
+    else
+    {
+        Trace(TT_Sound, TL_Warning, "Global Reverb Preset %s not found skipping", reverbName.c_str());
+        HANDLE_FMOD_ERROR(result);
+        m_DefaultReverb = "";
+    }
+}
 
 
 void EventManager::SetDefaultReverb( const STLString& reverbName )
@@ -2902,13 +2999,13 @@ bool EventManager::_LoadSoundPropertyData( const Event& soundEvent, EventPropert
         pEvent->getNumProperties( &nFMODProperties );
 
         for( int i = FMOD_EVENTPROPERTY_USER_BASE; i < nFMODProperties; ++i )
-    {
+        {
             char* propertyString = NULL;                    
             pEvent->getPropertyInfo( &i, &propertyString );                    
             STLString propertyName( propertyString );
 
             if( propertyName == "UnloadOnSilence" )
-        {
+            {
                 int unloadOnSilence = 0;
                 pEvent->getPropertyByIndex( i, &unloadOnSilence );
                 pSoundProperty->m_unloadOnSilence = ( unloadOnSilence != 0 );
@@ -2918,36 +3015,49 @@ bool EventManager::_LoadSoundPropertyData( const Event& soundEvent, EventPropert
                 pEvent->getPropertyByIndex( i, &pSoundProperty->m_maxRetriggerInstances );
             }
             else if( propertyName == "MinRetriggerTime" )
-                {
+            {
                 pEvent->getPropertyByIndex( i, &pSoundProperty->m_minRetriggerTime );
             }
             else if( propertyName == "DelayTime" )
-                    {
+            {
                 pEvent->getPropertyByIndex( i, &pSoundProperty->m_soundDelayTime );
             }
             else if( propertyName == "RetriggerRadius" )
-                        {
+            {
                 pEvent->getPropertyByIndex( i, &pSoundProperty->m_retriggerRadius );
-                        }
+            }
             else if( propertyName == "DisableCutoff" )
             {
                 int disableCutoff = 0;
                 pEvent->getPropertyByIndex( i, &disableCutoff );
                 if( disableCutoff == 1 )
-        {
+                {
                     pSoundProperty->m_cutoffRadius = -1.f;
-        }
-    }
+                }
+            }
             else if( strstr( propertyString, "Duck_" ) != 0 )
-    {
+            {
                 STLString categoryName( propertyString + 5 );
                 float duckedVolume = 1.f;
                 pEvent->getPropertyByIndex( i, &duckedVolume );
                 pSoundProperty->m_categoriesToDuck.push_back( categoryName );
                 pSoundProperty->m_duckingVolumes.push_back( duckedVolume );
+            }
         }
-    }
 
+        //load parameters
+        int nFMODParams = 0;        
+        pEvent->getNumParameters( &nFMODParams );
+        FMOD::EventParameter *param;
+        for( int i = 0; i < nFMODParams; ++i )
+        {
+            int paramIndex = 0;
+            char * paramString = NULL;
+            if( ! FMOD_OK == pEvent->getParameterByIndex( i, &param ) ) continue;
+            if( ! FMOD_OK == param->getInfo( &paramIndex, &paramString ) ) continue;
+            STLString paramName( paramString );
+            pSoundProperty->m_aParams.insert( pair<STLString, int>( paramName, paramIndex ) );
+        }
         return true;
     }
 
@@ -3055,12 +3165,12 @@ void EventManager::_InternalUpdate(float fDeltaTime)
         }
 
 
-#ifdef _DEBUG
+// #ifdef _DEBUG
         if( m_initParams.m_enableAuditioning )
         {
             FMOD::NetEventSystem_Update();
         }
-#endif
+// #endif
 
 
     }
@@ -3080,7 +3190,7 @@ void EventManager::GetEventList(EventAndInstanceArray& aOutput,int nMinActiveIns
 
 void EventManager::_GetEventListInternal(EventAndInstanceArray& aOutput,int nMinActiveInstances, const vector<bool>& desiredProjects) const
 {
-#ifdef _DEBUG
+// #ifdef _DEBUG
     int nProjects = 0;
     if( s_pFMODEventSystem->getNumProjects( &nProjects ) == FMOD_OK )
     {
@@ -3118,5 +3228,5 @@ void EventManager::_GetEventListInternal(EventAndInstanceArray& aOutput,int nMin
             }
         }
     }
-#endif //_DEBUG
+// #endif //_DEBUG
 }

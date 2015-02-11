@@ -61,6 +61,7 @@ private:
 	//----------------------------------------------------------------//
 	static int		_getAge						( lua_State* L );
 	static int		_purge						( lua_State* L );
+	static int		_affirm						( lua_State* L );
 	static int		_setLoadingPolicy			( lua_State* L );
 	static int		_setReloader				( lua_State* L );
 

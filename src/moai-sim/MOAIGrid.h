@@ -40,7 +40,7 @@ protected:
 public:
 	
 	DECL_LUA_FACTORY ( MOAIGrid )
-	
+	GET (ZLLeanArray <u32> &, TileArray, mTiles)
 	//----------------------------------------------------------------//
 	u32				GetTile				( int xTile, int yTile );
 					MOAIGrid			();

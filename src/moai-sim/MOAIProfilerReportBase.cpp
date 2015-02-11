@@ -145,7 +145,8 @@ MOAIProfilerReportBase::MOAIProfilerReportBase ( const ZLHashedString& name, con
 MOAIProfilerReportBase::~MOAIProfilerReportBase () {
 
 	// Return all entries to the pool...
-	_TraverseEntries ( mRootEntry, &MOAIProfilerReportBase::Visitor_RecycleEntries );
+	if ( mRootEntry!=0 ) 
+		_TraverseEntries ( mRootEntry, &MOAIProfilerReportBase::Visitor_RecycleEntries );
 	// ...before deleting them
 	_DeletePool ();
 

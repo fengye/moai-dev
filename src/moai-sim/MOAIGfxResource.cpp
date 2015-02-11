@@ -71,6 +71,26 @@ int MOAIGfxResource::_purge ( lua_State* L ) {
 	return 1;
 }
 
+
+//----------------------------------------------------------------//
+/**	@lua	affrim
+	@text load resource into memory
+ 
+	@in		MOAIGfxResource self
+	@opt	bool CPUAffirm  default is true
+	@opt	bool GPUAffirm  default is false
+*/
+int MOAIGfxResource::_affirm ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAIGfxResource, "U" )
+
+	if( state.GetValue < bool>( 2, true ) )
+		self->DoCPUAffirm();
+	if( state.GetValue < bool>( 3, false ) )
+		self->DoGPUAffirm();
+	return 0;
+}
+
+
 //----------------------------------------------------------------//
 // TODO: doxygen
 int MOAIGfxResource::_setLoadingPolicy ( lua_State* L ) {
@@ -262,6 +282,7 @@ void MOAIGfxResource::RegisterLuaFuncs ( MOAILuaState& state ) {
 		{ "getAge",					_getAge },
 		{ "purge",					_purge },
 		{ "softRelease",			_purge }, // back compat
+		{ "affirm",					_affirm },
 		{ "setLoadingPolicy",		_setLoadingPolicy },
 		{ "setReloader",			_setReloader },
 		{ NULL, NULL }

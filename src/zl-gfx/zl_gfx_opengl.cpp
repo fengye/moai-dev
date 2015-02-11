@@ -40,6 +40,17 @@ using namespace std;
 	#include <GLES2/gl2ext.h>
 #endif
 
+
+#ifdef MOAI_OS_HTML
+	#include <GLES/gl.h>
+	#include <GLES/glext.h>
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+	#define MOAI_OS_NACL 1
+	#define GL_RGBA8 GL_RGBA8_OES
+#endif
+
+
 #ifdef MOAI_OS_LINUX
 	#ifndef MOAI_OS_NACL
 		#ifndef ANDROID
@@ -54,17 +65,6 @@ using namespace std;
 
 	#define GL_RGBA8 GL_RGBA8_OES
 #endif
-
-#ifdef MOAI_OS_HTML
-	#include <GLES/gl.h>
-	#include <GLES/glext.h>
-	#include <GLES2/gl2.h>
-	#include <GLES2/gl2ext.h>
-	#define MOAI_OS_NACL 1
-	#define GL_RGBA8 GL_RGBA8_OES
-#endif
-
-
 
 #ifdef MOAI_OS_BLACKBERRY
 	#include <GLES/gl.h>
@@ -119,6 +119,14 @@ GLenum _remapEnum ( u32 zglEnum ) {
 
 	switch ( zglEnum ) {
 
+		case ZGL_PRIM_LINE_LOOP:						return GL_LINE_LOOP;
+		case ZGL_PRIM_LINE_STRIP:						return GL_LINE_STRIP;
+		case ZGL_PRIM_LINES:							return GL_LINES;
+		case ZGL_PRIM_POINTS:							return GL_POINTS;
+		case ZGL_PRIM_TRIANGLE_FAN:						return GL_TRIANGLE_FAN;
+		case ZGL_PRIM_TRIANGLE_STRIP:					return GL_TRIANGLE_STRIP;
+		case ZGL_PRIM_TRIANGLES:						return GL_TRIANGLES;
+		
 		case ZGL_BLEND_FACTOR_DST_ALPHA:					return GL_DST_ALPHA;
 		case ZGL_BLEND_FACTOR_DST_COLOR:					return GL_DST_COLOR;
 		case ZGL_BLEND_FACTOR_ONE:							return GL_ONE;
@@ -227,6 +235,8 @@ GLenum _remapEnum ( u32 zglEnum ) {
 		case ZGL_PIXEL_FORMAT_ALPHA:						return GL_ALPHA;
 		case ZGL_PIXEL_FORMAT_LUMINANCE:					return GL_LUMINANCE;
 		case ZGL_PIXEL_FORMAT_LUMINANCE_ALPHA:				return GL_LUMINANCE_ALPHA;
+		case ZGL_PIXEL_FORMAT_DEPTH_COMPONENT16:			return GL_DEPTH_COMPONENT16;
+
 
 		#if !defined ( MOAI_OS_NACL ) && !defined ( MOAI_OS_IPHONE ) && !defined ( MOAI_OS_BLACKBERRY ) && !defined ( MOAI_OS_ANDROID )
 			case ZGL_PIXEL_FORMAT_RED:						return GL_RED;
@@ -304,14 +314,6 @@ GLenum _remapEnum ( u32 zglEnum ) {
 		#endif
 
 		case ZGL_PIXEL_TYPE_UNSIGNED_SHORT_5_5_5_1:		return GL_UNSIGNED_SHORT_5_5_5_1;
-
-		case ZGL_PRIM_LINE_LOOP:						return GL_LINE_LOOP;
-		case ZGL_PRIM_LINE_STRIP:						return GL_LINE_STRIP;
-		case ZGL_PRIM_LINES:							return GL_LINES;
-		case ZGL_PRIM_POINTS:							return GL_POINTS;
-		case ZGL_PRIM_TRIANGLE_FAN:						return GL_TRIANGLE_FAN;
-		case ZGL_PRIM_TRIANGLE_STRIP:					return GL_TRIANGLE_STRIP;
-		case ZGL_PRIM_TRIANGLES:						return GL_TRIANGLES;
 
 		case ZGL_PROGRAM_INFO_ACTIVE_ATTRIBUTES:			return GL_ACTIVE_ATTRIBUTES;
 		case ZGL_PROGRAM_INFO_ACTIVE_ATTRIBUTE_MAX_LENGTH:	return GL_ACTIVE_ATTRIBUTE_MAX_LENGTH;
@@ -404,6 +406,8 @@ GLenum _remapEnum ( u32 zglEnum ) {
 
 		case ZGL_WRAP_MODE_CLAMP:						return GL_CLAMP_TO_EDGE;
 		case ZGL_WRAP_MODE_REPEAT:						return GL_REPEAT;
+
+
 	}
 
 	assert ( false );
@@ -480,13 +484,13 @@ void zglInitialize () {
 		sIsProgrammable = ( majorVersion >= 2 );
 		sIsFramebufferSupported = true;
 	#endif
-
+		
 	#ifdef EMSCRIPTEN 
 		isOpenGLES = true;
 		sIsProgrammable = true;
 		sIsFramebufferSupported = true;
 	#endif
-	
+
 	#if defined ( __GLEW_H__ )
 
 		// if framebuffer object is not in code, check to see if it's available as

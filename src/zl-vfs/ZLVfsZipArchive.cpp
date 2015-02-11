@@ -54,6 +54,10 @@ int ZLVfsZipArchiveHeader::FindAndRead ( FILE* file, size_t* offset ) {
 					( *offset ) = cursor + i;
 				}
 
+				if ( offset ) {
+					( *offset ) = cursor + i;
+				}
+
 				fseek ( file, cursor + i, SEEK_SET );
 				
 				fread ( &this->mSignature, 4, 1, file );

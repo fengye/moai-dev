@@ -108,6 +108,7 @@ void MOAIFont::InitWithBMFont ( cc8* filename, const u32 numPreloadedTextures, M
 
 	MOAIGlyphSet* glyphSet = 0;
 	MOAIStaticGlyphCache* glyphCache = new MOAIStaticGlyphCache ();
+	int smooth=0;
 
 	this->mCache.Set ( *this, glyphCache );
 	this->mReader.Set ( *this, 0 );
@@ -123,12 +124,12 @@ void MOAIFont::InitWithBMFont ( cc8* filename, const u32 numPreloadedTextures, M
 		p = parseKeyVal ( p, &key, &val, &endl );
 
 		if ( strcmp ( key, "info" ) == 0 ) {
-		
 			float size = 0.0f;
 			
 			//info face="Cambria" size=64 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=2,2
 			do {
 				p = parseKeyVal ( p, &key, &val, &endl );
+				if ( strcasecmp ( key, "smooth" ) == 0 ) { smooth = ( int )atof ( val ); }
 				if ( strcasecmp ( key, "size" ) == 0 ) { size = ( float )atof ( val ); }
 			} while ( !endl );
 			
@@ -138,7 +139,6 @@ void MOAIFont::InitWithBMFont ( cc8* filename, const u32 numPreloadedTextures, M
 			}
 		}
 		else if ( strcmp ( key, "common" ) == 0 ) {
-			
 			float lineSpacing = 0.0f;
 			float base = 0.0f;
 			u32 pages = 0;
@@ -184,6 +184,7 @@ void MOAIFont::InitWithBMFont ( cc8* filename, const u32 numPreloadedTextures, M
 			if ( texture == 0 ) {
 				texture = new MOAITexture ();
 				texture->Init ( texturename, MOAITexture::DEFAULT_TRANSFORM );
+				if(smooth==1) texture->SetFilter ( ZGL_SAMPLE_LINEAR, ZGL_SAMPLE_LINEAR );
 			}
 				
 			glyphCache->SetTexture ( id, texture );

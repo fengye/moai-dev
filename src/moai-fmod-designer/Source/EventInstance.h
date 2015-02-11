@@ -30,6 +30,7 @@ namespace FMODDesigner
         void SetOrientation( const ZLVec3D& vForward, const ZLVec3D& vUp = ZLVec3D( 0.f, 1.f, 0.f ) );
         void SetTime( float fTime );
         void SetTimeMs( u32 time );
+        void SetSubChannelPosition( u32 idx, u32 pos );
         void SetDelayMs( u32 delay, bool start = true );
         void SetPitch( float fPitch );
         float GetPitch() const;
@@ -72,6 +73,12 @@ namespace FMODDesigner
         float GetTempo() const;
         float GetBeatFraction() const;
         float GetMeasureFraction() const;
+        
+        // For marker use
+        // default to false to preserve existing calls.
+        // Correct default may actually be true?
+        float GetDuration(bool subsoundTime=false) const;
+
 
         // Voice API    
         bool ContainsVoiceData() const                                  { return GetFlag(kSIF_ResidentVoice); }    
@@ -122,10 +129,6 @@ namespace FMODDesigner
         void MuteInternal( bool bMute );
         void SetPositionInternal(const ZLVec3D& vPos, const ZLVec3D& vVelocity, const ZLVec3D& vForward);
 
-        // For marker use
-        // default to false to preserve existing calls.
-        // Correct default may actually be true?
-        float GetDuration(bool subsoundTime=false) const;
 
         // Utility functions for the EventInstance and EventManager        
         void SetFlag(StateFlags flag, bool value);

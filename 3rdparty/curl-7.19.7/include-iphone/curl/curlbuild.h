@@ -194,7 +194,19 @@ typedef CURL_TYPEOF_CURL_OFF_T curl_off_t;
 #else
 
 /* The size of `long', as computed by sizeof. */
+// /*#define CURL_SIZEOF_LONG 4*/
+// #ifdef __i386__
+// #define CURL_SIZEOF_LONG 8
+// #else
+// #define CURL_SIZEOF_LONG 8
+// #endif
+
+/* The size of `long', as computed by sizeof. */
+#ifdef __i386__
+#define CURL_SIZEOF_LONG 8
+#else
 #define CURL_SIZEOF_LONG 4
+#endif
 
 /* Integral data type used for curl_socklen_t. */
 #define CURL_TYPEOF_CURL_SOCKLEN_T socklen_t

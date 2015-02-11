@@ -1289,6 +1289,7 @@ void MOAIGfxDevice::SetViewRect ( ZLRect rect ) {
 	s32 x = ( s32 )deviceRect.mXMin;
 	s32 y = ( s32 )deviceRect.mYMin;
 	
+
 	u32 w = ( u32 )( deviceRect.Width () + 0.5f );
 	u32 h = ( u32 )( deviceRect.Height () + 0.5f );
 	

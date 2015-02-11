@@ -760,7 +760,7 @@ u32 EventInstance::GetTimeMs(bool subsoundTime) const
                         result = apChannels[0]->getPosition( &position, FMOD_TIMEUNIT_MS );
                         if( result == FMOD_OK )
                         {
-                            return position;
+                            return position + FMODDesigner::GetDSPTimeOffsetMs() ;
                         }
                     }
                 }
@@ -773,7 +773,7 @@ u32 EventInstance::GetTimeMs(bool subsoundTime) const
             result = ((FMOD::Event*)m_pInternalData)->getInfo(NULL, NULL, &info);
             if( result == FMOD_OK )
             {
-                return info.positionms;
+                return info.positionms + FMODDesigner::GetDSPTimeOffsetMs();
             }
         }
         else
@@ -783,7 +783,7 @@ u32 EventInstance::GetTimeMs(bool subsoundTime) const
             result = pChannel->getPosition( &position, FMOD_TIMEUNIT_MS );
             if( result == FMOD_OK )
             {
-                return position;
+                return position + FMODDesigner::GetDSPTimeOffsetMs();
             }
         }
 
@@ -791,6 +791,22 @@ u32 EventInstance::GetTimeMs(bool subsoundTime) const
     }
 
     return 0;
+}
+
+void EventInstance::SetSubChannelPosition( u32 idx, u32 position ) {
+    if( !IsValid() ) return ;
+    FMOD_RESULT result = FMOD_OK;
+    FMOD::ChannelGroup* pChannelGroup = NULL;
+    result = ((FMOD::Event*)m_pInternalData)->getChannelGroup( &pChannelGroup );
+    if( result == FMOD_OK )
+    {
+        vector<FMOD::Channel*> apChannels;                    
+        GetEventParts( pChannelGroup, apChannels );    
+        if( apChannels.size() > idx )
+        {
+           result = apChannels[ idx ]->setPosition( position, FMOD_TIMEUNIT_MS );
+        }
+    }   
 }
 
 float EventInstance::GetElapsed(bool subsoundTime) const
