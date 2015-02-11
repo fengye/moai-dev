@@ -25,7 +25,6 @@ add_subdirectory ( expat )
 add_subdirectory ( freetype )
 add_subdirectory ( jansson )
 add_subdirectory ( jpg )
-add_subdirectory ( webp )
 add_subdirectory ( tess2 )
 
 set (LUA_HEADERS "")

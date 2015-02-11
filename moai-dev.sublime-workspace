@@ -1,0 +1,1156 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Node",
+				"NodeStatus"
+			],
+			[
+				"_last",
+				"_lastSeenPlayerPositionExpireTimer"
+			],
+			[
+				"distan",
+				"distanceTo"
+			],
+			[
+				"_current",
+				"_currentState"
+			],
+			[
+				"behavio",
+				"BehaviourNode	me.beaconguide.bt"
+			],
+			[
+				"S",
+				"SUCCESS"
+			],
+			[
+				"Behavi",
+				"BehaviourNode"
+			],
+			[
+				"Seque",
+				"SequenceNode"
+			],
+			[
+				"Dec",
+				"DecoratorNode"
+			],
+			[
+				"Behav",
+				"BehaviourNode"
+			],
+			[
+				"child",
+				"children"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"Tween",
+				"FlxTween	flixel.tweens"
+			],
+			[
+				"length",
+				"lengthSquared	Float"
+			],
+			[
+				"sense",
+				"senseInterval	var"
+			],
+			[
+				"scale",
+				"scaledTileHeight	Int"
+			],
+			[
+				"scaled",
+				"scaledTileWidth	Int"
+			],
+			[
+				"tile",
+				"TilemapEx	class"
+			],
+			[
+				"ti",
+				"TilemapEx"
+			],
+			[
+				"Tile",
+				"TilemapEx	class"
+			],
+			[
+				"fl",
+				"Float	class"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/host-modules/aku_modules_config.h",
+			"settings":
+			{
+				"buffer_size": 1166,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/third-party/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 2328,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\n\nSearching 18502 files for \"libChartboost\"\n\nH:\\Projects\\moai-dev\\cmake\\libmoai\\moai-iphone\\moai-ios-chartboost\\CMakeLists.txt:\n    3  \n    4  # lib\n    5: set(CHARTBOOST_LIB ${MOAI_ROOT}/3rdparty/chartboost-4.2/libChartboost.a)\n    6  add_library(Chartboost STATIC IMPORTED)\n    7  set_property(TARGET Chartboost PROPERTY IMPORTED_LOCATION ${CHARTBOOST_LIB})\n    8: #target_include_directories(libChartboost PUBLIC \"${MOAI_ROOT}/3rdparty/chartboost-4.2\")\n    9  \n   10  install(FILES ${CHARTBOOST_LIB} DESTINATION lib)\n\nH:\\Projects\\moai-dev\\host-templates\\ios\\Moai Template\\Moai Template.xcodeproj\\project.pbxproj:\n   16  		63CF1A641A065DF300F731F1 /* libbox2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CF1A211A065DF300F731F1 /* libbox2d.a */; };\n   17  		63CF1A651A065DF300F731F1 /* libcares.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CF1A221A065DF300F731F1 /* libcares.a */; };\n   18: 		63CF1A661A065DF300F731F1 /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CF1A231A065DF300F731F1 /* libChartboost.a */; };\n   19  		63CF1A671A065DF300F731F1 /* libchipmunk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CF1A241A065DF300F731F1 /* libchipmunk.a */; };\n   20  		63CF1A681A065DF300F731F1 /* libcontrib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CF1A251A065DF300F731F1 /* libcontrib.a */; };\n   ..\n  125  		63CF1A211A065DF300F731F1 /* libbox2d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbox2d.a; path = libmoai/lib/libbox2d.a; sourceTree = \"<group>\"; };\n  126  		63CF1A221A065DF300F731F1 /* libcares.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcares.a; path = libmoai/lib/libcares.a; sourceTree = \"<group>\"; };\n  127: 		63CF1A231A065DF300F731F1 /* libChartboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libChartboost.a; path = libmoai/lib/libChartboost.a; sourceTree = \"<group>\"; };\n  128  		63CF1A241A065DF300F731F1 /* libchipmunk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libchipmunk.a; path = libmoai/lib/libchipmunk.a; sourceTree = \"<group>\"; };\n  129  		63CF1A251A065DF300F731F1 /* libcontrib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcontrib.a; path = libmoai/lib/libcontrib.a; sourceTree = \"<group>\"; };\n  ...\n  269  				63CF1A641A065DF300F731F1 /* libbox2d.a in Frameworks */,\n  270  				63CF1A651A065DF300F731F1 /* libcares.a in Frameworks */,\n  271: 				63CF1A661A065DF300F731F1 /* libChartboost.a in Frameworks */,\n  272  				63CF1A671A065DF300F731F1 /* libchipmunk.a in Frameworks */,\n  273  				63CF1A681A065DF300F731F1 /* libcontrib.a in Frameworks */,\n  ...\n  368  				63CF1A211A065DF300F731F1 /* libbox2d.a */,\n  369  				63CF1A221A065DF300F731F1 /* libcares.a */,\n  370: 				63CF1A231A065DF300F731F1 /* libChartboost.a */,\n  371  				63CF1A241A065DF300F731F1 /* libchipmunk.a */,\n  372  				63CF1A251A065DF300F731F1 /* libcontrib.a */,\n\nH:\\Projects\\moai-dev\\xcode\\ios\\MoaiSample.xcodeproj\\project.pbxproj:\n  177  		CDFD7E261A08B16C00A94E6B /* aku_modules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDFD7E1C1A08B16C00A94E6B /* aku_modules.cpp */; };\n  178  		CDFD7E271A08B16C00A94E6B /* aku_modules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CDFD7E1C1A08B16C00A94E6B /* aku_modules.cpp */; };\n  179: 		CDFD7E461A08BBF500A94E6B /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFD7E441A08BBF500A94E6B /* libChartboost.a */; };\n  180: 		CDFD7E471A08BBF500A94E6B /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFD7E441A08BBF500A94E6B /* libChartboost.a */; };\n  181  		CDFD7E4A1A08BC0A00A94E6B /* libCrittercism_v4_3_3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFD7E481A08BC0A00A94E6B /* libCrittercism_v4_3_3.a */; };\n  182  		CDFD7E4B1A08BC0A00A94E6B /* libCrittercism_v4_3_3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDFD7E481A08BC0A00A94E6B /* libCrittercism_v4_3_3.a */; };\n  ...\n  709  		CDFD7E1C1A08B16C00A94E6B /* aku_modules.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aku_modules.cpp; path = \"../../src/host-modules/aku_modules.cpp\"; sourceTree = SOURCE_ROOT; };\n  710  		CDFD7E1D1A08B16C00A94E6B /* aku_modules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aku_modules.h; path = \"../../src/host-modules/aku_modules.h\"; sourceTree = SOURCE_ROOT; };\n  711: 		CDFD7E441A08BBF500A94E6B /* libChartboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libChartboost.a; path = \"../../3rdparty/chartboost-4.2/libChartboost.a\"; sourceTree = \"<group>\"; };\n  712  		CDFD7E481A08BC0A00A94E6B /* libCrittercism_v4_3_3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCrittercism_v4_3_3.a; path = \"../../3rdparty/crittercism-4.3.3/CrittercismSDK/libCrittercism_v4_3_3.a\"; sourceTree = \"<group>\"; };\n  713  		CDFD7E4C1A08BC2700A94E6B /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = \"../../3rdparty/facebook-ios-sdk-3.14.1/FacebookSDK.framework\"; sourceTree = \"<group>\"; };\n  ...\n  787  				CD508A99155E3AF90002FC3B /* SystemConfiguration.framework in Frameworks */,\n  788  				CD236687180A5CBC006A7236 /* Social.framework in Frameworks */,\n  789: 				CDFD7E471A08BBF500A94E6B /* libChartboost.a in Frameworks */,\n  790  				CD4C4165180A6A8D00C02381 /* MobileCoreServices.framework in Frameworks */,\n  791  				CD508A9E155E3AF90002FC3B /* Twitter.framework in Frameworks */,\n  ...\n  822  				CDDD30781574AC7300C410A0 /* SystemConfiguration.framework in Frameworks */,\n  823  				CD236685180A5CBC006A7236 /* Social.framework in Frameworks */,\n  824: 				CDFD7E461A08BBF500A94E6B /* libChartboost.a in Frameworks */,\n  825  				CD4C4164180A6A8D00C02381 /* MobileCoreServices.framework in Frameworks */,\n  826  				CDDD30791574AC7300C410A0 /* Twitter.framework in Frameworks */,\n  ...\n  893  			isa = PBXGroup;\n  894  			children = (\n  895: 				CDFD7E441A08BBF500A94E6B /* libChartboost.a */,\n  896  				CDFD7E481A08BC0A00A94E6B /* libCrittercism_v4_3_3.a */,\n  897  				CD9F769D1808DEDC0001EF0C /* AdSupport.framework */,\n\n19 matches across 3 files\n",
+			"settings":
+			{
+				"buffer_size": 6286,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-iphone/moai-ios-chartboost/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1168,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-sim/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1840,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-fmod-designer/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1339,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "samples/hello-moai/main.lua",
+			"settings":
+			{
+				"buffer_size": 1469,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "samples/textbox-label/main.lua",
+			"settings":
+			{
+				"buffer_size": 988,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 930,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-fmod-ex/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1144,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-luaext/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1482,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/libmoai/moai-box2d/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1126,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/moai-fmod-designer/host.cpp",
+			"settings":
+			{
+				"buffer_size": 1306,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/cmake-modules/module-setup.cmake",
+			"settings":
+			{
+				"buffer_size": 2488,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cmake/third-party/webp/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 2806,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "3rdparty/LICENSE",
+			"settings":
+			{
+				"buffer_size": 49694,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/Haxe/Support/Hxml.sublime-build",
+	"command_palette":
+	{
+		"height": 127.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: discover",
+				"Package Control: Discover Packages"
+			],
+			[
+				"install package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 271.0,
+		"history":
+		[
+			"sublime.log_commands(True)",
+			"sublime.log_commands(true)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/H/Projects/moai-dev",
+		"/H/Projects/moai-dev/cmake",
+		"/H/Projects/moai-dev/cmake/hosts",
+		"/H/Projects/moai-dev/cmake/libmoai",
+		"/H/Projects/moai-dev/cmake/libmoai/moai-fmod-designer",
+		"/H/Projects/moai-dev/cmake/libmoai/moai-fmod-ex",
+		"/H/Projects/moai-dev/cmake/libmoai/moai-sim",
+		"/H/Projects/moai-dev/samples",
+		"/H/Projects/moai-dev/samples/textbox-label"
+	],
+	"file_history":
+	[
+		"/H/Projects/moai-dev/cmake/cmake-modules/module-config.cmake",
+		"/J/moai/cmake/CMakeLists.txt",
+		"/J/moai/cmake/third-party/CMakeLists.txt",
+		"/H/Projects/moai-dev/build/build-vs2013/libmoai/config/moai_config.h",
+		"/J/moai/samples/textbox/textBox-alignment/run.bat",
+		"/J/moai/samples/textbox/textBox-alignment/main.lua",
+		"/J/moai/samples/contrib/particle-helper/ParticleHelper.lua",
+		"/H/Projects/FlixelRogue/source/Player.hx",
+		"/H/Projects/FlixelRogue/source/PlayState.hx",
+		"/H/Projects/FlixelRogue/source/FogOfWar.hx",
+		"/H/Projects/FlixelRogue/source/IntelligentAgent.hx",
+		"/H/Projects/FlixelRogue/source/SteeringAgent.hx",
+		"/H/Projects/FlixelRogue/source/Enemy.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/NodeStatus.hx",
+		"/H/Projects/FlixelRogue/source/Actions/WalkToPlayerPositionAction.hx",
+		"/H/Projects/FlixelRogue/source/Actions/WalkToPlayerLastPositionAction.hx",
+		"/H/Projects/FlixelRogue/source/Actions/WalkToSpawnPositionAction.hx",
+		"/H/Projects/FlixelRogue/source/Conditions/PlayerWithinRangeCondition.hx",
+		"/H/Projects/FlixelRogue/source/Conditions/PlayerCanBeSeenCondition.hx",
+		"/H/Projects/FlixelRogue/source/Actions/IdleAction.hx",
+		"/H/Projects/FlixelRogue/Project.xml",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/BehaviourNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/DecoratorNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/EnsureNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/BehaviourTreeException.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/NegateNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/RepeatNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/ActionNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/ConditionNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/SelectorNode.hx",
+		"/H/Projects/FlixelRogue/source/me/beaconguide/bt/SequenceNode.hx",
+		"/H/Projects/FlixelRogue/source/BT/BehaviourNode.hx",
+		"/H/Projects/HaxePunkAI/com/haxepunk/ai/behaviors/Sequence.hx",
+		"/H/Projects/HaxePunkAI/com/haxepunk/ai/behaviors/Composite.hx",
+		"/H/Projects/HaxePunkAI/com/haxepunk/ai/behaviors/Behavior.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/util/FlxRandom.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/tweens/FlxEase.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/util/FlxVector.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/tweens/FlxTween.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/tweens/motion/LinearPath.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/tweens/motion/Motion.hx",
+		"/H/Projects/FlixelRogue/source/Scene.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/FlxObject.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/tile/FlxTilemap.hx",
+		"/H/Projects/FlixelRogue/source/GeomUtility.hx",
+		"/C/Users/feng_ye/Documents/Brainiac Designer/Behaviors/Project Hoshimi/New Behavior 1.xml",
+		"/H/Projects/HaxePunkAI/com/haxepunk/ai/behaviors/Decorator.hx",
+		"/H/Projects/HaxePunkAI/examples/behaviors/FollowMouse.hx",
+		"/H/Portable Program Files/Sublime Text 3/Data/Packages/FuzzyFileNav/Default (Windows).sublime-keymap",
+		"/H/Projects/FlixelRogue/source/AssetPaths.hx",
+		"/H/Portable Program Files/Sublime Text 3/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/H/Portable Program Files/Sublime Text 3/Data/Packages/FuzzyFileNav/fuzzy_file_nav.sublime-settings",
+		"/H/Projects/FlixelRogue/source/LinearPathEx.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel/3,3,6/flixel/plugin/TweenManager.hx",
+		"/H/Projects/FlixelRogue/source/Main.hx",
+		"/H/Projects/FlixelRogue/source/TilemapEx.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel-addons/1,1,0/flixel/addons/editors/ogmo/FlxOgmoLoader.hx",
+		"/H/Projects/FlixelRogue/source/OgmoLoaderEx.hx",
+		"/H/HaxeToolkit/haxe/lib/flixel-addons/1,1,0/flixel/addons/tile/FlxTileSpecial.hx",
+		"/H/Portable Program Files/Sublime Text 3/Data/Installed Packages/Haxe.sublime-package",
+		"/H/Portable Program Files/Sublime Text 3/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/H/Portable Program Files/Sublime Text 3/Data/Packages/User/Preferences.sublime-settings",
+		"/H/HelloWorld.js",
+		"/H/Projects/GWEN/gwen/UnitTest/UnitTest.cpp",
+		"/H/Projects/GWEN/gwen/Samples/Direct3D10/Direct3D10Sample.cpp",
+		"/H/Projects/GWEN/gwen/Projects/inc/macosx.lua",
+		"/H/Projects/GWEN/gwen/Projects/Build.sh",
+		"/H/Projects/GWEN/gwen/Projects/premake4"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"chartboost",
+			"libChartboost",
+			"tapjoy",
+			"MOAI_BOX2D",
+			"MOAI_FMOD_DESIGNER",
+			"moai-box2d",
+			"lib",
+			"libraries",
+			"box2d",
+			"designer",
+			"get_target",
+			"box2d",
+			"moai-fmod-designer",
+			"fmod",
+			"AKUFmodDesignerAppFinalize",
+			"webp",
+			"we",
+			"webp",
+			"Cmakelists.txt",
+			"webp",
+			"sdl",
+			"AKU_WITH_SIM",
+			"AKU_WITH_SDL",
+			"vs2013",
+			"PVR",
+			"builtinSymbol",
+			"sanitizeWaypoints",
+			"findPath",
+			"currentAction",
+			"PURSUING",
+			"BehaviourNode",
+			"_currentState",
+			"attachBehaviour",
+			"source",
+			"_spawnPoint",
+			"_lastSeenPlayerPosition",
+			"player",
+			"children",
+			"doRun",
+			"BehaviourNode",
+			"me.beaconguide.BT",
+			"_backSpawnPointTimer",
+			"_waypoints = null",
+			"stopFollowing()",
+			"_pursueTarget",
+			"_pursueTarget =",
+			"_pursueTarget",
+			"_missingPursueTarget",
+			"_backSpawnPointTimer",
+			"_spawnpoint",
+			"MULTIPLIER",
+			"syncDirection",
+			"flxrandom",
+			"globalSeed",
+			"_internalSeed",
+			"generate",
+			"facing",
+			"_followPath",
+			"_waypoints",
+			"_pursueTarget",
+			"getCurrentDirection",
+			"_facingDir",
+			"facing",
+			"_facingDir",
+			"TweenOptions",
+			"radians",
+			"scale",
+			"_index",
+			"_rerouteElapsed",
+			"facing",
+			"LevelScene",
+			"levelscene",
+			"manager",
+			"updatePath",
+			"x = ",
+			"manager.",
+			"manager",
+			"linearpath",
+			"_rerouteElapsed",
+			"senseInterval",
+			"_senseInterval",
+			"EaseFunction",
+			"tweenoptions",
+			"TWEENOPTIONS",
+			"_scene",
+			".x",
+			"changeOrder",
+			"pts",
+			"checkObjectOnTilemap",
+			"_facing",
+			"facing",
+			"animation",
+			"_facing",
+			"widthintiles",
+			"tilewidth",
+			"checkObjectOnTilemap",
+			"_fow",
+			"scene",
+			" get_scaledTileHeight",
+			"Y * widthInTiles + X",
+			"_tileObjects",
+			"set",
+			"@",
+			"_speed",
+			"_scaledTileWidth",
+			"_tileHeight",
+			"TileGraphic",
+			"widthInTiles",
+			"getPlayerMapIndex",
+			"_mapIndex",
+			"ctrl+shift+b",
+			"ctrl+enter",
+			"ctrl+shift+b",
+			"2010",
+			"vs",
+			"directx"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 7,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/host-modules/aku_modules_config.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1166,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								764,
+								764
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "cmake/third-party/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2328,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								642,
+								642
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6286,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										212,
+										225
+									],
+									[
+										395,
+										408
+									],
+									[
+										941,
+										954
+									],
+									[
+										1035,
+										1048
+									],
+									[
+										1773,
+										1786
+									],
+									[
+										1858,
+										1871
+									],
+									[
+										1894,
+										1907
+									],
+									[
+										2508,
+										2521
+									],
+									[
+										2836,
+										2849
+									],
+									[
+										3378,
+										3391
+									],
+									[
+										3472,
+										3485
+									],
+									[
+										3532,
+										3545
+									],
+									[
+										3626,
+										3639
+									],
+									[
+										4508,
+										4521
+									],
+									[
+										4593,
+										4606
+									],
+									[
+										4648,
+										4661
+									],
+									[
+										5419,
+										5432
+									],
+									[
+										5820,
+										5833
+									],
+									[
+										6109,
+										6122
+									],
+									[
+										6286,
+										6286
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								202,
+								202
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 8,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "cmake/libmoai/moai-iphone/moai-ios-chartboost/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1168,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								839,
+								922
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "cmake/libmoai/moai-sim/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1840,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								584,
+								584
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "cmake/libmoai/moai-fmod-designer/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1339,
+								1339
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "samples/hello-moai/main.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1469,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								573,
+								573
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "samples/textbox-label/main.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 988,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								689,
+								689
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "cmake/libmoai/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 930,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								605,
+								605
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "cmake/libmoai/moai-fmod-ex/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1144,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								882,
+								882
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "cmake/libmoai/moai-luaext/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								820,
+								824
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "cmake/libmoai/moai-box2d/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1126,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								454,
+								464
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/moai-fmod-designer/host.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1306,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1306,
+								1306
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "cmake/cmake-modules/module-setup.cmake",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2488,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2068,
+								2072
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 708.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "cmake/third-party/webp/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2806,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								78,
+								82
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "3rdparty/LICENSE",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 49694,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1557,
+								1557
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 946.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 190.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "moai-dev.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"behaviour",
+				"source\\me\\beaconguide\\bt\\BehaviourNode.hx"
+			],
+			[
+				"",
+				"source\\Actions\\WalkToSpawnPositionAction.hx"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 261.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

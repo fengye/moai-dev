@@ -18,6 +18,9 @@ add_subdirectory ( moai-http-client )
 add_subdirectory ( moai-http-server )
 add_subdirectory ( moai-luaext )
 add_subdirectory ( moai-audiosampler )
+
+add_subdirectory ( moai-fmod-designer )
+add_subdirectory ( moai-fmod-ex )
  
 if (MOAI_TEST)
    add_subdirectory ( moai-test)

@@ -57,6 +57,9 @@ if (MOAI_BOX2D)
  target_link_libraries ( moai-sim moai-box2d)
 endif (MOAI_BOX2D)
 
+target_link_libraries ( moai-sim moai-fmod-designer)
+target_link_libraries ( moai-sim moai-fmod-ex)
+
 if (BUILD_WINDOWS)
  target_link_libraries ( moai-sim  psapi rpcrt4 ) #GetProcessMemoryInfo and UuidCreateSequential
 endif (BUILD_WINDOWS)

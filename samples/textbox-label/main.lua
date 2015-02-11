@@ -15,6 +15,7 @@ viewport:setScale ( 320, 480 )
 layer = MOAILayer2D.new ()
 layer:setViewport ( viewport )
 MOAISim.pushRenderPass ( layer )
+MOAIRenderMgr.setBufferTable( { MOAIGfxDevice.getFrameBuffer() } )
 
 text = 'This is a label.'
 

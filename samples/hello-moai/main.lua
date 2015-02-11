@@ -6,6 +6,8 @@
 
 MOAISim.openWindow ( "test", 320, 480 )
 
+
+print( MOAIActionMgr )
 viewport = MOAIViewport.new ()
 viewport:setSize ( 320, 480 )
 viewport:setScale ( 320, 480 )
@@ -13,6 +15,7 @@ viewport:setScale ( 320, 480 )
 layer = MOAILayer2D.new ()
 layer:setViewport ( viewport )
 MOAISim.pushRenderPass ( layer )
+MOAIRenderMgr.setBufferTable( { MOAIGfxDevice.getFrameBuffer() } )
 
 gfxQuad = MOAIGfxQuad2D.new ()
 gfxQuad:setTexture ( "moai.png" )
