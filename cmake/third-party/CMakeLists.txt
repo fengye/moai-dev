@@ -26,6 +26,7 @@ add_subdirectory ( freetype )
 add_subdirectory ( jansson )
 add_subdirectory ( jpg )
 add_subdirectory ( tess2 )
+add_subdirectory ( libpvr )
 
 set (LUA_HEADERS "")
 set (LUA_LIB "")
