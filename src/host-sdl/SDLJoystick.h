@@ -13,9 +13,6 @@ class Joystick
         explicit Joystick(const int index);
         ~Joystick();
         
-        Joystick(const Joystick&) = delete;
-        void operator= (const Joystick&) = delete;
-    
         struct AXIS_MOTION {
             int x;
             int y;
@@ -37,6 +34,9 @@ class Joystick
         const AXIS_MOTION & HandleAxisMotion(const SDL_Event & event);
 
     private:
+		Joystick(const Joystick&);
+		void operator= (const Joystick&);
+    
 
         AXIS_MOTION axis_motion;
 
